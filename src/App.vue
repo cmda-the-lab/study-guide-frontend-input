@@ -10,6 +10,14 @@
           <option>C</option>
         </select>
       </section>
+      <section id="Indicatoren">
+        <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak?</p>
+        <select >
+          <option v-for="indicator in indicators" :value="indicator.value">
+            {{ indicator.value }}
+          </option>
+        </select>
+      </section>
       <section id="vakNaam">
         <p>Wat is de naam van het vak?</p>
         <input v-model="name" placeholder="type hier">
@@ -55,7 +63,7 @@ export default {
       .then(json => { this.faculty = json[0].name[0].value })
     fetch(APIUrl+"indicator/")
       .then(response => response.json())
-      .then(json => { this.indicators = json[0] })
+      .then(json => { this.indicators = json })
   },
   methods: {
     postCourse: function(){
