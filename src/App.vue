@@ -4,16 +4,16 @@
     <form id="signup-form" @submit.prevent="postCourse">
       <section id="Faculteit">
         <p>Onder welke faculteit valt dit vak?</p>
-        <select v-model="selected">
-          <option>{{ selected }}</option>
+        <select v-model="faculty">
+          <option>{{ faculty }}</option>
           <option>B</option>
           <option>C</option>
         </select>
       </section>
       <section id="vakNaam">
         <p>Wat is de naam van het vak?</p>
-        <input v-model="message" placeholder="type hier">
-        <p>Naam: {{ message }}</p>
+        <input v-model="name" placeholder="type hier">
+        <p>Naam: {{ name }}</p>
       </section>
       <button>Sla het vak op</button>
     </form>
@@ -21,24 +21,54 @@
 </template>
 
 <script>
-
+const APIUrl = "http://localhost:8000/"
 export default {
   name: "app",
   data: function(){
     return {
-      message: "",
-      selected: ""
+      name: "",
+      faculty: "",
+      description:"",
+      years:"",
+      learningYears:"",
+      periods:"",
+      credits:"",
+      start:"",
+      end:"",
+      methods:"",
+      methodsSummary:"",
+      coordinators:"",
+      coordinatorsSummary:"",
+      teachers:"",
+      teachersSummary:"",
+      competencies:"",
+      indicators:"",
+      indicatorSummary:"",
+      objectivesSummary:"",
+      program:"",
     }
   },
   created: function() {
     console.log("Page loaded")
-    fetch("http://localhost:8000/faculty/")
+    fetch(APIUrl+"faculty/")
       .then(response => response.json())
-      .then(json => { this.selected = json[0].name[0].value })
+      .then(json => { this.faculty = json[0].name[0].value })
+    fetch(APIUrl+"indicator/")
+      .then(response => response.json())
+      .then(json => { this.indicators = json[0] })
   },
   methods: {
-    postCourse: function(event){
-      console.log(this.$data.selected)
+    postCourse: function(){
+      console.log(this.$data)
+      fetch("http://localhost:8000/course/",{
+        method: "post",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify(this.$data)
+      })
+        .then(response => response.json())
+        .then(json => { console.log(json) })
     }
   }
 }
