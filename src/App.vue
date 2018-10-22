@@ -2,14 +2,8 @@
   <div id="app">
     <h1>De nieuwe ✨Vakkenvuller✨</h1>
     <form id="signup-form" @submit.prevent="postCourse">
-      <section id="Faculteit">
-        <p>Onder welke faculteit valt dit vak?</p>
-        <select>
-          <option v-for="fac in faculty" :key="fac.id">
-            {{ fac.name[lang].value }}
-          </option>
-        </select>
-      </section>
+      <drop-down v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"></drop-down>
+      <drop-down v-bind:payload="{options:program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"></drop-down>
       <section id="Indicatoren">
         <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak?</p>
         <select >
@@ -29,16 +23,16 @@
 </template>
 
 <script>
-//TODO: combine all course data into a course object and have other data like the language setting somewhere else. Either use vuex (store) to implement this
-// or make compononents out of questions and pass them the right data. Or use props.
 const APIUrl = "http://localhost:8000/"
+
 export default {
   name: "app",
+  components: {},
   data: function() {
     return {
       lang: 0,
       name: "",
-      faculty: "",
+      faculties: "",
       description: "",
       years: "",
       learningYears: "",
@@ -65,7 +59,11 @@ export default {
       .then(response => response.json())
       .then(json => {
         this.faculty = json
-        console.table(json)
+      })
+    fetch(APIUrl + "program/")
+      .then(response => response.json())
+      .then(json => {
+        this.program = json
       })
     fetch(APIUrl + "indicator/")
       .then(response => response.json())
