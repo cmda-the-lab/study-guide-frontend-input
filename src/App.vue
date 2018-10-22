@@ -2,7 +2,7 @@
   <div id="app">
     <h1>De nieuwe ✨Vakkenvuller✨</h1>
     <form id="signup-form" @submit.prevent="postCourse">
-      <drop-down v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?', chosen:cFaculty}"
+      <drop-down v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"
                 v-on:input="facultyChosen"></drop-down>
       <drop-down v-bind:payload="{options:program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"></drop-down>
       <section id="Indicatoren">
@@ -74,12 +74,14 @@ export default {
       })
   },
   methods: {
-    facultyChosen: function(val){
-      console.log("val!", val)
+    facultyChosen: function(val) {
+      console.log("fac chosen!", val)
+      this.cFaculty = val
+      //In the future, this could do a get to the programs in the faculty's programs data field. Then those programs would be the only options further on in the form
     },
     postCourse: function() {
       console.log(this.$data)
-      fetch("http://localhost:8000/course/", {
+      fetch(APIUrl + "course/", {
         method: "post",
         headers: {
           "Content-Type": "application/json; charset=utf-8"
