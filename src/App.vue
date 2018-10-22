@@ -18,6 +18,9 @@
         <input v-model="name" placeholder="type hier">
         <p>Naam: {{ name }}</p>
       </section>
+      <multiselect v-model="cTeachers" :options="teachers" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some" label="name" track-by="name" :preselect-first="true">
+        <template slot="selection" slot-scope="{ values, search, isOpen }"><span class="multiselect__single" v-if="values.length &amp;&amp; !isOpen">{{ values.length }} options selected</span></template>
+      </multiselect>
       <button>Sla het vak op</button>
     </form>
   </div>
@@ -47,6 +50,7 @@ export default {
       coordinators: "",
       coordinatorsSummary: "",
       teachers: "",
+      cTeachers: [],
       teachersSummary: "",
       competencies: "",
       indicators: "",
@@ -66,6 +70,12 @@ export default {
       .then(response => response.json())
       .then(json => {
         this.program = json
+      })
+    fetch(APIUrl + "person/")
+      .then(response => response.json())
+      .then(json => {
+        this.teachers = json
+        console.log(this.teachers)
       })
     fetch(APIUrl + "indicator/")
       .then(response => response.json())
@@ -96,7 +106,7 @@ export default {
   }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
