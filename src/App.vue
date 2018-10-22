@@ -2,7 +2,8 @@
   <div id="app">
     <h1>De nieuwe ✨Vakkenvuller✨</h1>
     <form id="signup-form" @submit.prevent="postCourse">
-      <drop-down v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"></drop-down>
+      <drop-down v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?', chosen:cFaculty}"
+                v-on:input="facultyChosen"></drop-down>
       <drop-down v-bind:payload="{options:program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"></drop-down>
       <section id="Indicatoren">
         <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak?</p>
@@ -33,6 +34,7 @@ export default {
       lang: 0,
       name: "",
       faculties: "",
+      cFaculty: {},
       description: "",
       years: "",
       learningYears: "",
@@ -58,7 +60,7 @@ export default {
     fetch(APIUrl + "faculty/")
       .then(response => response.json())
       .then(json => {
-        this.faculty = json
+        this.faculties = json
       })
     fetch(APIUrl + "program/")
       .then(response => response.json())
@@ -72,6 +74,9 @@ export default {
       })
   },
   methods: {
+    facultyChosen: function(val){
+      console.log("val!", val)
+    },
     postCourse: function() {
       console.log(this.$data)
       fetch("http://localhost:8000/course/", {
