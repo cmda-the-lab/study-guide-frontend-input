@@ -10,6 +10,14 @@
         <multiselect v-model="cIndicators" :options="indicators" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Kies relevante indicatoren" label="value" track-by="_id">
         </multiselect>
       </section>
+      <section>
+        <p>Op basis van de hierboven geselecteerde indicatoren zijn de volgende competencies vertegenwoordigd in dit vak. Als deze lijst onvolledig is, controleer dan of je wel de goede indicatoren hebt geselecteerd</p>
+        <ul>
+          <li v-for="competency in competenciesChosen" :key="competency._id">
+            {{ competency.value }}
+          </li>
+        </ul>
+      </section>
       <section id="vakNaam">
         <p>Wat is de naam van het vak?</p>
         <input v-model="name" placeholder="type hier">
@@ -37,7 +45,8 @@ export default {
         teachers: false,
         indicators: false,
         faculties: false,
-        program: false
+        program: false,
+        competencies: false
       },
       name: "",
       program: "",
@@ -46,7 +55,9 @@ export default {
       teachers: "",
       cTeachers: [],
       indicators: "",
-      cIndicators: []
+      cIndicators: [],
+      competencies: ""
+      // cCompetencies: [],
       // description: "",
       // years: "",
       // learningYears: "",
@@ -59,7 +70,7 @@ export default {
       // coordinators: "",
       // coordinatorsSummary: "",
       // teachersSummary: "",
-      // competencies: "",
+      //
       // indicatorSummary: "",
       // objectivesSummary: "",
     }
@@ -90,6 +101,12 @@ export default {
         this.indicators = json
         this.loaded.indicators = true
       })
+    fetch(APIUrl + "competency/")
+      .then(response => response.json())
+      .then(json => {
+        this.competencies = json
+        this.loaded.competencies = true
+      })
   },
   methods: {
     facultyChosen: function(val) {
@@ -112,6 +129,17 @@ export default {
       //   .then(json => {
       //     console.log(json)
       //   })
+    }
+  },
+  computed: {
+    competenciesChosen: function() {
+      //If indicators have been chose, find out which unique competencies are connected to those indicators
+      if (this.cIndicators.length) {
+        //console.log("computing comps with cindicators:", this.cIndicators)
+        let comps = this.cIndicators.map(indicator => indicator.competency)
+        return this.competencies.filter(comp => comps.indexOf(comp._id) > -1)
+      }
+      return []
     }
   }
 }
