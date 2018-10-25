@@ -2,12 +2,35 @@
   <div id="app">
     <h1>De nieuwe ✨Vakkenvuller✨</h1>
     <form id="signup-form" @submit.prevent="postCourse">
-      <drop-down v-if="loaded.faculties" v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"
-                v-on:input="facultyChosen"></drop-down>
-      <drop-down v-if="loaded.program" v-bind:payload="{options:program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"></drop-down>
-      <section id="Indicatoren" v-if="loaded.indicators">
+      <drop-down 
+        v-if="loaded.faculties" 
+        v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"
+        v-on:input="facultyChosen"
+        />
+      <drop-down 
+        v-if="loaded.program" 
+        v-bind:payload="{options:program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"
+        />
+      <section>
+        <p>Wat is de naam van het vak?</p>
+        <input v-model="name" placeholder="type hier">
+      </section>
+      <section>
+        <p>Geef een beschrijving van het vak voor in de studiegids</p>
+        <textarea v-model="description" placeholder="type hier" />
+      </section>
+      <section v-if="loaded.indicators">
         <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
-        <multiselect v-model="cIndicators" :options="indicators" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Kies relevante indicatoren" label="value" track-by="_id">
+        <multiselect 
+          v-model="cIndicators" 
+          :options="indicators" 
+          :multiple="true" 
+          :close-on-select="false" 
+          :clear-on-select="false" 
+          :preserve-search="true" 
+          placeholder="Kies relevante indicatoren" 
+          label="value" 
+          track-by="_id">
         </multiselect>
       </section>
       <section>
@@ -18,14 +41,60 @@
           </li>
         </ul>
       </section>
-      <section id="vakNaam">
-        <p>Wat is de naam van het vak?</p>
-        <input v-model="name" placeholder="type hier">
+      <drop-down 
+        v-if="false"
+        v-bind:payload="{options:followingLearningYears('2017', '3'), lang:lang, title:'In welke leerjaar wordt dit vak gegeven?'}"
+        />
+      <section>
+        <p>Wat is het aantal studiepunten bij dit vak?</p>
+        <input type="number" min="0"> 
       </section>
-      <section v-if="loaded.teachers">
+      <section>
+        <p>Welke werkvormen worden er gebruikt in dit vak?</p>
+        <multiselect
+          v-model="cMethods"
+          :options="methods"
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          placeholder="Kies een of meerdere werkvormen"
+        />
+      </section>
+      <section>
+        <p>Geef een toelichting van de werkvormen</p>
+        <textarea v-model="methodsSummary" placeholder="type hier" />
+      </section>
+      <section v-if="loaded.staff">
+        <p>Welke personen coördineren dit vak? Je kan meerdere personen selecteren of een naam typen om te zoeken</p>
+        <multiselect
+          v-model="cCoordinators"
+          :options="staff"
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :preserve-search="true"
+          placeholder="Kies betrokken personen"
+          label="name"
+          track-by="_id"
+        />
+      </section>
+      <section v-if="loaded.staff">
         <p>Welke docenten geven dit vak? Je kan meerdere docenten selecteren of een naam typen om te zoeken</p>
-        <multiselect v-model="cTeachers" :options="teachers" :multiple="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Kies betrokken docenten" label="name" track-by="_id">
-        </multiselect>
+        <multiselect
+          v-model="cTeachers"
+          :options="staff"
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :preserve-search="true"
+          placeholder="Kies betrokken docenten"
+          label="name"
+          track-by="_id"
+        />
+      </section>
+      <section>
+        <p>Welke leerdoelen zijn er bij dit vak?</p>
+        <textarea v-model="objectivesSummary" placeholder="type hier" />
       </section>
       <button>Sla het vak op</button>
     </form>
@@ -42,7 +111,7 @@ export default {
     return {
       lang: 0,
       loaded: {
-        teachers: false,
+        staff: false,
         indicators: false,
         faculties: false,
         program: false,
@@ -52,27 +121,32 @@ export default {
       program: "",
       faculties: "",
       cFaculty: {},
-      teachers: "",
+      staff: "",
+      cCoordinators: [],
       cTeachers: [],
       indicators: "",
       cIndicators: [],
-      competencies: ""
+      competencies: "",
+      description: "",
+      methods: ["practicum", "lecture", "lab", "coaching", "hoorcollege"],
+      cMethods: [],
+      methodsSummary: "",
+      objectivesSummary: ""
+      // years: "",
+      // learningYears: ""
       // cCompetencies: [],
-      // description: "",
+      //
       // years: "",
       // learningYears: "",
       // periods: "",
-      // credits: "",
       // start: "",
       // end: "",
-      // methods: "",
-      // methodsSummary: "",
-      // coordinators: "",
+      //
       // coordinatorsSummary: "",
       // teachersSummary: "",
       //
       // indicatorSummary: "",
-      // objectivesSummary: "",
+      //
     }
   },
   created: function() {
@@ -92,8 +166,8 @@ export default {
     fetch(APIUrl + "person/")
       .then(response => response.json())
       .then(json => {
-        this.teachers = json
-        this.loaded.teachers = true
+        this.staff = json
+        this.loaded.staff = true
       })
     fetch(APIUrl + "indicator/")
       .then(response => response.json())
@@ -114,6 +188,10 @@ export default {
       this.cFaculty = val
       //In the future, this could do a get to the programs in the faculty's programs data field. Then those programs would be the only options further on in the form
     },
+    //Not yet functional.
+    // followingLearningYears: function(rootYear, range) {
+    //   return [new Date()]
+    // },
     postCourse: function() {
       console.log("Sending Course to API:", this.$data)
       //TODO: Validate data before it is sent. The API is way too "nice" right now and will allow empty fields. There should be clients-side and server side validation.
@@ -151,8 +229,9 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  max-width: 36em;
+  margin: 0 auto;
 }
 </style>
