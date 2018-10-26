@@ -4,39 +4,40 @@
     <form id="signup-form" @submit.prevent="postCourse">
       <drop-down 
         v-if="loaded.faculties" 
-        v-bind:payload="{options:faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"
+        v-bind:payload="{options:courseOptions.faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"
         v-on:input="facultyChosen"
         />
       <drop-down 
         v-if="loaded.program" 
-        v-bind:payload="{options:program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"
+        v-bind:payload="{options:courseOptions.program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"
         />
       <section>
         <p>Wat is de naam van het vak?</p>
-        <input v-model="name" placeholder="type hier">
+        <input v-model="newCourse.name" placeholder="type hier">
       </section>
       <section>
         <p>Geef een beschrijving van het vak voor in de studiegids</p>
-        <textarea v-model="description" placeholder="type hier" />
+        <textarea v-model="newCourse.description" placeholder="type hier" />
       </section>
       <section v-if="loaded.indicators">
         <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
         <multiselect 
-          v-model="cIndicators" 
-          :options="indicators" 
+          v-model="newCourse.indicators" 
+          :options="courseOptions.indicators" 
           :multiple="true" 
           :close-on-select="false" 
           :clear-on-select="false" 
           :preserve-search="true" 
           placeholder="Kies relevante indicatoren" 
           label="value" 
-          track-by="_id">
-        </multiselect>
+          track-by="_id"
+          @input="calculateCompetencies"
+          />
       </section>
       <section>
         <p>Op basis van de hierboven geselecteerde indicatoren zijn de volgende competencies vertegenwoordigd in dit vak. Als deze lijst onvolledig is, controleer dan of je wel de goede indicatoren hebt geselecteerd</p>
         <ul>
-          <li v-for="competency in competenciesChosen" :key="competency._id">
+          <li v-for="competency in newCourse.competencies" :key="competency._id">
             {{ competency.value }}
           </li>
         </ul>
@@ -47,13 +48,13 @@
         />
       <section>
         <p>Wat is het aantal studiepunten bij dit vak?</p>
-        <input type="number" min="0"> 
+        <input type="number" min="0" v-model="newCourse.credits"> 
       </section>
       <section>
         <p>Welke werkvormen worden er gebruikt in dit vak?</p>
         <multiselect
-          v-model="cMethods"
-          :options="methods"
+          v-model="newCourse.methods"
+          :options="courseOptions.methods"
           :multiple="true"
           :close-on-select="false"
           :clear-on-select="false"
@@ -62,13 +63,13 @@
       </section>
       <section>
         <p>Geef een toelichting van de werkvormen</p>
-        <textarea v-model="methodsSummary" placeholder="type hier" />
+        <textarea v-model="newCourse.methodsSummary" placeholder="type hier" />
       </section>
       <section v-if="loaded.staff">
         <p>Welke personen coördineren dit vak? Je kan meerdere personen selecteren of een naam typen om te zoeken</p>
         <multiselect
-          v-model="cCoordinators"
-          :options="staff"
+          v-model="newCourse.coordinators"
+          :options="courseOptions.staff"
           :multiple="true"
           :close-on-select="false"
           :clear-on-select="false"
@@ -81,8 +82,8 @@
       <section v-if="loaded.staff">
         <p>Welke docenten geven dit vak? Je kan meerdere docenten selecteren of een naam typen om te zoeken</p>
         <multiselect
-          v-model="cTeachers"
-          :options="staff"
+          v-model="newCourse.teachers"
+          :options="courseOptions.staff"
           :multiple="true"
           :close-on-select="false"
           :clear-on-select="false"
@@ -94,7 +95,7 @@
       </section>
       <section>
         <p>Welke leerdoelen zijn er bij dit vak?</p>
-        <textarea v-model="objectivesSummary" placeholder="type hier" />
+        <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
       </section>
       <button>Sla het vak op</button>
     </form>
@@ -117,36 +118,27 @@ export default {
         program: false,
         competencies: false
       },
-      name: "",
-      program: "",
-      faculties: "",
-      cFaculty: {},
-      staff: "",
-      cCoordinators: [],
-      cTeachers: [],
-      indicators: "",
-      cIndicators: [],
-      competencies: "",
-      description: "",
-      methods: ["practicum", "lecture", "lab", "coaching", "hoorcollege"],
-      cMethods: [],
-      methodsSummary: "",
-      objectivesSummary: ""
-      // years: "",
-      // learningYears: ""
-      // cCompetencies: [],
-      //
-      // years: "",
-      // learningYears: "",
-      // periods: "",
-      // start: "",
-      // end: "",
-      //
-      // coordinatorsSummary: "",
-      // teachersSummary: "",
-      //
-      // indicatorSummary: "",
-      //
+      newCourse: {
+        name: "",
+        faculty: {},
+        coordinators: [],
+        teachers: [],
+        indicators: [],
+        competencies: [],
+        credits: "",
+        description: "",
+        methods: [],
+        methodsSummary: "",
+        objectivesSummary: ""
+      },
+      courseOptions: {
+        faculties: "",
+        program: "",
+        staff: "",
+        indicators: "",
+        competencies: "",
+        methods: ["practicum", "lecture", "lab", "coaching", "hoorcollege"]
+      }
     }
   },
   created: function() {
@@ -154,39 +146,48 @@ export default {
     fetch(APIUrl + "faculty/")
       .then(response => response.json())
       .then(json => {
-        this.faculties = json
+        this.courseOptions.faculties = json
         this.loaded.faculties = true
       })
     fetch(APIUrl + "program/")
       .then(response => response.json())
       .then(json => {
-        this.program = json
+        this.courseOptions.program = json
         this.loaded.program = true
       })
     fetch(APIUrl + "person/")
       .then(response => response.json())
       .then(json => {
-        this.staff = json
+        this.courseOptions.staff = json
         this.loaded.staff = true
       })
     fetch(APIUrl + "indicator/")
       .then(response => response.json())
       .then(json => {
-        this.indicators = json
+        this.courseOptions.indicators = json
         this.loaded.indicators = true
       })
     fetch(APIUrl + "competency/")
       .then(response => response.json())
       .then(json => {
-        this.competencies = json
+        this.courseOptions.competencies = json
         this.loaded.competencies = true
       })
   },
   methods: {
     facultyChosen: function(val) {
       console.log("fac chosen!", val)
-      this.cFaculty = val
+      this.newCourse.cFaculty = val
       //In the future, this could do a get to the programs in the faculty's programs data field. Then those programs would be the only options further on in the form
+    },
+    calculateCompetencies: function() {
+      //find out which unique competencies are connected to those indicators
+      //TODO: Now that this is no longer a computed but a method, it can be simplified by just adding the relevant comp to the newcourse.competencies list.
+
+      //console.log("computing comps with indicators:", this.newCourse.indicators)
+      let comps = this.newCourse.indicators.map(indicator => indicator.competency)
+      console.log("comps", comps)
+      this.newCourse.competencies = this.courseOptions.competencies.filter(comp => comps.indexOf(comp._id) > -1)
     },
     //Not yet functional.
     // followingLearningYears: function(rootYear, range) {
@@ -207,17 +208,6 @@ export default {
       //   .then(json => {
       //     console.log(json)
       //   })
-    }
-  },
-  computed: {
-    competenciesChosen: function() {
-      //If indicators have been chose, find out which unique competencies are connected to those indicators
-      if (this.cIndicators.length) {
-        //console.log("computing comps with cindicators:", this.cIndicators)
-        let comps = this.cIndicators.map(indicator => indicator.competency)
-        return this.competencies.filter(comp => comps.indexOf(comp._id) > -1)
-      }
-      return []
     }
   }
 }
