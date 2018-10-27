@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>De nieuwe ✨Vakkenvuller✨</h1>
-    <form id="signup-form" @submit.prevent="postCourse">
+    <form id="signup-form" @submit.prevent>
       <section>
         <p>Onder welke faculteit valt dit vak?</p>
         <select v-if="loaded.faculties" v-model="newCourse.faculty">
@@ -18,7 +18,6 @@
           </option>
         </select>
       </section>
-      
       <section>
         <p>Wat is de naam van het vak?</p>
         <input v-model="newCourse.name" placeholder="type hier">
@@ -105,7 +104,7 @@
         <p>Welke leerdoelen zijn er bij dit vak?</p>
         <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
       </section>
-      <button>Sla het vak op</button>
+      <button v-on:click="postCourse">Sla het vak op in de database</button>
     </form>
   </div>
 </template>
@@ -138,7 +137,7 @@ export default {
         indicators: [],
         objectivesSummary: "",
         program: "",
-        faculty: {},
+        faculty: {}
       },
       courseOptions: {
         faculties: "",
@@ -203,15 +202,25 @@ export default {
     //   return [new Date()]
     // },
     postCourse: function() {
-      console.log("Sending Course to API:", this.$data.newCourse)
+      
       //TODO: Validate data before it is sent. The API is way too "nice" right now and will allow empty fields. There should be clients-side and server side validation.
       //TODO: Disable the form being sent on enter or other events except for when the relevant button is pushed.
+      let courseData = this.$data.newCourse
+      courseData.name = [{ language: "nl", value: courseData.name }]
+      courseData.description = [{ language: "nl", value: courseData.description }]
+      courseData.coordinators = courseData.coordinators.map(coordinator => coordinator._id)
+      courseData.teachers = courseData.teachers.map(teacher => teacher._id)
+      courseData.competencies = courseData.competencies.map(competency => competency._id)
+      courseData.indicators = courseData.indicators.map(indicator => indicator._id)
+      courseData.program = courseData.program._id
+      courseData.faculty = courseData.faculty._id
+      console.log("Sending Course to API:", courseData)
       fetch(APIUrl + "course/", {
-        //method: "post",
+        method: "post",
         headers: {
           "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(this.$data.newCourse)
+        body: JSON.stringify(courseData)
       })
         .then(response => response.json())
         .then(json => {
