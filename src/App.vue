@@ -2,15 +2,23 @@
   <div id="app">
     <h1>De nieuwe ✨Vakkenvuller✨</h1>
     <form id="signup-form" @submit.prevent="postCourse">
-      <drop-down 
-        v-if="loaded.faculties" 
-        v-bind:payload="{options:courseOptions.faculties, lang:lang, title:'Onder welke faculteit valt dit vak?'}"
-        v-on:input="facultyChosen"
-        />
-      <drop-down 
-        v-if="loaded.program" 
-        v-bind:payload="{options:courseOptions.program, lang:lang, title:'Bij welk studie programma hoort dit vak?'}"
-        />
+      <section>
+        <p>Onder welke faculteit valt dit vak?</p>
+        <select v-if="loaded.faculties" v-model="newCourse.faculty">
+          <option v-for="option in courseOptions.faculties" :key="option.id" v-bind:value="option">
+              {{ option.name[lang].value }}
+          </option>
+        </select>
+      </section>
+        <section>
+        <p>Bij welk studie programma hoort dit vak?</p>
+         <select v-if="loaded.program" v-model="newCourse.program">
+          <option v-for="option in courseOptions.program" :key="option.id" v-bind:value="option">
+              {{ option.name[lang].value }}
+          </option>
+        </select>
+      </section>
+      
       <section>
         <p>Wat is de naam van het vak?</p>
         <input v-model="newCourse.name" placeholder="type hier">
@@ -120,16 +128,17 @@ export default {
       },
       newCourse: {
         name: "",
-        faculty: {},
-        coordinators: [],
-        teachers: [],
-        indicators: [],
-        competencies: [],
-        credits: "",
         description: "",
+        credits: "",
         methods: [],
         methodsSummary: "",
-        objectivesSummary: ""
+        coordinators: [],
+        teachers: [],
+        competencies: [],
+        indicators: [],
+        objectivesSummary: "",
+        program: "",
+        faculty: {},
       },
       courseOptions: {
         faculties: "",
@@ -182,7 +191,7 @@ export default {
     },
     calculateCompetencies: function() {
       //find out which unique competencies are connected to those indicators
-      //TODO: Now that this is no longer a computed but a method, it can be simplified by just adding the relevant comp to the newcourse.competencies list.
+      //TODO: Now that this is no longer a computed but a method, it can be simplified by just adding the relevant comp to the newCourse.competencies list.
 
       //console.log("computing comps with indicators:", this.newCourse.indicators)
       let comps = this.newCourse.indicators.map(indicator => indicator.competency)
@@ -194,20 +203,20 @@ export default {
     //   return [new Date()]
     // },
     postCourse: function() {
-      console.log("Sending Course to API:", this.$data)
+      console.log("Sending Course to API:", this.$data.newCourse)
       //TODO: Validate data before it is sent. The API is way too "nice" right now and will allow empty fields. There should be clients-side and server side validation.
       //TODO: Disable the form being sent on enter or other events except for when the relevant button is pushed.
-      // fetch(APIUrl + "course/", {
-      //   method: "post",
-      //   headers: {
-      //     "Content-Type": "application/json; charset=utf-8"
-      //   },
-      //   body: JSON.stringify(this.$data)
-      // })
-      //   .then(response => response.json())
-      //   .then(json => {
-      //     console.log(json)
-      //   })
+      fetch(APIUrl + "course/", {
+        //method: "post",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(this.$data.newCourse)
+      })
+        .then(response => response.json())
+        .then(json => {
+          console.log(json)
+        })
     }
   }
 }
