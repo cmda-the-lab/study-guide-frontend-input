@@ -208,10 +208,31 @@ export default {
       //Check if the input is valid. If it is, post the course to the API
       this.errors = []
       if (!this.newCourse.name) {
-        this.errors.push('Vul de vaknaam in')
+        this.errors.push('De naam voor het vak ontbreekt')
       }
       if (!this.newCourse.competencies) {
         this.errors.push('Er zijn nog geen competenties gekozen')
+      }
+      if (!this.newCourse.description) {
+        this.errors.push('De beschrijving van het vak ontbreekt')
+      }
+      if (!this.newCourse.credits) {
+        this.errors.push('De studiepunten van het vak ontbreken')
+      }
+      if (!this.newCourse.coordinators) {
+        this.errors.push('Er is nog geen coördinator ingevuld')
+      }
+      if (!this.newCourse.indicators) {
+        this.errors.push('Er zijn geen competentie indicatoren gekozen')
+      }
+      if (!this.newCourse.objectivesSummary) {
+        this.errors.push('De leerdoelen van het vak ontbreken')
+      }
+      if (!this.newCourse.program) {
+        this.errors.push('Er is nog geen studie programma gekozen')
+      }
+      if (!this.newCourse.faculty) {
+        this.errors.push('De faculteit waar dit vak bij hoort ontbreekt')
       }
       this.errors = [...new Set(this.errors)]
       if (!this.errors.length) this.postCourse()
