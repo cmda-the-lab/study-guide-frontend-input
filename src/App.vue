@@ -104,7 +104,13 @@
         <p>Welke leerdoelen zijn er bij dit vak?</p>
         <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
       </section>
-      <button v-on:click="postCourse">Sla het vak op in de database</button>
+      <p v-if="errors.length">
+        <b>Het vak kan pas worden opgeslagen als de volgende fouten worden gecorrigeerd</b>
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
+      <button v-on:click="checkForm">Sla het vak op in de database</button>
     </form>
   </div>
 </template>
@@ -118,6 +124,7 @@ export default {
   data: function() {
     return {
       lang: 0,
+      errors: [],
       loaded: {
         staff: false,
         indicators: false,
@@ -126,18 +133,18 @@ export default {
         competencies: false
       },
       newCourse: {
-        name: "",
-        description: "",
-        credits: "",
-        methods: [],
-        methodsSummary: "",
-        coordinators: [],
-        teachers: [],
-        competencies: [],
-        indicators: [],
-        objectivesSummary: "",
-        program: "",
-        faculty: {}
+        name: null,
+        description: null,
+        credits: null,
+        methods: null,
+        methodsSummary: null,
+        coordinators: null,
+        teachers: null,
+        competencies: null,
+        indicators: null,
+        objectivesSummary: null,
+        program: null,
+        faculty: null,
       },
       courseOptions: {
         faculties: "",
@@ -197,6 +204,18 @@ export default {
       console.log("comps", comps)
       this.newCourse.competencies = this.courseOptions.competencies.filter(comp => comps.indexOf(comp._id) > -1)
     },
+    checkForm: function (e) {
+      //Check if the input is valid. If it is, post the course to the API
+      this.errors = []
+      if (!this.newCourse.name) {
+        this.errors.push('Vul de vaknaam in')
+      }
+      if (!this.newCourse.competencies) {
+        this.errors.push('Er zijn nog geen competenties gekozen')
+      }
+      this.errors = [...new Set(this.errors)]
+      if (!this.errors.length) this.postCourse()
+    },
     //Not yet functional.
     // followingLearningYears: function(rootYear, range) {
     //   return [new Date()]
@@ -215,17 +234,17 @@ export default {
       courseData.program = courseData.program._id
       courseData.faculty = courseData.faculty._id
       console.log("Sending Course to API:", courseData)
-      fetch(APIUrl + "course/", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify(courseData)
-      })
-        .then(response => response.json())
-        .then(json => {
-          console.log(json)
-        })
+      // fetch(APIUrl + "course/", {
+      //   method: "post",
+      //   headers: {
+      //     "Content-Type": "application/json; charset=utf-8"
+      //   },
+      //   body: JSON.stringify(courseData)
+      // })
+      //   .then(response => response.json())
+      //   .then(json => {
+      //     console.log(json)
+      //   })
     }
   }
 }
