@@ -116,7 +116,7 @@
 </template>
 
 <script>
-const APIUrl = "http://localhost:8000/"
+const APIUrl = process.env.NODE_ENV === 'production' ? "https://study-guide-api.herokuapp.com/" :  "http://localhost:8000/"
 
 export default {
   name: "app",
