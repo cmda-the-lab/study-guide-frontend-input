@@ -144,7 +144,7 @@ export default {
         indicators: null,
         objectivesSummary: null,
         program: null,
-        faculty: null,
+        faculty: null
       },
       courseOptions: {
         faculties: "",
@@ -204,35 +204,35 @@ export default {
       console.log("comps", comps)
       this.newCourse.competencies = this.courseOptions.competencies.filter(comp => comps.indexOf(comp._id) > -1)
     },
-    checkForm: function (e) {
+    checkForm: function() {
       //Check if the input is valid. If it is, post the course to the API
       this.errors = []
       if (!this.newCourse.name) {
-        this.errors.push('De naam voor het vak ontbreekt')
+        this.errors.push("De naam voor het vak ontbreekt")
       }
       if (!this.newCourse.competencies) {
-        this.errors.push('Er zijn nog geen competenties gekozen')
+        this.errors.push("Er zijn nog geen competenties gekozen")
       }
       if (!this.newCourse.description) {
-        this.errors.push('De beschrijving van het vak ontbreekt')
+        this.errors.push("De beschrijving van het vak ontbreekt")
       }
       if (!this.newCourse.credits) {
-        this.errors.push('De studiepunten van het vak ontbreken')
+        this.errors.push("De studiepunten van het vak ontbreken")
       }
       if (!this.newCourse.coordinators) {
-        this.errors.push('Er is nog geen coördinator ingevuld')
+        //this.errors.push('Er is nog geen coördinator ingevuld')
       }
       if (!this.newCourse.indicators) {
-        this.errors.push('Er zijn geen competentie indicatoren gekozen')
+        this.errors.push("Er zijn geen competentie indicatoren gekozen")
       }
       if (!this.newCourse.objectivesSummary) {
-        this.errors.push('De leerdoelen van het vak ontbreken')
+        this.errors.push("De leerdoelen van het vak ontbreken")
       }
       if (!this.newCourse.program) {
-        this.errors.push('Er is nog geen studie programma gekozen')
+        this.errors.push("Er is nog geen studie programma gekozen")
       }
       if (!this.newCourse.faculty) {
-        this.errors.push('De faculteit waar dit vak bij hoort ontbreekt')
+        this.errors.push("De faculteit waar dit vak bij hoort ontbreekt")
       }
       this.errors = [...new Set(this.errors)]
       if (!this.errors.length) this.postCourse()
@@ -242,30 +242,29 @@ export default {
     //   return [new Date()]
     // },
     postCourse: function() {
-      
       //TODO: Validate data before it is sent. The API is way too "nice" right now and will allow empty fields. There should be clients-side and server side validation.
       //TODO: Disable the form being sent on enter or other events except for when the relevant button is pushed.
       let courseData = this.$data.newCourse
       courseData.name = [{ language: "nl", value: courseData.name }]
       courseData.description = [{ language: "nl", value: courseData.description }]
-      courseData.coordinators = courseData.coordinators.map(coordinator => coordinator._id)
-      courseData.teachers = courseData.teachers.map(teacher => teacher._id)
+      if (courseData.coordinators) {
+        courseData.coordinators = courseData.coordinators.map(coordinator => coordinator._id)
+      }
+      if (courseData.teachers) {
+        courseData.teachers = courseData.teachers.map(teacher => teacher._id)
+      }
       courseData.competencies = courseData.competencies.map(competency => competency._id)
       courseData.indicators = courseData.indicators.map(indicator => indicator._id)
       courseData.program = courseData.program._id
       courseData.faculty = courseData.faculty._id
       console.log("Sending Course to API:", courseData)
-      // fetch(APIUrl + "course/", {
-      //   method: "post",
-      //   headers: {
-      //     "Content-Type": "application/json; charset=utf-8"
-      //   },
-      //   body: JSON.stringify(courseData)
-      // })
-      //   .then(response => response.json())
-      //   .then(json => {
-      //     console.log(json)
-      //   })
+      fetch(APIUrl + "course/", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(courseData)
+      }).then(response => console.log(response))
     }
   }
 }
