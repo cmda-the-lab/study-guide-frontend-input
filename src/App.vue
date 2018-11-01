@@ -26,6 +26,10 @@
         <p>Geef een beschrijving van het vak voor in de studiegids</p>
         <textarea v-model="newCourse.description" placeholder="type hier" />
       </section>
+      <section>
+        <p>Welke leerdoelen zijn er bij dit vak?</p>
+        <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
+      </section>
       <section v-if="loaded.indicators">
         <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
         <multiselect 
@@ -99,10 +103,6 @@
           label="name"
           track-by="_id"
         />
-      </section>
-      <section>
-        <p>Welke leerdoelen zijn er bij dit vak?</p>
-        <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
       </section>
       <p v-if="errors.length">
         <b>Het vak kan pas worden opgeslagen als de volgende fouten worden gecorrigeerd</b>
