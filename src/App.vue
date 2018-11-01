@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>De nieuwe ✨Vakkenvuller✨</h1>
+    <h1>De ✨Competentie Monitor✨</h1>
     <form id="signup-form" @submit.prevent>
       <section>
         <p>Onder welke faculteit valt dit vak?</p>
@@ -23,12 +23,16 @@
         <input v-model="newCourse.name" placeholder="type hier">
       </section>
       <section>
-        <p>Geef een beschrijving van het vak voor in de studiegids</p>
+        <p>Geef een korte beschrijving van het vak (een zin)</p>
+        <textarea v-model="newCourse.shortDescription" placeholder="type hier" />
+      </section>
+      <section>
+        <p>Geef een beschrijving van het vak voor in de studiegids (twee tot vier paragrafen)</p>
         <textarea v-model="newCourse.description" placeholder="type hier" />
       </section>
       <section>
-        <p>Welke leerdoelen zijn er bij dit vak?</p>
-        <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
+        <p>Welke leerdoelen zijn er bij dit vak? Begin elk leerdoel alsjeblieft met een dash(-)</p>
+        <textarea v-model="newCourse.objectivesSummary" placeholder="- je kan ..." />
       </section>
       <section v-if="loaded.competencies">
         <p>Welke competenties komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
@@ -60,8 +64,9 @@
         />
       </section>
       <section>
-        <p>Geef een toelichting van de werkvormen</p>
-        <textarea v-model="newCourse.methodsSummary" placeholder="type hier" />
+        <p>Geef een toelichting van de werkvormen in maximaal twee paragrafen</p>
+        <textarea v-model="newCourse.methodsSummary" placeholder="type hier" :maxlength="charCapLong" />
+        <span v-if="newCourse.methodsSummary" v-text="(charCapLong - newCourse.methodsSummary.length) +' Karakters over'"/>
       </section>
       <section v-if="loaded.staff">
         <p>Welke personen coördineren dit vak? Je kan meerdere personen selecteren of een naam typen om te zoeken</p>
@@ -99,8 +104,15 @@
       </p>
       <button v-on:click="checkForm">Sla het vak op in de database</button>
     </form>
+    <modal name="hello-world" height="auto" :clickToClose="false" >
+      <p>Bedankt voor invullen van deze cursus! 💖</p>
+      <p>De data is opgestuurd naar de database. 👾</p>
+      <p>Herlaad de pagina om een nieuwe cursus in te voeren. ♻️</p>
+      <button><a href="/">Herlaad</a></button>
+    </modal>
   </div>
 </template>
+
 
 <script>
 const APIUrl = process.env.NODE_ENV === "production" ? "https://study-guide-api.herokuapp.com/" : "http://localhost:8000/"
@@ -112,6 +124,7 @@ export default {
     return {
       lang: 0,
       errors: [],
+      charCapLong: 1000,
       loaded: {
         staff: false,
         indicators: false,
@@ -121,6 +134,7 @@ export default {
       },
       newCourse: {
         name: null,
+        shortDescription: null,
         description: null,
         credits: null,
         methods: null,
@@ -139,7 +153,7 @@ export default {
         staff: "",
         indicators: "",
         competencies: "",
-        methods: ["practicum", "lecture", "lab", "coaching", "hoorcollege"]
+        methods: ["practicum", "hoorcollege", "werkgroep", "coaching"]
       }
     }
   },
@@ -197,7 +211,7 @@ export default {
       if (!this.newCourse.coordinators) {
         //this.errors.push('Er is nog geen coördinator ingevuld')
       }
-      if (!this.newCourse.indicators) {
+      if (!this.newCourse.competencies) {
         this.errors.push("Er zijn geen competentie indicatoren gekozen")
       }
       if (!this.newCourse.objectivesSummary) {
@@ -210,7 +224,11 @@ export default {
         this.errors.push("De faculteit waar dit vak bij hoort ontbreekt")
       }
       this.errors = [...new Set(this.errors)]
-      if (!this.errors.length) this.postCourse()
+
+      if (!this.errors.length) {
+        this.show()
+        this.postCourse()
+      }
     },
     postCourse: function() {
       let courseData = this.$data.newCourse
@@ -226,6 +244,11 @@ export default {
       courseData.indicators = courseData.indicators.map(indicator => indicator._id)
       courseData.program = courseData.program._id
       courseData.faculty = courseData.faculty._id
+      courseData.methods = courseData.methods.map(method => {
+        if (method == "hoorcollege") return "lecture"
+        else if (method == "werkgroep") return "lab"
+        else return method
+      })
       console.log("Sending Course to API:", courseData)
       fetch(APIUrl + "course/", {
         method: "post",
@@ -234,6 +257,12 @@ export default {
         },
         body: JSON.stringify(courseData)
       }).then(response => console.log(response))
+    },
+    show() {
+      this.$modal.show("hello-world")
+    },
+    hide() {
+      this.$modal.hide("hello-world")
     }
   }
 }
