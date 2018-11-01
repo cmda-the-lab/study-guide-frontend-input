@@ -1,120 +1,154 @@
 <template>
   <div id="app">
-    <h1>De ✨Competentie Monitor✨</h1>
-    <form id="signup-form" @submit.prevent>
-      <section>
-        <p>Onder welke faculteit valt dit vak?</p>
-        <select v-if="loaded.faculties" v-model="newCourse.faculty">
-          <option v-for="option in courseOptions.faculties" :key="option.id" v-bind:value="option">
-              {{ option.name[lang].value }}
-          </option>
-        </select>
-      </section>
-        <section>
-        <p>Bij welk studie programma hoort dit vak?</p>
-         <select v-if="loaded.program" v-model="newCourse.program">
-          <option v-for="option in courseOptions.program" :key="option.id" v-bind:value="option">
-              {{ option.name[lang].value }}
-          </option>
-        </select>
-      </section>
-      <section>
-        <p>Wat is de naam van het vak?</p>
-        <input v-model="newCourse.name" placeholder="type hier">
-      </section>
-      <section>
-        <p>Geef een korte beschrijving van het vak (een zin)</p>
-        <textarea v-model="newCourse.shortDescription" placeholder="type hier" />
-      </section>
-      <section>
-        <p>Geef een beschrijving van het vak voor in de studiegids (twee tot vier paragrafen)</p>
-        <textarea v-model="newCourse.description" placeholder="type hier" />
-      </section>
-      <section>
-        <p>Welke leerdoelen zijn er bij dit vak? Begin elk leerdoel alsjeblieft met een dash(-)</p>
-        <textarea v-model="newCourse.objectivesSummary" placeholder="- je kan ..." />
-      </section>
-      <section v-if="loaded.competencies">
-        <p>Welke competenties komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
-        <multiselect 
-          v-model="newCourse.competencies" 
-          :options="courseOptions.competencies" 
-          :multiple="true" 
-          :close-on-select="false" 
-          :clear-on-select="false" 
-          :preserve-search="true" 
-          placeholder="Kies relevante competencies" 
-          label="value" 
-          track-by="_id"
-          />
-      </section>
-      <section>
-        <p>Wat is het aantal studiepunten bij dit vak?</p>
-        <input type="number" min="0" v-model="newCourse.credits"> 
-      </section>
-      <section>
-        <p>Welke werkvormen worden er gebruikt in dit vak?</p>
-        <multiselect
-          v-model="newCourse.methods"
-          :options="courseOptions.methods"
-          :multiple="true"
-          :close-on-select="false"
-          :clear-on-select="false"
-          placeholder="Kies een of meerdere werkvormen"
-        />
-      </section>
-      <section>
-        <p>Geef een toelichting van de werkvormen in maximaal twee paragrafen</p>
-        <textarea v-model="newCourse.methodsSummary" placeholder="type hier" :maxlength="charCapLong" />
-        <span v-if="newCourse.methodsSummary" v-text="(charCapLong - newCourse.methodsSummary.length) +' Karakters over'"/>
-      </section>
-      <section v-if="loaded.staff">
-        <p>Welke personen coördineren dit vak? Je kan meerdere personen selecteren of een naam typen om te zoeken</p>
-        <multiselect
-          v-model="newCourse.coordinators"
-          :options="courseOptions.staff"
-          :multiple="true"
-          :close-on-select="false"
-          :clear-on-select="false"
-          :preserve-search="true"
-          placeholder="Kies betrokken personen"
-          label="name"
-          track-by="_id"
-        />
-      </section>
-      <section v-if="loaded.staff">
-        <p>Welke docenten geven dit vak? Je kan meerdere docenten selecteren of een naam typen om te zoeken</p>
-        <multiselect
-          v-model="newCourse.teachers"
-          :options="courseOptions.staff"
-          :multiple="true"
-          :close-on-select="false"
-          :clear-on-select="false"
-          :preserve-search="true"
-          placeholder="Kies betrokken docenten"
-          label="name"
-          track-by="_id"
-        />
-      </section>
-      <p v-if="errors.length">
-        <b>Het vak kan pas worden opgeslagen als de volgende fouten worden gecorrigeerd</b>
-        <ul>
-          <li v-for="error in errors">{{ error }}</li>
-        </ul>
-      </p>
-      <button v-on:click="checkForm">Sla het vak op in de database</button>
-    </form>
-    <modal name="hello-world" height="auto" :clickToClose="false" >
-      <p>Bedankt voor invullen van deze cursus! 💖</p>
-      <p>De data is opgestuurd naar de database. 👾</p>
-      <p>Herlaad de pagina om een nieuwe cursus in te voeren. ♻️</p>
-      <button><a href="/">Herlaad</a></button>
-    </modal>
+    <div class="page-container">
+      <md-app md-waterfall md-mode="overlap">
+        <md-app-toolbar class="md-primary md-large">
+          <div class="md-toolbar-row">
+            <h1 class="md-title">Competentie Monitor</h1>
+          </div>
+        </md-app-toolbar>
+
+        <md-app-content>
+
+          <form @submit.prevent>
+            <md-field v-if="courseOptions.faculties && courseOptions.faculties.length > 1">
+              <label>Faculteit</label>
+              <md-select v-model="newCourse.faculty">
+                <md-option
+                  v-for="option in courseOptions.faculties"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.name[lang].value }}</md-option>
+              </md-select>
+            </md-field>
+
+            <md-field v-if="courseOptions.program && courseOptions.program.length > 1">
+              <label>Opleiding</label>
+              <md-select v-model="newCourse.program">
+                <md-option
+                  v-for="option in courseOptions.program"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.name[lang].value }}</md-option>
+              </md-select>
+            </md-field>
+
+            <md-field>
+              <label>Naam</label>
+              <md-input v-model="newCourse.name"></md-input>
+            </md-field>
+            <p class="help">Wat is de naam van de module? Bijvoorbeeld, “Design Ethics”</p>
+
+            <md-field>
+              <label>Korte beschrijving</label>
+              <md-textarea v-model="newCourse.shortDescription" md-autogrow maxlength="120"></md-textarea>
+            </md-field>
+            <p class="help">Beschrijf de module in één zin. Bijvoorbeeld, “Design ethics is a course that allows you to integrate ethical thinking into your design practice.”</p>
+
+            <md-field>
+              <label>Beschrijving van module</label>
+              <md-textarea v-model="newCourse.description" maxlength="480"></md-textarea>
+            </md-field>
+            <p class="help">Beschrijf de module in twee tot vier alineas</p>
+
+            <md-field>
+              <label>Leerdoelen</label>
+              <md-textarea v-model="newCourse.objectivesSummary"></md-textarea>
+            </md-field>
+            <p class="help">Beschrijf wat de student leert. Gebruik streepjes en enters. Bijvoorbeeld, “- You learn to be aware of the ethical issues involved in design and designing”</p>
+
+            <md-field v-if="courseOptions.competencies">
+              <label>Competenties</label>
+              <md-select v-model="newCourse.competencies" multiple>
+                <md-option
+                  v-for="option in courseOptions.competencies"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.value }}</md-option>
+              </md-select>
+            </md-field>
+            <p class="help">Kies de CMD competenties die van toepassing zijn op deze module</p>
+
+            <md-field>
+              <label>Studiepunten (ECTS)</label>
+              <md-input v-model="newCourse.credits" min="0" max="30" type="number"></md-input>
+            </md-field>
+            <p class="help">Wat is het aantal studiepuntent van de module? Bijvoorbeeld 3 voor een vak, 5 voor een project.</p>
+
+            <md-field>
+              <label>Werkvormen</label>
+              <md-select v-model="newCourse.methods" multiple>
+                <md-option
+                  v-for="(option, index) in courseOptions.methods"
+                  :value="option"
+                  :key="index"
+                >{{ option }}</md-option>
+              </md-select>
+            </md-field>
+            <p class="help">Kies de een of meer werkvormen die van toepassing zijn op deze module</p>
+
+            <md-field>
+              <label>Beschrijving van werkvormen</label>
+              <md-textarea v-model="newCourse.methodsSummary" maxlength="480"></md-textarea>
+            </md-field>
+            <p class="help">Twee tot vier alineas</p>
+
+            <md-field v-if="courseOptions.staff">
+              <label>Coördinatoren</label>
+              <md-select v-model="newCourse.coordinators" multiple>
+                <md-option
+                  v-for="option in courseOptions.staff"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.name }}</md-option>
+              </md-select>
+            </md-field>
+            <p class="help">Kies welke mensen deze module coördineren.</p>
+
+
+            <md-field v-if="courseOptions.staff">
+              <label>Docenten</label>
+              <md-select v-model="newCourse.teachers" multiple>
+                <md-option
+                  v-for="option in courseOptions.staff"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.name }}</md-option>
+              </md-select>
+            </md-field>
+            <p class="help">Kies welke mensen deze module geven.</p>
+
+
+            <p v-if="errors.length">
+              <b>Het vak kan pas worden opgeslagen als de volgende fouten worden gecorrigeerd</b>
+              <ul>
+                <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+              </ul>
+            </p>
+
+            <md-button class="md-dense md-raised md-primary" v-on:click="checkForm">Sla op</md-button>
+
+          </form>
+        </md-app-content>
+      </md-app>
+
+
+      <md-dialog-confirm
+        :md-active.sync="showDialog"
+        md-title="Gelukt!"
+        md-content="Bedankt voor invullen van deze cursus! 💖 De data is opgestuurd naar de database. 👾 Wil je de pagina herladen om een nieuwe module in te vullen? ♻️"
+        md-confirm-text="Ja, herlaad"
+        md-cancel-text="Nee"
+        @md-confirm="onConfirm"
+      />
+    </div>
   </div>
 </template>
 
 
 <script>
+const alphaSort = require("alpha-sort")
+
 const APIUrl = process.env.NODE_ENV === "production" ? "https://study-guide-api.herokuapp.com/" : "http://localhost:8000/"
 
 export default {
@@ -122,74 +156,62 @@ export default {
   components: {},
   data: function() {
     return {
+      showDialog: false,
       lang: 0,
       errors: [],
       charCapLong: 1000,
-      loaded: {
-        staff: false,
-        indicators: false,
-        faculties: false,
-        program: false,
-        competencies: false
-      },
       newCourse: {
         name: null,
         shortDescription: null,
         description: null,
         credits: null,
-        methods: null,
+        methods: [],
         methodsSummary: null,
-        coordinators: null,
-        teachers: null,
-        competencies: null,
+        coordinators: [],
+        teachers: [],
+        competencies: [],
         indicators: null,
         objectivesSummary: null,
         program: null,
         faculty: null
       },
       courseOptions: {
-        faculties: "",
-        program: "",
-        staff: "",
-        indicators: "",
-        competencies: "",
+        faculties: null,
+        program: null,
+        staff: null,
+        indicators: null,
+        competencies: null,
         methods: ["practicum", "hoorcollege", "werkgroep", "coaching"]
       }
     }
   },
   created: function() {
-    console.log("Page loaded")
     fetch(APIUrl + "faculty/")
       .then(response => response.json())
       .then(json => {
         this.courseOptions.faculties = json
-        this.newCourse.faculty = json[0] //Auto select the first faculty in the array
-        this.loaded.faculties = true
+        this.newCourse.faculty = json[0]._id //Auto select the first faculty in the array
       })
     fetch(APIUrl + "program/")
       .then(response => response.json())
       .then(json => {
         this.courseOptions.program = json
-        this.newCourse.program = json[0] //Auto select the first program in the array
-        this.loaded.program = true
+        this.newCourse.program = json[0]._id //Auto select the first program in the array
       })
     fetch(APIUrl + "person/")
       .then(response => response.json())
       .then(json => {
-        this.courseOptions.staff = json
-        this.loaded.staff = true
+        this.courseOptions.staff = json.sort((a, b) => alphaSort.asc(a.name, b.name))
       })
     fetch(APIUrl + "indicator/")
       .then(response => response.json())
       .then(json => {
         this.courseOptions.indicators = json
-        this.loaded.indicators = true
       })
     fetch(APIUrl + "competency/")
       .then(response => response.json())
       .then(json => {
         this.courseOptions.competencies = json
-        this.loaded.competencies = true
       })
   },
   methods: {
@@ -199,7 +221,7 @@ export default {
       if (!this.newCourse.name) {
         this.errors.push("De naam voor het vak ontbreekt")
       }
-      if (!this.newCourse.competencies) {
+      if (this.newCourse.competencies.length === 0) {
         this.errors.push("Er zijn nog geen competenties gekozen")
       }
       if (!this.newCourse.shortDescription) {
@@ -211,11 +233,8 @@ export default {
       if (!this.newCourse.credits) {
         this.errors.push("De studiepunten van het vak ontbreken")
       }
-      if (!this.newCourse.coordinators) {
-        //this.errors.push('Er is nog geen coördinator ingevuld')
-      }
-      if (!this.newCourse.competencies) {
-        this.errors.push("Er zijn geen competentie indicatoren gekozen")
+      if (!this.newCourse.coordinators.length === 0) {
+        this.errors.push("Er is nog geen coördinator ingevuld")
       }
       if (!this.newCourse.objectivesSummary) {
         this.errors.push("De leerdoelen van het vak ontbreken")
@@ -229,60 +248,83 @@ export default {
       this.errors = [...new Set(this.errors)]
 
       if (!this.errors.length) {
-        this.show()
         this.postCourse()
       }
     },
+    onConfirm: function() {
+      window.location.reload()
+    },
     postCourse: function() {
-      let courseData = this.$data.newCourse
-      courseData.name = [{ language: "nl", value: courseData.name }]
-      courseData.description = [{ language: "nl", value: courseData.description }]
-      courseData.shortDescription = [{ language: "nl", value: courseData.shortDescription }]
-      if (courseData.coordinators) {
-        courseData.coordinators = courseData.coordinators.map(coordinator => coordinator._id)
-      }
-      if (courseData.teachers) {
-        courseData.teachers = courseData.teachers.map(teacher => teacher._id)
-      }
-      courseData.competencies = courseData.competencies.map(competency => competency._id)
-      //courseData.indicators = courseData.indicators.map(indicator => indicator._id)
-      courseData.program = courseData.program._id
-      courseData.faculty = courseData.faculty._id
-      if (courseData.methods) {
-        courseData.methods = courseData.methods.map(method => {
-          if (method == "hoorcollege") return "lecture"
-          else if (method == "werkgroep") return "lab"
-          else return method
-        })
-      }
-      console.log("Sending Course to API:", courseData)
+      let raw = this.$data.newCourse
+
+      console.log("Sending Course to API:", raw)
       fetch(APIUrl + "course/", {
         method: "post",
         headers: {
           "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(courseData)
-      }).then(response => console.log(response))
-    },
-    show() {
-      this.$modal.show("hello-world")
-    },
-    hide() {
-      this.$modal.hide("hello-world")
+        body: JSON.stringify({
+          name: [{ language: "nl", value: raw.name }],
+          shortDescription: [{ language: "nl", value: raw.shortDescription }],
+          description: [{ language: "nl", value: raw.description }],
+          // year: null,
+          credits: parseInt(raw.credits, 10),
+          // start: null,
+          // end: null,
+          // languages: null,
+          coordinators: raw.coordinators,
+          // coordinatorsSummary: null,
+          teachers: raw.teachers,
+          // teachersSummary: null,
+          objectivesSummary: [{ language: "nl", content: raw.objectivesSummary }],
+          methods: raw.methods.map(method => {
+            return { hoorcollege: "lecture", werkgroep: "lab" }[method] || method
+          }),
+          methodsSummary: [{ language: "nl", content: raw.methodsSummary }],
+          // indicators: null,
+          competencies: raw.competencies,
+          // competenciesSummary: null,
+          program: raw.program,
+          faculty: raw.faculty
+        })
+      }).then(() => {
+        this.showDialog = true
+      })
     }
   }
 }
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css">
-</style>
-<style>
+<style scoped>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: system-ui, serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin-top: 60px;
-  max-width: 36em;
-  margin: 0 auto;
+}
+
+.md-app-content,
+.md-title {
+  width: 48rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.help {
+  font-size: small;
+}
+
+.md-field + .help {
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+  margin-right: 5rem;
+}
+
+.md-app.md-overlap .md-app-content {
+  margin-bottom: 64px;
+}
+</style>
+<style>
+.md-menu-content {
+  max-width: 50rem !important;
+  margin-left: -1rem;
 }
 </style>
