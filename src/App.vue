@@ -202,8 +202,11 @@ export default {
       if (!this.newCourse.competencies) {
         this.errors.push("Er zijn nog geen competenties gekozen")
       }
+      if (!this.newCourse.shortDescription) {
+        this.errors.push("De korte beschrijving van het vak ontbreekt")
+      }
       if (!this.newCourse.description) {
-        this.errors.push("De beschrijving van het vak ontbreekt")
+        this.errors.push("De lange beschrijving van het vak ontbreekt")
       }
       if (!this.newCourse.credits) {
         this.errors.push("De studiepunten van het vak ontbreken")
@@ -234,6 +237,7 @@ export default {
       let courseData = this.$data.newCourse
       courseData.name = [{ language: "nl", value: courseData.name }]
       courseData.description = [{ language: "nl", value: courseData.description }]
+      courseData.shortDescription = [{ language: "nl", value: courseData.shortDescription }]
       if (courseData.coordinators) {
         courseData.coordinators = courseData.coordinators.map(coordinator => coordinator._id)
       }
@@ -241,14 +245,16 @@ export default {
         courseData.teachers = courseData.teachers.map(teacher => teacher._id)
       }
       courseData.competencies = courseData.competencies.map(competency => competency._id)
-      courseData.indicators = courseData.indicators.map(indicator => indicator._id)
+      //courseData.indicators = courseData.indicators.map(indicator => indicator._id)
       courseData.program = courseData.program._id
       courseData.faculty = courseData.faculty._id
-      courseData.methods = courseData.methods.map(method => {
-        if (method == "hoorcollege") return "lecture"
-        else if (method == "werkgroep") return "lab"
-        else return method
-      })
+      if (courseData.methods) {
+        courseData.methods = courseData.methods.map(method => {
+          if (method == "hoorcollege") return "lecture"
+          else if (method == "werkgroep") return "lab"
+          else return method
+        })
+      }
       console.log("Sending Course to API:", courseData)
       fetch(APIUrl + "course/", {
         method: "post",
