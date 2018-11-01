@@ -30,33 +30,20 @@
         <p>Welke leerdoelen zijn er bij dit vak?</p>
         <textarea v-model="newCourse.objectivesSummary" placeholder="type hier" />
       </section>
-      <section v-if="loaded.indicators">
-        <p>Welke competentie indicatoren zijn vertegenwoordigd/komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
+      <section v-if="loaded.competencies">
+        <p>Welke competenties komen terug in dit vak? Je kan er meerdere selecteren of een woord typen om te zoeken</p>
         <multiselect 
-          v-model="newCourse.indicators" 
-          :options="courseOptions.indicators" 
+          v-model="newCourse.competencies" 
+          :options="courseOptions.competencies" 
           :multiple="true" 
           :close-on-select="false" 
           :clear-on-select="false" 
           :preserve-search="true" 
-          placeholder="Kies relevante indicatoren" 
+          placeholder="Kies relevante competencies" 
           label="value" 
           track-by="_id"
-          @input="calculateCompetencies"
           />
       </section>
-      <section>
-        <p>Op basis van de hierboven geselecteerde indicatoren zijn de volgende competencies vertegenwoordigd in dit vak. Als deze lijst onvolledig is, controleer dan of je wel de goede indicatoren hebt geselecteerd</p>
-        <ul>
-          <li v-for="competency in newCourse.competencies" :key="competency._id">
-            {{ competency.value }}
-          </li>
-        </ul>
-      </section>
-      <drop-down 
-        v-if="false"
-        v-bind:payload="{options:followingLearningYears('2017', '3'), lang:lang, title:'In welke leerjaar wordt dit vak gegeven?'}"
-        />
       <section>
         <p>Wat is het aantal studiepunten bij dit vak?</p>
         <input type="number" min="0" v-model="newCourse.credits"> 
@@ -116,7 +103,7 @@
 </template>
 
 <script>
-const APIUrl = process.env.NODE_ENV === 'production' ? "https://study-guide-api.herokuapp.com/" :  "http://localhost:8000/"
+const APIUrl = process.env.NODE_ENV === "production" ? "https://study-guide-api.herokuapp.com/" : "http://localhost:8000/"
 
 export default {
   name: "app",
@@ -162,12 +149,14 @@ export default {
       .then(response => response.json())
       .then(json => {
         this.courseOptions.faculties = json
+        this.newCourse.faculty = json[0] //Auto select the first faculty in the array
         this.loaded.faculties = true
       })
     fetch(APIUrl + "program/")
       .then(response => response.json())
       .then(json => {
         this.courseOptions.program = json
+        this.newCourse.program = json[0] //Auto select the first program in the array
         this.loaded.program = true
       })
     fetch(APIUrl + "person/")
@@ -190,20 +179,6 @@ export default {
       })
   },
   methods: {
-    facultyChosen: function(val) {
-      console.log("fac chosen!", val)
-      this.newCourse.cFaculty = val
-      //In the future, this could do a get to the programs in the faculty's programs data field. Then those programs would be the only options further on in the form
-    },
-    calculateCompetencies: function() {
-      //find out which unique competencies are connected to those indicators
-      //TODO: Now that this is no longer a computed but a method, it can be simplified by just adding the relevant comp to the newCourse.competencies list.
-
-      //console.log("computing comps with indicators:", this.newCourse.indicators)
-      let comps = this.newCourse.indicators.map(indicator => indicator.competency)
-      console.log("comps", comps)
-      this.newCourse.competencies = this.courseOptions.competencies.filter(comp => comps.indexOf(comp._id) > -1)
-    },
     checkForm: function() {
       //Check if the input is valid. If it is, post the course to the API
       this.errors = []
@@ -237,13 +212,7 @@ export default {
       this.errors = [...new Set(this.errors)]
       if (!this.errors.length) this.postCourse()
     },
-    //Not yet functional.
-    // followingLearningYears: function(rootYear, range) {
-    //   return [new Date()]
-    // },
     postCourse: function() {
-      //TODO: Validate data before it is sent. The API is way too "nice" right now and will allow empty fields. There should be clients-side and server side validation.
-      //TODO: Disable the form being sent on enter or other events except for when the relevant button is pushed.
       let courseData = this.$data.newCourse
       courseData.name = [{ language: "nl", value: courseData.name }]
       courseData.description = [{ language: "nl", value: courseData.description }]
