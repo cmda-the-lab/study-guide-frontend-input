@@ -10,7 +10,7 @@
 
         <md-app-content>
 
-          <form v-on:submit="submit">
+          <form novalidate v-on:submit="submit">
             <md-field v-if="options.faculty && options.faculty.length > 1">
               <label>Faculteit</label>
               <md-select v-model="course.faculty">
@@ -75,7 +75,31 @@
               >{{ option }}</md-radio>
               <span class="lab-fake-error" v-if="$v.course.phase.$dirty && !$v.course.phase.required">Dit veld is verplicht</span>
             </div>
-            <p class="help">Kies de een of meer werkvormen die van toepassing zijn op deze module</p>
+            <p class="help">Kies de fase waarin deze module valt</p>
+
+            <div>
+              <h2 class="lab-fake-label">Learning year *</h2>
+              <md-radio
+                v-model="$v.course.learningYear.$model"
+                v-for="(option, index) in options.learningYear"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <span class="lab-fake-error" v-if="$v.course.learningYear.$dirty && !$v.course.learningYear.required">Dit veld is verplicht</span>
+            </div>
+            <p class="help">Kies het leerjaar waarin deze module valt</p>
+
+            <div>
+              <h2 class="lab-fake-label">Quarter *</h2>
+              <md-checkbox
+                v-model="$v.course.quarter.$model"
+                v-for="(option, index) in options.quarter"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-checkbox>
+              <span class="lab-fake-error" v-if="$v.course.quarter.$dirty && !$v.course.quarter.required">Dit veld is verplicht</span>
+            </div>
+            <p class="help">Kies het kwartaal waarin deze module valt</p>
 
             <md-field :class="{'md-invalid': $v.course.objectivesSummary.$dirty && $v.course.objectivesSummary.$invalid}">
               <label>Leerdoelen</label>
@@ -93,6 +117,7 @@
               <h2 class="lab-fake-label">Competenties *</h2>
 
               <md-checkbox
+                class="many"
                 v-model="$v.course.competencies.$model"
                 v-for="option in options.competency"
                 :key="option._id"
@@ -219,6 +244,8 @@ export default {
         shortDescription: '',
         description: '',
         phase: '',
+        quarter: [],
+        learningYear: '',
         credits: null,
         methods: [],
         methodsSummary: '',
@@ -235,7 +262,9 @@ export default {
         person: null,
         competency: null,
         method: ['practicum', 'hoorcollege', 'werkgroep', 'coaching'],
-        phase: ['foundation', 'profiling', 'minor', 'graduation']
+        phase: ['foundation', 'profiling', 'minor', 'graduation'],
+        learningYear: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
+        quarter: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']
       }
     }
   },
@@ -249,6 +278,8 @@ export default {
       credits: {required, minValue: minValue(1), maxValue: maxValue(30)},
       methods: {required},
       phase: {required},
+      learningYear: {required},
+      quarter: {required},
       methodsSummary: {required, maxLength: maxLength(1024)},
       coordinators: {required},
       teachers: {}
@@ -282,9 +313,11 @@ export default {
     onConfirm: function() {
       window.location.reload()
     },
-    submit: function() {
+    submit: function(ev) {
       const uri = [apiUrl, course, ''].join('/')
       const {course} = this.$data
+
+      ev.preventDefault()
 
       // Mark every input as dirty.
       this.$v.$touch()
@@ -292,6 +325,9 @@ export default {
       if (this.$v.$invalid) {
         return
       }
+
+      // TODO:
+      // - Support phase, quarter(s), learning years
 
       const body = {
         name: [{language: 'nl', value: course.name}],
@@ -364,7 +400,7 @@ export default {
   margin-bottom: 64px;
 }
 
-.md-checkbox {
+.md-checkbox.many {
   display: flex;
 }
 
