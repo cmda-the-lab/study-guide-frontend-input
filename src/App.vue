@@ -33,82 +33,118 @@
               </md-select>
             </md-field>
 
-            <md-field>
+            <md-field :class="{'md-invalid': $v.course.name.$dirty && $v.course.name.$invalid}">
               <label>Naam</label>
-              <md-input v-model="course.name"></md-input>
+              <md-input v-model.trim="$v.course.name.$model" required></md-input>
+              <span class="md-error">Dit veld is verplicht</span>
             </md-field>
             <p class="help">Wat is de naam van de module? Bijvoorbeeld, “Design Ethics”</p>
 
-            <md-field>
+            <md-field :class="{'md-invalid': $v.course.shortDescription.$dirty && $v.course.shortDescription.$invalid}">
               <label>Korte beschrijving</label>
-              <md-textarea v-model="course.shortDescription" md-autogrow maxlength="120"></md-textarea>
+              <md-textarea
+                v-model.trim="$v.course.shortDescription.$model"
+                md-autogrow
+                required
+                :maxlength="$v.course.shortDescription.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.course.shortDescription.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.course.shortDescription.maxLength">Dit veld is te lang (max. {{$v.course.shortDescription.$params.maxLength.max}} karakters)</span>
             </md-field>
             <p class="help">Beschrijf de module in één zin. Bijvoorbeeld, “Design ethics is a course that allows you to integrate ethical thinking into your design practice.”</p>
 
-            <md-field>
+            <md-field :class="{'md-invalid': $v.course.description.$dirty && $v.course.description.$invalid}">
               <label>Beschrijving van module</label>
-              <md-textarea v-model="course.description" maxlength="480"></md-textarea>
+              <md-textarea
+                v-model.trim="$v.course.description.$model"
+                required
+                :maxlength="$v.course.description.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.course.description.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.course.description.maxLength">Dit veld is te lang (max. {{$v.course.description.$params.maxLength.max}} karakters)</span>
             </md-field>
             <p class="help">Beschrijf de module in twee tot vier alineas</p>
 
-            <md-field>
+            <md-field :class="{'md-invalid': $v.course.objectivesSummary.$dirty && $v.course.objectivesSummary.$invalid}">
               <label>Leerdoelen</label>
-              <md-textarea v-model="course.objectivesSummary"></md-textarea>
+              <md-textarea
+                v-model.trim="$v.course.objectivesSummary.$model"
+                required
+                :maxlength="$v.course.objectivesSummary.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.course.objectivesSummary.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.course.objectivesSummary.maxLength">Dit veld is te lang (max. {{$v.course.objectivesSummary.$params.maxLength.max}} karakters)</span>
             </md-field>
             <p class="help">Beschrijf wat de student leert. Gebruik streepjes en enters. Bijvoorbeeld, “- You learn to be aware of the ethical issues involved in design and designing”</p>
 
-            <md-field v-if="options.competency">
-              <label>Competenties</label>
-              <md-select v-model="course.competencies" multiple>
-                <md-option
-                  v-for="option in options.competencies"
-                  :value="option._id"
-                  :key="option._id"
-                >{{ option.value }}</md-option>
-              </md-select>
-            </md-field>
+            <div>
+              <h2 class="lab-fake-label">Competenties *</h2>
+
+              <md-checkbox
+                v-model="$v.course.competencies.$model"
+                v-for="option in options.competency"
+                :key="option._id"
+                :value="option._id"
+              >{{ option.value }}</md-checkbox>
+
+              <span class="lab-fake-error" v-if="$v.course.competencies.$dirty && !$v.course.competencies.required">Dit veld is verplicht</span>
+            </div>
             <p class="help">Kies de CMD competenties die van toepassing zijn op deze module</p>
 
-            <md-field>
+            <md-field :class="{'md-invalid': $v.course.credits.$dirty && $v.course.credits.$invalid}">
               <label>Studiepunten (ECTS)</label>
-              <md-input v-model="course.credits" min="0" max="30" type="number"></md-input>
+              <md-input
+                v-model="$v.course.credits.$model"
+                type="number"
+                :min="$v.course.credits.$params.minValue.min"
+                :max="$v.course.credits.$params.maxValue.max"
+                required
+              ></md-input>
+              <span class="md-error" v-if="!$v.course.credits.required">Dit veld is verplicht</span>
             </md-field>
             <p class="help">Wat is het aantal studiepuntent van de module? Bijvoorbeeld 3 voor een vak, 5 voor een project.</p>
 
-            <md-field>
-              <label>Werkvormen</label>
-              <md-select v-model="course.methods" multiple>
-                <md-option
-                  v-for="(option, index) in options.methods"
-                  :value="option"
-                  :key="index"
-                >{{ option }}</md-option>
-              </md-select>
-            </md-field>
+            <div>
+              <h2 class="lab-fake-label">Werkvormen *</h2>
+              <md-checkbox
+                v-model="$v.course.methods.$model"
+                v-for="(option, index) in options.methods"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-checkbox>
+              <span class="lab-fake-error" v-if="$v.course.methods.$dirty && !$v.course.methods.required">Dit veld is verplicht</span>
+            </div>
             <p class="help">Kies de een of meer werkvormen die van toepassing zijn op deze module</p>
 
-            <md-field>
+            <md-field :class="{'md-invalid': $v.course.methodsSummary.$dirty && $v.course.methodsSummary.$invalid}">
               <label>Beschrijving van werkvormen</label>
-              <md-textarea v-model="course.methodsSummary" maxlength="480"></md-textarea>
+              <md-textarea
+                v-model.trim="$v.course.methodsSummary.$model"
+                required
+                :maxlength="$v.course.methodsSummary.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.course.methodsSummary.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.course.methodsSummary.maxLength">Dit veld is te lang (max. {{$v.course.methodsSummary.$params.maxLength.max}} karakters)</span>
             </md-field>
             <p class="help">Twee tot vier alineas</p>
 
-            <md-field v-if="options.person">
+            <md-field v-if="options.person" :class="{'md-invalid': $v.course.coordinators.$dirty && $v.course.coordinators.$invalid}">
               <label>Coördinatoren</label>
-              <md-select v-model="course.coordinators" multiple>
+              <md-select v-model="$v.course.coordinators.$model" multiple>
                 <md-option
                   v-for="option in options.person"
                   :value="option._id"
                   :key="option._id"
                 >{{ option.name }}</md-option>
               </md-select>
+              <span class="md-error" v-if="!$v.course.coordinators.required">Dit veld is verplicht</span>
             </md-field>
             <p class="help">Kies welke mensen deze module coördineren.</p>
 
 
-            <md-field v-if="options.person">
+            <md-field v-if="options.person" :class="{'md-invalid': $v.course.teachers.$dirty && $v.course.teachers.$invalid}">
               <label>Docenten</label>
-              <md-select v-model="course.teachers" multiple>
+              <md-select v-model="$v.course.teachers.$model" multiple>
                 <md-option
                   v-for="option in options.person"
                   :value="option._id"
@@ -119,14 +155,14 @@
             <p class="help">Kies welke mensen deze module geven.</p>
 
 
-            <p v-if="errors.length">
-              <b>Het vak kan pas worden opgeslagen als de volgende fouten worden gecorrigeerd</b>
-              <ul>
-                <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-              </ul>
+            <p v-if="$v.$dirty && $v.$invalid" class="lab-fake-error">
+              Het vak kan pas worden opgeslagen als de fouten per veld worden gecorrigeerd.
             </p>
 
-            <md-button class="md-dense md-raised md-primary" v-on:click="checkForm">Sla op</md-button>
+            <md-button
+              class="md-dense md-raised md-primary"
+              v-on:click="submit"
+            >Sla op</md-button>
 
           </form>
         </md-app-content>
@@ -149,6 +185,13 @@
 const alphaSort = require('alpha-sort')
 
 import {identity, noop} from 'lodash'
+import {
+  required,
+  maxLength,
+  minValue,
+  maxValue,
+  between
+} from 'vuelidate/lib/validators'
 
 const apiUrl =
   process.env.NODE_ENV === 'production'
@@ -162,18 +205,17 @@ export default {
     return {
       showDialog: false,
       lang: 0,
-      errors: [],
       course: {
-        name: null,
-        shortDescription: null,
-        description: null,
+        name: '',
+        shortDescription: '',
+        description: '',
         credits: null,
         methods: [],
         methodsSummary: null,
         coordinators: [],
         teachers: [],
         competencies: [],
-        objectivesSummary: null,
+        objectivesSummary: '',
         program: null,
         faculty: null
       },
@@ -184,6 +226,20 @@ export default {
         competency: null,
         methods: ['practicum', 'hoorcollege', 'werkgroep', 'coaching']
       }
+    }
+  },
+  validations: {
+    course: {
+      name: {required},
+      shortDescription: {required, maxLength: maxLength(240)},
+      description: {required, maxLength: maxLength(1024)},
+      objectivesSummary: {required, maxLength: maxLength(1024)},
+      competencies: {required},
+      credits: {required, minValue: minValue(1), maxValue: maxValue(30)},
+      methods: {required},
+      methodsSummary: {required, maxLength: maxLength(1024)},
+      coordinators: {required},
+      teachers: {}
     }
   },
   created: function() {
@@ -211,48 +267,19 @@ export default {
     )
   },
   methods: {
-    checkForm: function() {
-      //Check if the input is valid. If it is, post the course to the API
-      this.errors = []
-      if (!this.course.name) {
-        this.errors.push('De naam voor het vak ontbreekt')
-      }
-      if (this.course.competencies.length === 0) {
-        this.errors.push('Er zijn nog geen competenties gekozen')
-      }
-      if (!this.course.shortDescription) {
-        this.errors.push('De korte beschrijving van het vak ontbreekt')
-      }
-      if (!this.course.description) {
-        this.errors.push('De lange beschrijving van het vak ontbreekt')
-      }
-      if (!this.course.credits) {
-        this.errors.push('De studiepunten van het vak ontbreken')
-      }
-      if (!this.course.coordinators.length === 0) {
-        this.errors.push('Er is nog geen coördinator ingevuld')
-      }
-      if (!this.course.objectivesSummary) {
-        this.errors.push('De leerdoelen van het vak ontbreken')
-      }
-      if (!this.course.program) {
-        this.errors.push('Er is nog geen studie programma gekozen')
-      }
-      if (!this.course.faculty) {
-        this.errors.push('De faculteit waar dit vak bij hoort ontbreekt')
-      }
-      this.errors = [...new Set(this.errors)]
-
-      if (!this.errors.length) {
-        this.postCourse()
-      }
-    },
     onConfirm: function() {
       window.location.reload()
     },
-    postCourse: function() {
+    submit: function() {
       const uri = [apiUrl, course, ''].join('/')
       const {course} = this.$data
+
+      // Mark every input as dirty.
+      this.$v.$touch()
+
+      if (this.$v.$invalid) {
+        return
+      }
 
       const body = {
         name: [{language: 'nl', value: course.name}],
@@ -313,10 +340,31 @@ export default {
   margin-top: -1rem;
   margin-bottom: 2rem;
   margin-right: 5rem;
+  transition: transform 200ms;
+  transform: translateY(0rem);
+}
+
+.md-field.md-invalid + .help {
+  transform: translateY(1rem);
 }
 
 .md-app.md-overlap .md-app-content {
   margin-bottom: 64px;
+}
+
+.md-checkbox {
+  display: flex;
+}
+
+.lab-fake-label {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.54);
+  font-weight: normal;
+}
+
+.lab-fake-error {
+  color: #ff1744;
+  font-size: 12px;
 }
 </style>
 
