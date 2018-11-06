@@ -11,11 +11,11 @@
         <md-app-content>
 
           <form @submit.prevent>
-            <md-field v-if="options.faculties && options.faculties.length > 1">
+            <md-field v-if="options.faculty && options.faculty.length > 1">
               <label>Faculteit</label>
               <md-select v-model="course.faculty">
                 <md-option
-                  v-for="option in options.faculties"
+                  v-for="option in options.faculty"
                   :value="option._id"
                   :key="option._id"
                 >{{ option.name[lang].value }}</md-option>
@@ -57,7 +57,7 @@
             </md-field>
             <p class="help">Beschrijf wat de student leert. Gebruik streepjes en enters. Bijvoorbeeld, “- You learn to be aware of the ethical issues involved in design and designing”</p>
 
-            <md-field v-if="options.competencies">
+            <md-field v-if="options.competency">
               <label>Competenties</label>
               <md-select v-model="course.competencies" multiple>
                 <md-option
@@ -93,11 +93,11 @@
             </md-field>
             <p class="help">Twee tot vier alineas</p>
 
-            <md-field v-if="options.staff">
+            <md-field v-if="options.person">
               <label>Coördinatoren</label>
               <md-select v-model="course.coordinators" multiple>
                 <md-option
-                  v-for="option in options.staff"
+                  v-for="option in options.person"
                   :value="option._id"
                   :key="option._id"
                 >{{ option.name }}</md-option>
@@ -106,11 +106,11 @@
             <p class="help">Kies welke mensen deze module coördineren.</p>
 
 
-            <md-field v-if="options.staff">
+            <md-field v-if="options.person">
               <label>Docenten</label>
               <md-select v-model="course.teachers" multiple>
                 <md-option
-                  v-for="option in options.staff"
+                  v-for="option in options.person"
                   :value="option._id"
                   :key="option._id"
                 >{{ option.name }}</md-option>
@@ -148,10 +148,12 @@
 <script>
 const alphaSort = require('alpha-sort')
 
-const APIUrl =
+import {identity, noop} from 'lodash'
+
+const apiUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://study-guide-api.herokuapp.com/'
-    : 'http://localhost:8000/'
+    ? 'https://study-guide-api.herokuapp.com'
+    : 'http://localhost:8000'
 
 export default {
   name: 'app',
@@ -171,49 +173,42 @@ export default {
         coordinators: [],
         teachers: [],
         competencies: [],
-        indicators: null,
         objectivesSummary: null,
         program: null,
         faculty: null
       },
       options: {
-        faculties: null,
+        faculty: null,
         program: null,
-        staff: null,
-        indicators: null,
-        competencies: null,
+        person: null,
+        competency: null,
         methods: ['practicum', 'hoorcollege', 'werkgroep', 'coaching']
       }
     }
   },
   created: function() {
-    fetch(APIUrl + 'faculty/')
-      .then(response => response.json())
-      .then(json => {
-        this.options.faculties = json
-        this.course.faculty = json[0]._id //Auto select the first faculty in the array
-      })
-    fetch(APIUrl + 'program/')
-      .then(response => response.json())
-      .then(json => {
-        this.options.program = json
-        this.course.program = json[0]._id //Auto select the first program in the array
-      })
-    fetch(APIUrl + 'person/')
-      .then(response => response.json())
-      .then(json => {
-        this.options.staff = json.sort((a, b) => alphaSort.asc(a.name, b.name))
-      })
-    fetch(APIUrl + 'indicator/')
-      .then(response => response.json())
-      .then(json => {
-        this.options.indicators = json
-      })
-    fetch(APIUrl + 'competency/')
-      .then(response => response.json())
-      .then(json => {
-        this.options.competencies = json
-      })
+    const resources = [
+      {name: 'faculty', sideEffect: x => (this.course.faculty = x[0]._id)},
+      {name: 'program', sideEffect: x => (this.course.program = x[0]._id)},
+      {
+        name: 'person',
+        map: x => x.sort((a, b) => alphaSort.asc(a.name, b.name))
+      },
+      {name: 'competency'}
+    ]
+
+    Promise.all(
+      resources.map(({name, map = identity, sideEffect = noop}) =>
+        fetch([apiUrl, name, ''].join('/'))
+          .then(res => res.json())
+          .then(map)
+          .then(data => {
+            sideEffect(data)
+            this.options[name] = data
+            return name
+          })
+      )
+    )
   },
   methods: {
     checkForm: function() {
@@ -256,38 +251,41 @@ export default {
       window.location.reload()
     },
     postCourse: function() {
-      let raw = this.$data.course
+      const uri = [apiUrl, course, ''].join('/')
+      const {course} = this.$data
 
-      fetch(APIUrl + 'course/', {
+      const body = {
+        name: [{language: 'nl', value: course.name}],
+        shortDescription: [{language: 'nl', value: course.shortDescription}],
+        description: [{language: 'nl', value: course.description}],
+        // year: null,
+        credits: parseInt(course.credits, 10),
+        // start: null,
+        // end: null,
+        // languages: null,
+        coordinators: course.coordinators,
+        // coordinatorsSummary: null,
+        teachers: course.teachers,
+        // teachersSummary: null,
+        objectivesSummary: [
+          {language: 'nl', content: course.objectivesSummary}
+        ],
+        methods: course.methods.map(method => {
+          return {hoorcollege: 'lecture', werkgroep: 'lab'}[method] || method
+        }),
+        methodsSummary: [{language: 'nl', content: course.methodsSummary}],
+        // indicators: null,
+        competencies: course.competencies,
+        // competenciesSummary: null,
+        program: course.program,
+        faculty: course.faculty
+      }
+
+      fetch(uri, {
         method: 'post',
         headers: {'Content-Type': 'application/json; charset=utf-8'},
-        body: JSON.stringify({
-          name: [{language: 'nl', value: raw.name}],
-          shortDescription: [{language: 'nl', value: raw.shortDescription}],
-          description: [{language: 'nl', value: raw.description}],
-          // year: null,
-          credits: parseInt(raw.credits, 10),
-          // start: null,
-          // end: null,
-          // languages: null,
-          coordinators: raw.coordinators,
-          // coordinatorsSummary: null,
-          teachers: raw.teachers,
-          // teachersSummary: null,
-          objectivesSummary: [{language: 'nl', content: raw.objectivesSummary}],
-          methods: raw.methods.map(method => {
-            return {hoorcollege: 'lecture', werkgroep: 'lab'}[method] || method
-          }),
-          methodsSummary: [{language: 'nl', content: raw.methodsSummary}],
-          // indicators: null,
-          competencies: raw.competencies,
-          // competenciesSummary: null,
-          program: raw.program,
-          faculty: raw.faculty
-        })
-      }).then(() => {
-        this.showDialog = true
-      })
+        body: JSON.stringify(body)
+      }).then(() => (this.showDialog = true), () => alert('Could not send'))
     }
   }
 }
