@@ -1,14 +1,21 @@
 {
-  "name": "vue",
-  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "test": "npm run build",
-    "start": "npm run serve"
-  },
+  "name": "vue",
+  "version": "0.0.0",
+  "description": "Frontend for teachers",
+  "license": "MIT",
+  "homepage": "https://cmda-the-lab.github.io/study-guide-frontend-input/",
+  "repository": "cmda-the-lab/study-guide-frontend-input",
+  "bugs": "https://github.com/cmda-the-lab/study-guide-frontend-input/issues",
+  "author": "Laurens Aarnoudse <laurens.aarnoudse@gmail.com>",
+  "contributors": [
+    "Laurens Aarnoudse <laurens.aarnoudse@gmail.com>",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
+  "files": [
+    "src",
+    "public"
+  ],
   "dependencies": {
     "alpha-sort": "^2.0.1",
     "vue": "^2.5.17",
@@ -22,6 +29,13 @@
     "postcss-preset-env": "^6.4.0",
     "prettier": "^1.14.3",
     "vue-template-compiler": "^2.5.17"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test": "npm run build",
+    "start": "npm run serve"
   },
   "eslintConfig": {
     "root": true,
