@@ -10,7 +10,7 @@
 
         <md-app-content>
 
-          <form @submit.prevent>
+          <form v-on:submit="submit">
             <md-field v-if="options.faculty && options.faculty.length > 1">
               <label>Faculteit</label>
               <md-select v-model="course.faculty">
@@ -159,10 +159,7 @@
               Het vak kan pas worden opgeslagen als de fouten per veld worden gecorrigeerd.
             </p>
 
-            <md-button
-              class="md-dense md-raised md-primary"
-              v-on:click="submit"
-            >Sla op</md-button>
+            <md-button type="submit" class="md-dense md-raised md-primary">Sla op</md-button>
 
           </form>
         </md-app-content>
