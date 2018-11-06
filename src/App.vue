@@ -65,6 +65,18 @@
             </md-field>
             <p class="help">Beschrijf de module in twee tot vier alineas</p>
 
+            <div>
+              <h2 class="lab-fake-label">Phase *</h2>
+              <md-radio
+                v-model="$v.course.phase.$model"
+                v-for="(option, index) in options.phase"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <span class="lab-fake-error" v-if="$v.course.phase.$dirty && !$v.course.phase.required">Dit veld is verplicht</span>
+            </div>
+            <p class="help">Kies de een of meer werkvormen die van toepassing zijn op deze module</p>
+
             <md-field :class="{'md-invalid': $v.course.objectivesSummary.$dirty && $v.course.objectivesSummary.$invalid}">
               <label>Leerdoelen</label>
               <md-textarea
@@ -108,7 +120,7 @@
               <h2 class="lab-fake-label">Werkvormen *</h2>
               <md-checkbox
                 v-model="$v.course.methods.$model"
-                v-for="(option, index) in options.methods"
+                v-for="(option, index) in options.method"
                 :key="index"
                 :value="option"
               >{{ option }}</md-checkbox>
@@ -206,9 +218,10 @@ export default {
         name: '',
         shortDescription: '',
         description: '',
+        phase: '',
         credits: null,
         methods: [],
-        methodsSummary: null,
+        methodsSummary: '',
         coordinators: [],
         teachers: [],
         competencies: [],
@@ -221,7 +234,8 @@ export default {
         program: null,
         person: null,
         competency: null,
-        methods: ['practicum', 'hoorcollege', 'werkgroep', 'coaching']
+        method: ['practicum', 'hoorcollege', 'werkgroep', 'coaching'],
+        phase: ['foundation', 'profiling', 'minor', 'graduation']
       }
     }
   },
@@ -234,6 +248,7 @@ export default {
       competencies: {required},
       credits: {required, minValue: minValue(1), maxValue: maxValue(30)},
       methods: {required},
+      phase: {required},
       methodsSummary: {required, maxLength: maxLength(1024)},
       coordinators: {required},
       teachers: {}
