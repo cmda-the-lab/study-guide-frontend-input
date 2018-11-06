@@ -1,26 +1,7 @@
-# vue
+# frontend-input
 
-## Project setup
-```
-npm install
-```
+![](screenshot.png)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## License
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+[MIT](license) © Laurens Aarnoudse
