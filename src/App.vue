@@ -115,17 +115,16 @@
 
             <div>
               <h2 class="lab-fake-label">Competenties *</h2>
-
-              <md-checkbox
-                class="many"
-                v-model="$v.course.competencies.$model"
-                v-for="option in options.competency"
-                :key="option._id"
-                :value="option._id"
-              >{{ option.value }}</md-checkbox>
-
+              <div v-for="option in options.competency" :key="option._id" :value="option._id">
+                <p class="description">{{option.description[lang].value}}</p>
+                <md-checkbox
+                  class="many"
+                  v-model="$v.course.competencies.$model"
+                >{{ option.value}}</md-checkbox>
+              </div>
               <span class="lab-fake-error" v-if="$v.course.competencies.$dirty && !$v.course.competencies.required">Dit veld is verplicht</span>
             </div>
+            
             <p class="help">Kies de CMD competenties die van toepassing zijn op deze module</p>
 
             <md-field :class="{'md-invalid': $v.course.credits.$dirty && $v.course.credits.$invalid}">
@@ -224,7 +223,6 @@ import {
   maxLength,
   minValue,
   maxValue,
-  between
 } from 'vuelidate/lib/validators'
 
 const apiUrl =
@@ -413,6 +411,10 @@ export default {
 .lab-fake-error {
   color: #ff1744;
   font-size: 12px;
+}
+
+.description {
+  font-style: italic;
 }
 </style>
 
