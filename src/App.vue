@@ -314,7 +314,7 @@ export default {
       window.location.reload()
     },
     submit: function(ev) {
-      const uri = [apiUrl, course, ''].join('/')
+      const uri = [apiUrl, "course", ''].join('/')
       const {course} = this.$data
 
       ev.preventDefault()
@@ -327,13 +327,14 @@ export default {
       }
 
       // TODO:
-      // - Support phase, quarter(s), learning years
+      // - Support phase
 
       const body = {
         name: [{language: 'nl', value: course.name}],
         shortDescription: [{language: 'nl', value: course.shortDescription}],
         description: [{language: 'nl', value: course.description}],
-        // year: null,
+        learningYears: [course.learningYear],
+        periods: [course.quarter],
         credits: parseInt(course.credits, 10),
         // start: null,
         // end: null,
