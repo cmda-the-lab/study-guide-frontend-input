@@ -63,9 +63,21 @@
           <span class="md-error" v-if="!$v.course.description.maxLength">Dit veld is te lang (max. {{$v.course.description.$params.maxLength.max}} karakters)</span>
         </md-field>
         <p class="help">Beschrijf de module in twee tot vier alineas</p>
+        
+        <div>
+          <h2 class="lab-fake-label">Type *</h2>
+          <md-radio
+            v-model="$v.course.type.$model"
+            v-for="(option, index) in options.type"
+            :key="index"
+            :value="option"
+          >{{ option }}</md-radio>
+          <span class="lab-fake-error" v-if="$v.course.type.$dirty && !$v.course.type.required">Dit veld is verplicht</span>
+        </div>
+        <p class="help">Is deze module een project of een vak?</p>
 
         <div>
-          <h2 class="lab-fake-label">Phase *</h2>
+          <h2 class="lab-fake-label">Fase *</h2>
           <md-radio
             v-model="$v.course.phase.$model"
             v-for="(option, index) in options.phase"
@@ -127,7 +139,7 @@
         </div>
         <p class="help">Kies de CMD competenties die van toepassing zijn op deze module</p>
 
-        <div>
+        <div v-if="course.type == 'Vak'">
           <img src='./assets/circles.png' />
           <h2 class="lab-fake-label">Cirkels *</h2>
           <md-radio class='radio-vertical'
@@ -250,6 +262,7 @@ export default {
         shortDescription: '',
         description: '',
         phase: '',
+        type: '',
         quarter: [],
         learningYear: '',
         credits: null,
@@ -272,7 +285,8 @@ export default {
         phase: ['fundament', 'verdieping', 'minor', 'afstuderen'],
         learningYear: [1,2,3,4],
         quarter: [1,2,3,4],
-        circles: ['Ontwerpvraag/Probleem/Content/Strategie', 'Interactie', 'Techniek', 'Vormgeving','Interactie/Techniek', 'Interactie/Vormgeving','Techniek/Vormgeving','Interactie/Techniek/Vormgeving']
+        circles: ['Ontwerpvraag/Probleem/Content/Strategie', 'Interactie', 'Techniek', 'Vormgeving','Interactie/Techniek', 'Interactie/Vormgeving','Techniek/Vormgeving','Interactie/Techniek/Vormgeving'],
+        type: ["Project", "Vak"],
       }
     }
   },
@@ -283,7 +297,8 @@ export default {
       description: {required, maxLength: maxLength(1024)},
       objectivesSummary: {required, maxLength: maxLength(1024)},
       competencies: {required},
-      circles: {required},
+      circles: {},
+      type: {required},
       credits: {required, minValue: minValue(1), maxValue: maxValue(30)},
       methods: {required},
       phase: {required},
@@ -340,6 +355,7 @@ export default {
         description: [{language: 'nl', value: course.description}],
         learningYears: [course.learningYear],
         phase: {fundament: 'foundation', verdieping: 'profiling', afstuderen: 'graduation'}[course.phase] || course.phase,
+        type: course.type,
         periods: [course.quarter],
         credits: parseInt(course.credits, 10),
         // start: null,
