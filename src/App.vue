@@ -356,7 +356,7 @@ export default {
         learningYears: [course.learningYear],
         phase: {fundament: 'foundation', verdieping: 'profiling', afstuderen: 'graduation'}[course.phase] || course.phase,
         type: course.type,
-        periods: [course.quarter],
+        periods: course.quarter,
         credits: parseInt(course.credits, 10),
         // start: null,
         // end: null,
