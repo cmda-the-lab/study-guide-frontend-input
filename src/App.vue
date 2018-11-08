@@ -77,25 +77,25 @@
         <p class="help">Kies de fase waarin deze module valt</p>
 
         <div>
-          <h2 class="lab-fake-label">Learning year *</h2>
+          <h2 class="lab-fake-label">Leerjaar *</h2>
           <md-radio
             v-model="$v.course.learningYear.$model"
             v-for="(option, index) in options.learningYear"
             :key="index"
             :value="option"
-          >{{ option }}</md-radio>
+          >{{ "Jaar " + option }}</md-radio>
           <span class="lab-fake-error" v-if="$v.course.learningYear.$dirty && !$v.course.learningYear.required">Dit veld is verplicht</span>
         </div>
         <p class="help">Kies het leerjaar waarin deze module valt</p>
 
         <div>
-          <h2 class="lab-fake-label">Quarter *</h2>
+          <h2 class="lab-fake-label">Kwartaal *</h2>
           <md-checkbox
             v-model="$v.course.quarter.$model"
             v-for="(option, index) in options.quarter"
             :key="index"
             :value="option"
-          >{{ option }}</md-checkbox>
+          >{{ "Kwartaal "+ option }}</md-checkbox>
           <span class="lab-fake-error" v-if="$v.course.quarter.$dirty && !$v.course.quarter.required">Dit veld is verplicht</span>
         </div>
         <p class="help">Kies het kwartaal waarin deze module valt</p>
@@ -270,8 +270,8 @@ export default {
         competency: null,
         method: ['practicum', 'hoorcollege', 'werkgroep', 'coaching'],
         phase: ['fundament', 'verdieping', 'minor', 'afstuderen'],
-        learningYear: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
-        quarter: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
+        learningYear: [1,2,3,4],
+        quarter: [1,2,3,4],
         circles: ['Ontwerpvraag/Probleem/Content/Strategie', 'Interactie', 'Techniek', 'Vormgeving','Interactie/Techniek', 'Interactie/Vormgeving','Techniek/Vormgeving','Interactie/Techniek/Vormgeving']
       }
     }
