@@ -269,7 +269,7 @@ export default {
         person: null,
         competency: null,
         method: ['practicum', 'hoorcollege', 'werkgroep', 'coaching'],
-        phase: ['foundation', 'profiling', 'minor', 'graduation'],
+        phase: ['fundament', 'verdieping', 'minor', 'afstuderen'],
         learningYear: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
         quarter: ['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4'],
         circles: ['Ontwerpvraag/Probleem/Content/Strategie', 'Interactie', 'Techniek', 'Vormgeving','Interactie/Techniek', 'Interactie/Vormgeving','Techniek/Vormgeving','Interactie/Techniek/Vormgeving']
@@ -334,15 +334,12 @@ export default {
       if (this.$v.$invalid) {
         return
       }
-
-      // TODO:
-      // - Support phase
-
       const body = {
         name: [{language: 'nl', value: course.name}],
         shortDescription: [{language: 'nl', value: course.shortDescription}],
         description: [{language: 'nl', value: course.description}],
         learningYears: [course.learningYear],
+        phase: {fundament: 'foundation', verdieping: 'profiling', afstuderen: 'graduation'}[course.phase] || course.phase,
         periods: [course.quarter],
         credits: parseInt(course.credits, 10),
         // start: null,
