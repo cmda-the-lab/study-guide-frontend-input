@@ -151,6 +151,16 @@
           <span class="lab-fake-error" v-if="$v.course.circles.$dirty && !$v.course.circles.required">Dit veld is verplicht</span>
         </div>
         <p class="help">In welk van deze gebieden valt de kern van het vak?</p>
+        
+        <div v-for="sliderOpt in options.spacesSlider">
+          <input type="range" min="1" max="100" v-model="sliderOpt.value">
+          <span>{{sliderOpt.name}}</span>
+        </div>
+<!--         <div class="error" v-if="!$v.spacesSliderTotal.between"> -->
+<!--           Must be between {{$v.spacesSliderTotal.$params.between.min}} and 
+          {{$v.spacesSliderTotal.$params.between.max}} 
+        </div> -->
+        <p>Total spaces:{{spacesSliderTotal}}</p>
 
         <md-field :class="{'md-invalid': $v.course.credits.$dirty && $v.course.credits.$invalid}">
           <label>Studiepunten (ECTS)</label>
@@ -242,7 +252,8 @@ import {
   required,
   maxLength,
   minValue,
-  maxValue
+  maxValue,
+  between
 } from 'vuelidate/lib/validators'
 
 const apiUrl =
@@ -287,6 +298,7 @@ export default {
         quarter: [1,2,3,4],
         circles: ['Ontwerpvraag/Probleem/Content/Strategie', 'Interactie', 'Techniek', 'Vormgeving','Interactie/Techniek', 'Interactie/Vormgeving','Techniek/Vormgeving','Interactie/Techniek/Vormgeving'],
         type: ["Project", "Vak"],
+        spacesSlider: [{name:"Problem Space", value: 0}, {name:"Concept Space", value: 0}, {name:"Design& Build Space", value: 0}, {name:"Market Space", value: 0}],
       }
     }
   },
@@ -306,7 +318,9 @@ export default {
       quarter: {required},
       methodsSummary: {required, maxLength: maxLength(1024)},
       coordinators: {required},
-      teachers: {}
+      teachers: {},
+      spacesSliderTotal: { between: between(0, 100) },
+
     }
   },
   created: function() {
@@ -332,6 +346,13 @@ export default {
           })
       )
     )
+  },
+  computed: {
+    spacesSliderTotal: function() {
+      let total = 0
+      this.options.spacesSlider.forEach(opt => total += Number(opt.value))
+      return total
+    },
   },
   methods: {
     onConfirm: function() {
