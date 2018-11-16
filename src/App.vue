@@ -152,16 +152,18 @@
         </div>
         <p class="help">In welk van deze gebieden valt de kern van het vak?</p>
         
-        <div v-for="sliderOpt in options.spacesSlider">
-          <input type="range" min="1" max="100" v-model="sliderOpt.value">
-          <span>{{sliderOpt.name}}</span>
+        <div v-if="course.type == 'Project'">
+          <img src='./assets/spaces.png' />
+          <div v-for="sliderOpt in options.spacesSlider">
+            <input type="range" min="0" max="100" step="10" value="0" v-model="sliderOpt.value">
+            <span>{{sliderOpt.name}}</span>
+          </div>
+  <!--         <div class="error" v-if="!$v.spacesSliderTotal.between"> -->
+  <!--           Must be between {{$v.spacesSliderTotal.$params.between.min}} and 
+            {{$v.spacesSliderTotal.$params.between.max}} 
+          </div> -->
+          <p>Total spaces:{{spacesSliderTotal}}</p>
         </div>
-<!--         <div class="error" v-if="!$v.spacesSliderTotal.between"> -->
-<!--           Must be between {{$v.spacesSliderTotal.$params.between.min}} and 
-          {{$v.spacesSliderTotal.$params.between.max}} 
-        </div> -->
-        <p>Total spaces:{{spacesSliderTotal}}</p>
-
         <md-field :class="{'md-invalid': $v.course.credits.$dirty && $v.course.credits.$invalid}">
           <label>Studiepunten (ECTS)</label>
           <md-input
@@ -283,9 +285,10 @@ export default {
         teachers: [],
         competencies: [],
         circles: '',
+        spaces:'',
         objectivesSummary: '',
         program: null,
-        faculty: null
+        faculty: null,
       },
       options: {
         faculty: null,
