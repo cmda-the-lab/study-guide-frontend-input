@@ -132,8 +132,7 @@
           :md-done="!$v.matter.$invalid"
         >
           <p>
-            In dit onderdeel van de monitor vragen we je om globale informatie over een module in te vullen.
-            Deze informatie kunnen we later gebruiken om het curriculum van volgend jaar te visualiseren, maar ook voor in de studiegids.
+            In dit onderdeel van de monitor vragen we je na te denken over wat de student leert, en hoe er gewerkt wordt.
           </p>
 
           <form novalidate v-on:submit="next($event, 'matter', 'people')">
@@ -218,8 +217,7 @@
           :md-done="!$v.people.$invalid"
         >
           <p>
-            In dit onderdeel van de monitor vragen we je om globale informatie over een module in te vullen.
-            Deze informatie kunnen we later gebruiken om het curriculum van volgend jaar te visualiseren, maar ook voor in de studiegids.
+            In dit onderdeel vragen we je om aan te geven wie de module coördineren en doceren.
           </p>
 
           <form novalidate v-on:submit="next($event, 'people')">
