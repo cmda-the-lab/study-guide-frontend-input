@@ -4,252 +4,254 @@
   <md-app md-waterfall md-mode="overlap">
     <md-app-toolbar class="md-primary md-large">
       <div class="md-toolbar-row">
-        <h1 class="md-title">Competentie Monitor</h1>
+        <h1 class="md-title">CMD Monitor</h1>
       </div>
     </md-app-toolbar>
 
     <md-app-content>
-      <form novalidate v-on:submit="submit">
-        <md-field v-if="options.faculty && options.faculty.length > 1">
-          <label>Faculteit</label>
-          <md-select v-model="course.faculty">
-            <md-option
-              v-for="option in options.faculty"
-              :value="option._id"
-              :key="option._id"
-            >{{ option.name[lang].value }}</md-option>
-          </md-select>
-        </md-field>
+      <md-steppers :md-active-step.sync="step" md-vertical md-linear>
+        <md-step
+          id="intro"
+          md-label="Introductie"
+          md-description="Informatie over de module"
+          :md-error="$v.intro.$dirty && $v.intro.$invalid ? 'Informatie mist' : ''"
+          :md-done="!$v.intro.$invalid"
+        >
+          <p>
+            In dit onderdeel van de monitor vragen we je om globale informatie over een module in te vullen.
+            Deze informatie kunnen we later gebruiken om het curriculum van volgend jaar te visualiseren, maar ook voor in de studiegids.
+          </p>
+          <form novalidate v-on:submit="next($event, 'intro', 'matter')">
+            <md-field :class="{'md-invalid': $v.intro.name.$dirty && $v.intro.name.$invalid}">
+              <label>Naam</label>
+              <md-input v-model.trim="$v.intro.name.$model" required></md-input>
+              <span class="md-error">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">Wat is de naam van de module? Bijvoorbeeld, “Design Ethics”</p>
 
-        <md-field v-if="options.program && options.program.length > 1">
-          <label>Opleiding</label>
-          <md-select v-model="course.program">
-            <md-option
-              v-for="option in options.program"
-              :value="option._id"
-              :key="option._id"
-            >{{ option.name[lang].value }}</md-option>
-          </md-select>
-        </md-field>
+            <md-field :class="{'md-invalid': $v.intro.shortDescription.$dirty && $v.intro.shortDescription.$invalid}">
+              <label>Korte beschrijving</label>
+              <md-textarea
+                v-model.trim="$v.intro.shortDescription.$model"
+                md-autogrow
+                required
+                :maxlength="$v.intro.shortDescription.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.intro.shortDescription.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.intro.shortDescription.maxLength">Dit veld is te lang (max. {{$v.intro.shortDescription.$params.maxLength.max}} karakters)</span>
+            </md-field>
+            <p class="help">Beschrijf de module in één zin. Bijvoorbeeld, “Design ethics is a course that allows you to integrate ethical thinking into your design practice.”</p>
 
-        <md-field :class="{'md-invalid': $v.course.name.$dirty && $v.course.name.$invalid}">
-          <label>Naam</label>
-          <md-input v-model.trim="$v.course.name.$model" required></md-input>
-          <span class="md-error">Dit veld is verplicht</span>
-        </md-field>
-        <p class="help">Wat is de naam van de module? Bijvoorbeeld, “Design Ethics”</p>
+            <md-field :class="{'md-invalid': $v.intro.description.$dirty && $v.intro.description.$invalid}">
+              <label>Lange beschrijving</label>
+              <md-textarea
+                v-model.trim="$v.intro.description.$model"
+                md-autogrow
+                required
+                :maxlength="$v.intro.description.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.intro.description.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.intro.description.maxLength">Dit veld is te lang (max. {{$v.intro.description.$params.maxLength.max}} karakters)</span>
+            </md-field>
+            <p class="help">Beschrijf de module in twee tot vier alineas</p>
 
-        <md-field :class="{'md-invalid': $v.course.shortDescription.$dirty && $v.course.shortDescription.$invalid}">
-          <label>Korte beschrijving</label>
-          <md-textarea
-            v-model.trim="$v.course.shortDescription.$model"
-            md-autogrow
-            required
-            :maxlength="$v.course.shortDescription.$params.maxLength.max"
-          ></md-textarea>
-          <span class="md-error" v-if="!$v.course.shortDescription.required">Dit veld is verplicht</span>
-          <span class="md-error" v-if="!$v.course.shortDescription.maxLength">Dit veld is te lang (max. {{$v.course.shortDescription.$params.maxLength.max}} karakters)</span>
-        </md-field>
-        <p class="help">Beschrijf de module in één zin. Bijvoorbeeld, “Design ethics is a course that allows you to integrate ethical thinking into your design practice.”</p>
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Type *</h2>
+              <p class="help">Is deze module een project of een vak?</p>
+              <md-radio
+                v-model="$v.intro.type.$model"
+                v-for="(option, index) in options.type"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.intro.type.$dirty && !$v.intro.type.required">Dit veld is verplicht</p>
+            </div>
 
-        <md-field :class="{'md-invalid': $v.course.description.$dirty && $v.course.description.$invalid}">
-          <label>Beschrijving van module</label>
-          <md-textarea
-            v-model.trim="$v.course.description.$model"
-            required
-            :maxlength="$v.course.description.$params.maxLength.max"
-          ></md-textarea>
-          <span class="md-error" v-if="!$v.course.description.required">Dit veld is verplicht</span>
-          <span class="md-error" v-if="!$v.course.description.maxLength">Dit veld is te lang (max. {{$v.course.description.$params.maxLength.max}} karakters)</span>
-        </md-field>
-        <p class="help">Beschrijf de module in twee tot vier alineas</p>
-        
-        <div>
-          <h2 class="lab-fake-label">Type *</h2>
-          <md-radio
-            v-model="$v.course.type.$model"
-            v-for="(option, index) in options.type"
-            :key="index"
-            :value="option"
-          >{{ option }}</md-radio>
-          <span class="lab-fake-error" v-if="$v.course.type.$dirty && !$v.course.type.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">Is deze module een project of een vak?</p>
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Fase *</h2>
+              <p class="help">In welke fase valt deze module?</p>
+              <md-radio
+                v-model="$v.intro.phase.$model"
+                v-for="(option, index) in options.phase"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.intro.phase.$dirty && !$v.intro.phase.required">Dit veld is verplicht</p>
+            </div>
 
-        <div>
-          <h2 class="lab-fake-label">Fase *</h2>
-          <md-radio
-            v-model="$v.course.phase.$model"
-            v-for="(option, index) in options.phase"
-            :key="index"
-            :value="option"
-          >{{ option }}</md-radio>
-          <span class="lab-fake-error" v-if="$v.course.phase.$dirty && !$v.course.phase.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">Kies de fase waarin deze module valt</p>
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Leerjaar *</h2>
+              <p class="help">In welk leerjaar wordt deze module gegeven?</p>
+              <md-radio
+                v-model="$v.intro.learningYear.$model"
+                v-for="(option, index) in options.learningYear"
+                :key="index"
+                :value="option"
+              >{{ "Jaar " + option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.intro.learningYear.$dirty && !$v.intro.learningYear.required">Dit veld is verplicht</p>
+            </div>
 
-        <div>
-          <h2 class="lab-fake-label">Leerjaar *</h2>
-          <md-radio
-            v-model="$v.course.learningYear.$model"
-            v-for="(option, index) in options.learningYear"
-            :key="index"
-            :value="option"
-          >{{ "Jaar " + option }}</md-radio>
-          <span class="lab-fake-error" v-if="$v.course.learningYear.$dirty && !$v.course.learningYear.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">Kies het leerjaar waarin deze module valt</p>
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Kwartaal *</h2>
+              <p class="help">In welk kwartaal wordt deze module gegeven? Als de module in meerdere kwartalen gegeven wordt, of een semester overbrugt, vul dan meerdere kwartalen in.</p>
+              <md-checkbox
+                v-model="$v.intro.quarter.$model"
+                v-for="(option, index) in options.quarter"
+                :key="index"
+                :value="option"
+              >{{ "Kwartaal "+ option }}</md-checkbox>
+              <p class="lab-fake-error" v-if="$v.intro.quarter.$dirty && !$v.intro.quarter.required">Dit veld is verplicht</p>
+            </div>
 
-        <div>
-          <h2 class="lab-fake-label">Kwartaal *</h2>
-          <md-checkbox
-            v-model="$v.course.quarter.$model"
-            v-for="(option, index) in options.quarter"
-            :key="index"
-            :value="option"
-          >{{ "Kwartaal "+ option }}</md-checkbox>
-          <span class="lab-fake-error" v-if="$v.course.quarter.$dirty && !$v.course.quarter.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">Kies het kwartaal waarin deze module valt</p>
+            <md-field :class="{'md-invalid': $v.intro.credits.$dirty && $v.intro.credits.$invalid}">
+              <label>Studiepunten (ECTS)</label>
+              <md-input
+                v-model="$v.intro.credits.$model"
+                type="number"
+                :min="$v.intro.credits.$params.minValue.min"
+                :max="$v.intro.credits.$params.maxValue.max"
+                required
+              ></md-input>
+              <span class="md-error" v-if="!$v.intro.credits.required">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">
+              Wat is het aantal studiepuntent van de module?
+              <span v-if="intro.type == 'Vak'">Een vak is doorgaands <strong>3 punten</strong>.</span>
+              <span v-if="intro.type == 'Project'">Een project is doorgaands <strong>5 punten</strong>.</span>
+            </p>
 
-        <md-field :class="{'md-invalid': $v.course.objectivesSummary.$dirty && $v.course.objectivesSummary.$invalid}">
-          <label>Leerdoelen</label>
-          <md-textarea
-            v-model.trim="$v.course.objectivesSummary.$model"
-            required
-            :maxlength="$v.course.objectivesSummary.$params.maxLength.max"
-          ></md-textarea>
-          <span class="md-error" v-if="!$v.course.objectivesSummary.required">Dit veld is verplicht</span>
-          <span class="md-error" v-if="!$v.course.objectivesSummary.maxLength">Dit veld is te lang (max. {{$v.course.objectivesSummary.$params.maxLength.max}} karakters)</span>
-        </md-field>
-        <p class="help">Beschrijf wat de student leert. Gebruik streepjes en enters. Bijvoorbeeld, “- You learn to be aware of the ethical issues involved in design and designing”</p>
+            <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
+          </form>
+        </md-step>
 
-        <div>
-          <h2 class="lab-fake-label">Competenties *</h2>
-          <div v-for="option in options.competency" :key="option._id">
-            <p class="description">{{option.description[lang].value}}</p>
-            <md-checkbox
-              class="many" 
-              :key="option._id" 
-              :value="option._id"
-              v-model="$v.course.competencies.$model"
-            >{{ option.value}}</md-checkbox>
-          </div>
-          <span class="lab-fake-error" v-if="$v.course.competencies.$dirty && !$v.course.competencies.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">Kies de CMD competenties die van toepassing zijn op deze module</p>
+        <md-step
+          id="matter"
+          md-label="Materie"
+          md-description="Wat studenten leren, en hoe"
+          :md-error="$v.matter.$dirty && $v.matter.$invalid ? 'Informatie mist' : ''"
+          :md-done="!$v.matter.$invalid"
+        >
+          <p>
+            In dit onderdeel van de monitor vragen we je om globale informatie over een module in te vullen.
+            Deze informatie kunnen we later gebruiken om het curriculum van volgend jaar te visualiseren, maar ook voor in de studiegids.
+          </p>
 
-        <div v-if="course.type == 'Vak'">
-          <img src='./assets/circles.png' />
-          <h2 class="lab-fake-label">Cirkels *</h2>
-          <md-radio class='radio-vertical'
-            v-model="$v.course.circles.$model"
-            v-for="(option, index) in options.circles"
-            :key="index"
-            :value="option"
-          >{{ (index+1) +": "+ option }}</md-radio>
-          <span class="lab-fake-error" v-if="$v.course.circles.$dirty && !$v.course.circles.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">In welk van deze gebieden valt de kern van het vak?</p>
-        
-        <!-- TODO: @wooorm has some ideas about how to improve this question -->
- <!--        <div v-if="course.type == 'Project'">
-          <img src='./assets/spaces.png' />
-          <div v-for="sliderOpt in options.spacesSlider">
-            <input type="range" min="0" max="100" step="10" value="0" v-model="sliderOpt.value">
-            <span>{{sliderOpt.name}}</span>
-          </div> -->
-          <!--<div class="error" v-if="!$v.spacesSliderTotal.between"> -->
-          <!--Must be between {{$v.spacesSliderTotal.$params.between.min}} and 
-            {{$v.spacesSliderTotal.$params.between.max}} 
-          </div> -->
-<!--           <p>Total spaces:{{spacesSliderTotal}}</p>
-        </div> -->
+          <form novalidate v-on:submit="next($event, 'matter', 'people')">
+            <md-field :class="{'md-invalid': $v.matter.objectivesSummary.$dirty && $v.matter.objectivesSummary.$invalid}">
+              <label>Leerdoelen</label>
+              <md-textarea
+                v-model.trim="$v.matter.objectivesSummary.$model"
+                md-autogrow
+                required
+                :maxlength="$v.matter.objectivesSummary.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.matter.objectivesSummary.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.matter.objectivesSummary.maxLength">Dit veld is te lang (max. {{$v.matter.objectivesSummary.$params.maxLength.max}} karakters)</span>
+            </md-field>
+            <p class="help">Beschrijf wat de student leert.<br>Gebruik streepjes en enters. Bijvoorbeeld, “- You learn to be aware of the ethical issues involved in design and designing”</p>
 
-        
-        <div v-if="course.type == 'Project'">
-<!--           <p>Beantwoord de volgende vraag alleen als deze module een 'project' is. Bijvoorbeeld 'Project 2' in jaar 1 of het project 'Information Design' in jaar 3.</p>
-          <img src='./assets/levels.png' />
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Competenties *</h2>
+              <p class="lab-fake-error" v-if="$v.matter.competencies.$dirty && !$v.matter.competencies.required">Dit veld is verplicht</p>
+              <p class="help">Kies de CMD competenties die van toepassing zijn op deze module</p>
+              <div v-for="option in options.competency" :key="option._id">
+                <md-checkbox
+                  class="lab-check-vertical"
+                  :key="option._id" 
+                  :value="option._id"
+                  v-model="$v.matter.competencies.$model"
+                >{{ option.value}}</md-checkbox>
+                <p class="lab-check-description">{{option.description[lang].value}}</p>
+              </div>
+            </div>
 
-          <div>
-            <h2 class="lab-fake-label">Niveau *</h2>
-            <md-radio
-              v-model="$v.course.level['Niveau'].$model"
-              value="1">
-            </md-radio>
-            <span class="lab-fake-error" v-if="$v.course.type.$dirty && !$v.course.type.required">Dit veld is verplicht</span>
-          </div>
- -->        
-         <!--  <p class="help">Wat is het niveau van complexiteit en initiërend vermogen bij dit project?</p> -->
-        </div>
+            <div v-if="intro.type == 'Vak'">
+              <img src="./assets/circles.png">
+              <div class="lab-fake-field">
+                <h2 class="lab-fake-label">Cirkels *</h2>
+                <p class="help">In welk van deze gebieden valt het vak?</p>
+                <md-radio
+                  class="lab-check-vertical"
+                  v-model="$v.matter.circles.$model"
+                  v-for="(option, index) in options.circles"
+                  :key="index"
+                  :value="option"
+                ><strong>{{ index + 1 }}</strong>: {{ option }}</md-radio>
+                <p class="lab-fake-error" v-if="$v.matter.circles.$dirty && !$v.matter.circles.required">Dit veld is verplicht</p>
+              </div>
+            </div>
 
-        <md-field :class="{'md-invalid': $v.course.credits.$dirty && $v.course.credits.$invalid}">
-          <label>Studiepunten (ECTS)</label>
-          <md-input
-            v-model="$v.course.credits.$model"
-            type="number"
-            :min="$v.course.credits.$params.minValue.min"
-            :max="$v.course.credits.$params.maxValue.max"
-            required
-          ></md-input>
-          <span class="md-error" v-if="!$v.course.credits.required">Dit veld is verplicht</span>
-        </md-field>
-        <p class="help">Wat is het aantal studiepuntent van de module? Bijvoorbeeld 3 voor een vak, 5 voor een project.</p>
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Werkvormen *</h2>
+              <p class="help">Kies één of meer werkvormen die van toepassing zijn op deze module</p>
+              <md-checkbox
+                v-model="$v.matter.methods.$model"
+                v-for="(option, index) in options.method"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-checkbox>
+              <p class="lab-fake-error" v-if="$v.matter.methods.$dirty && !$v.matter.methods.required">Dit veld is verplicht</p>
+            </div>
 
-        <div>
-          <h2 class="lab-fake-label">Werkvormen *</h2>
-          <md-checkbox
-            v-model="$v.course.methods.$model"
-            v-for="(option, index) in options.method"
-            :key="index"
-            :value="option"
-          >{{ option }}</md-checkbox>
-          <span class="lab-fake-error" v-if="$v.course.methods.$dirty && !$v.course.methods.required">Dit veld is verplicht</span>
-        </div>
-        <p class="help">Kies de een of meer werkvormen die van toepassing zijn op deze module</p>
+            <md-field :class="{'md-invalid': $v.matter.methodsSummary.$dirty && $v.matter.methodsSummary.$invalid}">
+              <label>Beschrijving van werkvormen</label>
+              <md-textarea
+                v-model.trim="$v.matter.methodsSummary.$model"
+                md-autogrow
+                required
+                :maxlength="$v.matter.methodsSummary.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.matter.methodsSummary.required">Dit veld is verplicht</span>
+              <span class="md-error" v-if="!$v.matter.methodsSummary.maxLength">Dit veld is te lang (max. {{$v.matter.methodsSummary.$params.maxLength.max}} karakters)</span>
+            </md-field>
+            <p class="help">Twee tot vier alineas</p>
 
-        <md-field :class="{'md-invalid': $v.course.methodsSummary.$dirty && $v.course.methodsSummary.$invalid}">
-          <label>Beschrijving van werkvormen</label>
-          <md-textarea
-            v-model.trim="$v.course.methodsSummary.$model"
-            required
-            :maxlength="$v.course.methodsSummary.$params.maxLength.max"
-          ></md-textarea>
-          <span class="md-error" v-if="!$v.course.methodsSummary.required">Dit veld is verplicht</span>
-          <span class="md-error" v-if="!$v.course.methodsSummary.maxLength">Dit veld is te lang (max. {{$v.course.methodsSummary.$params.maxLength.max}} karakters)</span>
-        </md-field>
-        <p class="help">Twee tot vier alineas</p>
+            <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
+          </form>
+        </md-step>
 
-        <md-field v-if="options.person" :class="{'md-invalid': $v.course.coordinators.$dirty && $v.course.coordinators.$invalid}">
-          <label>Coördinatoren</label>
-          <md-select v-model="$v.course.coordinators.$model" multiple>
-            <md-option
-              v-for="option in options.person"
-              :value="option._id"
-              :key="option._id"
-            >{{ option.name }}</md-option>
-          </md-select>
-          <span class="md-error" v-if="!$v.course.coordinators.required">Dit veld is verplicht</span>
-        </md-field>
-        <p class="help">Kies welke mensen deze module coördineren.</p>
+        <md-step
+          id="people"
+          md-label="Mensen"
+          md-description="De betrokken docenten en coordinatoren van deze module"
+          :md-error="$v.people.$dirty && $v.people.$invalid ? 'Informatie mist' : ''"
+          :md-done="!$v.people.$invalid"
+        >
+          <p>
+            In dit onderdeel van de monitor vragen we je om globale informatie over een module in te vullen.
+            Deze informatie kunnen we later gebruiken om het curriculum van volgend jaar te visualiseren, maar ook voor in de studiegids.
+          </p>
 
-        <md-field v-if="options.person" :class="{'md-invalid': $v.course.teachers.$dirty && $v.course.teachers.$invalid}">
-          <label>Docenten</label>
-          <md-select v-model="$v.course.teachers.$model" multiple>
-            <md-option
-              v-for="option in options.person"
-              :value="option._id"
-              :key="option._id"
-            >{{ option.name }}</md-option>
-          </md-select>
-        </md-field>
-        <p class="help">Kies welke mensen deze module geven.</p>
+          <form novalidate v-on:submit="next($event, 'people')">
+            <md-field :class="{'md-invalid': $v.people.coordinators.$dirty && $v.people.coordinators.$invalid}">
+              <label>Coördinatoren</label>
+              <md-select v-model="$v.people.coordinators.$model" multiple>
+                <md-option
+                  v-for="option in options.person"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.name }}</md-option>
+              </md-select>
+              <span class="md-error" v-if="!$v.people.coordinators.required">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">Kies welke mensen deze module coördineren.</p>
 
-        <p v-if="$v.$dirty && $v.$invalid" class="lab-fake-error">
-          Het vak kan pas worden opgeslagen als de fouten per veld worden gecorrigeerd.
-        </p>
-        <md-button type="submit" class="md-dense md-raised md-primary">Sla op</md-button>
-      </form>
+            <md-field :class="{'md-invalid': $v.people.teachers.$dirty && $v.people.teachers.$invalid}">
+              <label>Docenten</label>
+              <md-select v-model="$v.people.teachers.$model" multiple>
+                <md-option
+                  v-for="option in options.person"
+                  :value="option._id"
+                  :key="option._id"
+                >{{ option.name }}</md-option>
+              </md-select>
+            </md-field>
+            <p class="help">Kies welke mensen deze module geven.</p>
+
+            <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
+          </form>
+        </md-step>
+      </md-steppers>
     </md-app-content>
   </md-app>
 
@@ -268,14 +270,8 @@
 <script>
 const alphaSort = require('alpha-sort')
 
-import {identity, noop} from 'lodash'
-import {
-  required,
-  maxLength,
-  minValue,
-  maxValue,
-  between
-} from 'vuelidate/lib/validators'
+import {identity} from 'lodash'
+import {required, maxLength, minValue, maxValue} from 'vuelidate/lib/validators'
 
 const apiUrl =
   process.env.NODE_ENV === 'production'
@@ -288,68 +284,79 @@ export default {
   data: function() {
     return {
       showDialog: false,
+      step: null,
       lang: 0,
-      course: {
+      intro: {
         name: '',
         shortDescription: '',
         description: '',
-        phase: '',
         type: '',
+        phase: '',
         quarter: [],
         learningYear: '',
-        credits: null,
-        methods: [],
-        methodsSummary: '',
-        coordinators: [],
-        teachers: [],
+        credits: null
+      },
+      matter: {
+        objectivesSummary: '',
         competencies: [],
         circles: '',
-        spaces:'',
-        objectivesSummary: '',
-        program: null,
-        faculty: null,
-        level: {'Niveau': 0},
+        methods: [],
+        methodsSummary: ''
+      },
+      people: {
+        coordinators: [],
+        teachers: []
       },
       options: {
-        faculty: null,
-        program: null,
         person: null,
         competency: null,
         method: ['practicum', 'hoorcollege', 'werkgroep', 'coaching'],
         phase: ['fundament', 'verdieping', 'minor', 'afstuderen'],
-        learningYear: [1,2,3,4],
-        quarter: [1,2,3,4],
-        circles: ['Ontwerpvraag/Probleem/Content/Strategie', 'Interactie', 'Techniek', 'Vormgeving','Interactie/Techniek', 'Interactie/Vormgeving','Techniek/Vormgeving','Interactie/Techniek/Vormgeving'],
-        type: ["Project", "Vak"],
-        spacesSlider: [{name:"Problem Space", value: 0}, {name:"Concept Space", value: 0}, {name:"Design& Build Space", value: 0}, {name:"Market Space", value: 0}],
+        learningYear: [1, 2, 3, 4],
+        quarter: [1, 2, 3, 4],
+        circles: [
+          'Ontwerpvraag/Probleem/Content/Strategie',
+          'Interactie',
+          'Techniek',
+          'Vormgeving',
+          'Interactie/Techniek',
+          'Interactie/Vormgeving',
+          'Techniek/Vormgeving',
+          'Interactie/Techniek/Vormgeving'
+        ],
+        type: ['Project', 'Vak']
       }
     }
   },
-  validations: {
-    course: {
-      name: {required},
-      shortDescription: {required, maxLength: maxLength(240)},
-      description: {required, maxLength: maxLength(1024)},
-      objectivesSummary: {required, maxLength: maxLength(1024)},
-      competencies: {required},
-      circles: {},
-      type: {required},
-      credits: {required, minValue: minValue(1), maxValue: maxValue(30)},
-      methods: {required},
-      phase: {required},
-      learningYear: {required},
-      quarter: {required},
-      methodsSummary: {required, maxLength: maxLength(1024)},
-      coordinators: {required},
-      teachers: {},
-      spacesSliderTotal: { between: between(0, 100) },
-      level: {},
+  validations: function() {
+    return {
+      intro: {
+        name: {required},
+        shortDescription: {required, maxLength: maxLength(240)},
+        description: {required, maxLength: maxLength(1024)},
+        type: {required},
+        phase: {required},
+        learningYear: {required},
+        quarter: {required},
+        credits: {required, minValue: minValue(1), maxValue: maxValue(30)}
+      },
+      matter: {
+        objectivesSummary: {required, maxLength: maxLength(1024)},
+        competencies: {required},
+        circles: this.intro.type === 'Vak' ? {required} : {},
+        methods: {required},
+        methodsSummary: {required, maxLength: maxLength(1024)}
+      },
+      people: {
+        coordinators: {required},
+        teachers: {}
+      }
     }
   },
   created: function() {
     const resources = [
-      {name: 'faculty', sideEffect: x => (this.course.faculty = x[0]._id)},
-      {name: 'program', sideEffect: x => (this.course.program = x[0]._id)},
+      {name: 'faculty'},
+      {name: 'program'},
       {
         name: 'person',
         map: x => x.sort((a, b) => alphaSort.asc(a.name, b.name))
@@ -358,70 +365,72 @@ export default {
     ]
 
     Promise.all(
-      resources.map(({name, map = identity, sideEffect = noop}) =>
+      resources.map(({name, map = identity}) =>
         fetch([apiUrl, name, ''].join('/'))
           .then(res => res.json())
           .then(map)
           .then(data => {
-            sideEffect(data)
             this.options[name] = data
             return name
           })
       )
     )
   },
-  computed: {
-    spacesSliderTotal: function() {
-      let total = 0
-      this.options.spacesSlider.forEach(opt => total += Number(opt.value))
-      return total
-    },
-  },
   methods: {
-    onConfirm: function() {
-      window.location.reload()
-    },
-    submit: function(ev) {
-      const uri = [apiUrl, "course", ''].join('/')
-      const {course} = this.$data
-
+    next: function(ev, curr, next) {
       ev.preventDefault()
 
-      // Mark every input as dirty.
-      this.$v.$touch()
+      this.$v[curr].$touch()
 
-      if (this.$v.$invalid) {
+      if (this.$v[curr].$invalid) {
         return
       }
+
+      if (next) {
+        this.step = next
+      } else {
+        this.submit()
+      }
+    },
+    submit: function() {
+      const uri = [apiUrl, 'course', ''].join('/')
+      const options = this.options
+      const {intro, matter, people} = this.$data
+
       const body = {
-        name: [{language: 'nl', value: course.name}],
-        shortDescription: [{language: 'nl', value: course.shortDescription}],
-        description: [{language: 'nl', value: course.description}],
-        learningYears: [course.learningYear],
-        phase: {fundament: 'foundation', verdieping: 'profiling', afstuderen: 'graduation'}[course.phase] || course.phase,
-        type: course.type,
-        periods: course.quarter,
-        credits: parseInt(course.credits, 10),
+        name: [{language: 'nl', value: intro.name}],
+        shortDescription: [{language: 'nl', value: intro.shortDescription}],
+        description: [{language: 'nl', value: intro.description}],
+        learningYears: [intro.learningYear],
+        phase:
+          {
+            fundament: 'foundation',
+            verdieping: 'profiling',
+            afstuderen: 'graduation'
+          }[intro.phase] || intro.phase,
+        type: intro.type,
+        periods: intro.quarter,
+        credits: parseInt(intro.credits, 10),
         // start: null,
         // end: null,
         // languages: null,
-        coordinators: course.coordinators,
+        coordinators: people.coordinators,
         // coordinatorsSummary: null,
-        teachers: course.teachers,
+        teachers: people.teachers,
         // teachersSummary: null,
         objectivesSummary: [
-          {language: 'nl', content: course.objectivesSummary}
+          {language: 'nl', content: matter.objectivesSummary}
         ],
-        methods: course.methods.map(method => {
+        methods: matter.methods.map(method => {
           return {hoorcollege: 'lecture', werkgroep: 'lab'}[method] || method
         }),
-        methodsSummary: [{language: 'nl', content: course.methodsSummary}],
+        methodsSummary: [{language: 'nl', content: matter.methodsSummary}],
         // indicators: null,
-        competencies: course.competencies,
-        circles: course.circles,
+        competencies: matter.competencies,
+        circles: matter.circles,
         // competenciesSummary: null,
-        program: course.program,
-        faculty: course.faculty
+        program: options.program[0]._id,
+        faculty: options.faculty[0]._id
       }
 
       fetch(uri, {
@@ -429,6 +438,9 @@ export default {
         headers: {'Content-Type': 'application/json; charset=utf-8'},
         body: JSON.stringify(body)
       }).then(() => (this.showDialog = true), () => alert('Could not send'))
+    },
+    onConfirm: function() {
+      window.location.reload()
     }
   }
 }
@@ -441,25 +453,27 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.md-toolbar.md-theme-default.md-primary {
+  background-color: #feca2f;
+}
+
 img {
   width: 50%;
   float: right;
-}
-
-.md-app-content,
-.md-title {
-  width: 48rem;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
 .help {
   font-size: small;
 }
 
+.md-field {
+  margin-top: 0;
+  margin-bottom: 3rem;
+}
+
 .md-field + .help {
-  margin-top: -1rem;
-  margin-bottom: 2rem;
+  margin-top: -2.5rem;
+  margin-bottom: 3rem;
   margin-right: 5rem;
   transition: transform 200ms;
   transform: translateY(0rem);
@@ -471,15 +485,36 @@ img {
 
 .md-app.md-overlap .md-app-content {
   margin-bottom: 64px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
-.md-checkbox.many {
+.lab-check-vertical {
   display: flex;
 }
 
-.radio-vertical {
-    display: flex;
+.lab-check-description {
+  font-size: small;
+  margin-bottom: 0.75rem;
+  padding-left: 2.25rem;
+  margin-top: -0.75rem;
+  color: rgba(0, 0, 0, 0.75);
 }
+
+.lab-fake-field .help {
+  margin-bottom: 0;
+}
+
+.lab-fake-field {
+  width: 100%;
+  min-height: 48px;
+  margin: 4px 0 24px;
+  margin-bottom: 3rem;
+  padding-top: 16px;
+  position: relative;
+  font-family: inherit;
+}
+
 .lab-fake-label {
   font-size: 16px;
   color: rgba(0, 0, 0, 0.54);
@@ -490,13 +525,34 @@ img {
   color: #ff1744;
   font-size: 12px;
 }
-
-.description {
-  font-style: italic;
-}
 </style>
 
 <style>
+.md-app-content,
+.md-toolbar-row {
+  max-width: 48rem;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+@media (max-width: 48rem) {
+  .md-app-content {
+    border-radius: 0 !important;
+  }
+}
+
+.md-toolbar-row {
+  height: 132px;
+  vertical-align: bottom;
+}
+
+.md-toolbar-row .md-title {
+  align-self: flex-end !important;
+  margin: 1rem 0 !important;
+  color: black !important;
+  font-weight: 500 !important;
+}
+
 .md-menu-content {
   max-width: 50rem !important;
   margin-left: -1rem;
