@@ -165,9 +165,9 @@
             </div>
 
             <div v-if="intro.type == 'Vak'">
-              <img src="./assets/circles.png">
               <div class="lab-fake-field">
                 <h2 class="lab-fake-label">Cirkels *</h2>
+                <img class="lab-circles" src="./assets/circles.png">
                 <p class="help">In welk van deze gebieden valt het vak?</p>
                 <md-radio
                   class="lab-check-vertical"
@@ -455,9 +455,11 @@ export default {
   background-color: #feca2f;
 }
 
-img {
-  width: 50%;
-  float: right;
+@media (min-width: 48rem) {
+  .lab-circles {
+    width: 50%;
+    float: right;
+  }
 }
 
 .help {
