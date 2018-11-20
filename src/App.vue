@@ -152,18 +152,37 @@
         </div>
         <p class="help">In welk van deze gebieden valt de kern van het vak?</p>
         
-        <div v-if="course.type == 'Project'">
+        <!-- TODO: @wooorm has some ideas about how to improve this question -->
+ <!--        <div v-if="course.type == 'Project'">
           <img src='./assets/spaces.png' />
           <div v-for="sliderOpt in options.spacesSlider">
             <input type="range" min="0" max="100" step="10" value="0" v-model="sliderOpt.value">
             <span>{{sliderOpt.name}}</span>
-          </div>
-  <!--         <div class="error" v-if="!$v.spacesSliderTotal.between"> -->
-  <!--           Must be between {{$v.spacesSliderTotal.$params.between.min}} and 
+          </div> -->
+          <!--<div class="error" v-if="!$v.spacesSliderTotal.between"> -->
+          <!--Must be between {{$v.spacesSliderTotal.$params.between.min}} and 
             {{$v.spacesSliderTotal.$params.between.max}} 
           </div> -->
-          <p>Total spaces:{{spacesSliderTotal}}</p>
+<!--           <p>Total spaces:{{spacesSliderTotal}}</p>
+        </div> -->
+
+        
+        <div v-if="course.type == 'Project'">
+<!--           <p>Beantwoord de volgende vraag alleen als deze module een 'project' is. Bijvoorbeeld 'Project 2' in jaar 1 of het project 'Information Design' in jaar 3.</p>
+          <img src='./assets/levels.png' />
+
+          <div>
+            <h2 class="lab-fake-label">Niveau *</h2>
+            <md-radio
+              v-model="$v.course.level['Niveau'].$model"
+              value="1">
+            </md-radio>
+            <span class="lab-fake-error" v-if="$v.course.type.$dirty && !$v.course.type.required">Dit veld is verplicht</span>
+          </div>
+ -->        
+         <!--  <p class="help">Wat is het niveau van complexiteit en initiërend vermogen bij dit project?</p> -->
         </div>
+
         <md-field :class="{'md-invalid': $v.course.credits.$dirty && $v.course.credits.$invalid}">
           <label>Studiepunten (ECTS)</label>
           <md-input
@@ -289,6 +308,7 @@ export default {
         objectivesSummary: '',
         program: null,
         faculty: null,
+        level: {'Niveau': 0},
       },
       options: {
         faculty: null,
@@ -323,7 +343,7 @@ export default {
       coordinators: {required},
       teachers: {},
       spacesSliderTotal: { between: between(0, 100) },
-
+      level: {},
     }
   },
   created: function() {
