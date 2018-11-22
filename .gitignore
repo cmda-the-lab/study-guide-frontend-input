@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+# Local WIP files
+levels.html
+
 # local env files
 .env.local
 .env.*.local

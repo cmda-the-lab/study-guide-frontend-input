@@ -102,6 +102,30 @@
               >{{ "Kwartaal "+ option }}</md-checkbox>
               <p class="lab-fake-error" v-if="$v.intro.quarter.$dirty && !$v.intro.quarter.required">Dit veld is verplicht</p>
             </div>
+            
+            <div class="lab-fake-field" v-if="intro.phase == 'verdieping'">
+              <h2 class="lab-fake-label">Project *</h2>
+              <p class="help">Bij welk project hoort deze module?</p>
+              <md-radio class="vertical"
+                v-model="$v.intro.project.$model"
+                v-for="(option, index) in options.project"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.intro.project.$dirty && !$v.intro.project.required">Dit veld is verplicht</p>
+            </div>
+
+            <div class="lab-fake-field" v-if="intro.phase == 'minor'">
+              <h2 class="lab-fake-label">Minor *</h2>
+              <p class="help">Bij welke minor hoort deze module?</p>
+              <md-radio class="vertical"
+                v-model="$v.intro.minor.$model"
+                v-for="(option, index) in options.minor"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.intro.minor.$dirty && !$v.intro.minor.required">Dit veld is verplicht</p>
+            </div>
 
             <md-field :class="{'md-invalid': $v.intro.credits.$dirty && $v.intro.credits.$invalid}">
               <label>Studiepunten (ECTS)</label>
@@ -292,7 +316,9 @@ export default {
         phase: '',
         quarter: [],
         learningYear: '',
-        credits: null
+        project: '',
+        minor: '',
+        credits: null,
       },
       matter: {
         objectivesSummary: '',
@@ -322,7 +348,9 @@ export default {
           'Techniek/Vormgeving',
           'Interactie/Techniek/Vormgeving'
         ],
-        type: ['Project', 'Vak']
+        type: ['Project', 'Vak'],
+        project: ['Jaar 2: Project Tech', 'Jaar 2: Project Visual', 'Jaar 2: Project Interaction', 'Jaar 2: Project Concept', 'Jaar 3: Project Behavioural Design', 'Jaar 3: Project Redesigning the Experience', 'Jaar 3: Project Designing for Emerging Technologies', 'Jaar 3: Project Information Design - Tech Track', 'Jaar 3: Project Information Design - Design Track'],
+        minor: ['Applied Game Design', 'Design thinking and doing', 'Designing User Research', 'User eXperience Design', 'Visual Interface Design', 'Web Development', 'Makers Lab'],
       }
     }
   },
@@ -336,6 +364,8 @@ export default {
         phase: {required},
         learningYear: {required},
         quarter: {required},
+        project: this.intro.phase === 'verdieping' ? {required} : {},
+        minor: this.intro.phase === 'minor' ? {required} : {},
         credits: {required, minValue: minValue(1), maxValue: maxValue(30)}
       },
       matter: {
@@ -556,5 +586,9 @@ export default {
 .md-menu-content {
   max-width: 50rem !important;
   margin-left: -1rem;
+}
+
+.md-radio.vertical {
+  display: flex;
 }
 </style>
