@@ -230,7 +230,7 @@
             <p class="help">Twee tot vier alineas</p>
             
             <md-field :class="{'md-invalid': $v.matter.productsLearned.$dirty && $v.matter.productsLearned.$invalid}">
-              <label>Producten</label>
+              <label>Producten aangeleerd</label>
               <md-select v-model="$v.matter.productsLearned.$model" multiple>
                 <md-option
                   v-for="option in options.products"
@@ -243,7 +243,7 @@
             <p class="help">Kies welke beroepsproducten er worden aangeleerd bij deze module.</p>
 
             <md-field :class="{'md-invalid': $v.matter.productsAsked.$dirty && $v.matter.productsAsked.$invalid}">
-              <label>Producten</label>
+              <label>Producten gevraagd</label>
               <md-select v-model="$v.matter.productsAsked.$model" multiple>
                 <md-option
                   v-for="option in options.products"
@@ -253,7 +253,34 @@
               </md-select>
               <span class="md-error" v-if="!$v.matter.productsAsked.required">Dit veld is verplicht</span>
             </md-field>
-            <p class="help">Kies welke beroepsproducten er worden gevraagd als oplevering.</p>
+            <p class="help">Kies op welke beroepsproducten er getoetst wordt bij deze module.</p>
+
+            
+            <md-field :class="{'md-invalid': $v.matter.researchMethodsLearned.$dirty && $v.matter.researchMethodsLearned.$invalid}">
+              <label>Onderzoeksmethoden aangeleerd</label>
+              <md-select v-model="$v.matter.researchMethodsLearned.$model" multiple>
+                <md-option
+                  v-for="option in options.researchMethods"
+                  :value="option"
+                  :key="option"
+                >{{ option }}</md-option>
+              </md-select>
+              <span class="md-error" v-if="!$v.matter.researchMethodsLearned.required">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">Kies welke onderzoeksmethoden er worden aangeleerd in deze module. Kijk op <a href="http://www.cmdmethods.nl/">cmdmethods.nl</a> om te zien wat elke methode inhoudt</p>
+
+            <md-field :class="{'md-invalid': $v.matter.researchMethodsAsked.$dirty && $v.matter.researchMethodsAsked.$invalid}">
+              <label>Onderzoeksmethoden aangeleerd</label>
+              <md-select v-model="$v.matter.researchMethodsAsked.$model" multiple>
+                <md-option
+                  v-for="option in options.researchMethods"
+                  :value="option"
+                  :key="option"
+                >{{ option }}</md-option>
+              </md-select>
+              <span class="md-error" v-if="!$v.matter.researchMethodsAsked.required">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">Kies op welke onderzoeksmethoden er getoetst wordt bij deze module. Kijk op <a href="http://www.cmdmethods.nl/">cmdmethods.nl</a> om te zien wat elke methode inhoudt</p>
 
             <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
           </form>
@@ -353,6 +380,8 @@ export default {
         methodsSummary: '',
         productsLearned: [],
         productsAsked: [],
+        researchMethodsLearned: [],
+        researchMethodsAsked: [],
       },
       people: {
         coordinators: [],
@@ -377,7 +406,8 @@ export default {
         ],
         type: ['Project', 'Vak'],
         cluster: null,
-        products: ["analyse" , "business model canvas" , "concept" , "customer journey" , "design system" , "empathy map" , "flows/wireframe" , "installatie" , "interactieve applicatie" , "job story" , "logboek" , "mockup / schermontwerp" , "moodboard" , "ontwerp document / design spec" , "persona" , "prototype" , "requirement list" , "schetsen" , " scenario" , "service blueprint" , "sitemap" , "styleguide" , "storyboard" , "testplan/testrapport" , "video" , "visual design", "geen beroepsproducten"],
+        products: ["geen beroepsproducten", "analyse" , "business model canvas" , "concept" , "customer journey" , "design system" , "empathy map" , "flows/wireframe" , "installatie" , "interactieve applicatie" , "job story" , "logboek" , "mockup / schermontwerp" , "moodboard" , "ontwerp document / design spec" , "persona" , "prototype" , "requirement list" , "schetsen" , " scenario" , "service blueprint" , "sitemap" , "styleguide" , "storyboard" , "testplan/testrapport" , "video" , "visual design"],
+        researchMethods: ["Geen methodes", "Library", "Benchmark creation", "Best, good & bad practices", "Competitive Analysis", "Design Pattern Search", "Expert Interview", "Literature Study", "Trend analysis", "Field", "Bag tour", "Card sorting", "Context mapping", "Cultural probes", "Day in the life", "Diary study", "Fly on the wall", "Focus group", "Interview", "Participant observation", "Survey", "Lab", "A/B Testing", "Biometrics", "Field Trial", "Online analytics", "Thinking aloud", "Usability Testing", "Wizard of Oz", "Showroom", "Co-reflection", "Expo", "Heuristic Evaluation", "Peer Review", "Pitch", "Provocative Prototyping", "(Product) Quality Review", "USP (Unique Selling Points)", "Workshop", "Co-creation", "Ideation", "Morphological chart", "Proof of Concept", "Prototyping", "Scamper", "Sketching", "Storytelling ", "Tinkering", "Stepping Stones", "Business Model Canvas", "Concept", "Comparison Chart", "Customer Journey", "Design Specification", "Empathy Map", "Expert Review Report", "Inspiration Wall", "Mood Board", "Persona", "Prototype", "Requirement List", "Risk Analysis", "Scenario", "Task Analysis", "Test Report"],
       }
     }
   },
@@ -402,6 +432,8 @@ export default {
         methodsSummary: {required, maxLength: maxLength(1024)},
         productsLearned: {required},
         productsAsked: {required},
+        researchMethodsLearned: {required},
+        researchMethodsAsked: {required},
       },
       people: {
         coordinators: {required},
@@ -485,6 +517,8 @@ export default {
         methodsSummary: [{language: 'nl', content: matter.methodsSummary}],
         productsLearned: matter.productsLearned,
         productsAsked: matter.productsAsked,
+        researchMethodsLearned: matter.researchMethodsLearned,
+        researchMethodsAsked: matter.researchMethodsAsked,
         competencies: matter.competencies,
         circles: matter.circles,
         // competenciesSummary: null,
