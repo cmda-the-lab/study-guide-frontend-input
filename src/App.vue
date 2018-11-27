@@ -228,6 +228,32 @@
               <span class="md-error" v-if="!$v.matter.methodsSummary.maxLength">Dit veld is te lang (max. {{$v.matter.methodsSummary.$params.maxLength.max}} karakters)</span>
             </md-field>
             <p class="help">Twee tot vier alineas</p>
+            
+            <md-field :class="{'md-invalid': $v.matter.productsLearned.$dirty && $v.matter.productsLearned.$invalid}">
+              <label>Producten</label>
+              <md-select v-model="$v.matter.productsLearned.$model" multiple>
+                <md-option
+                  v-for="option in options.products"
+                  :value="option"
+                  :key="option"
+                >{{ option }}</md-option>
+              </md-select>
+              <span class="md-error" v-if="!$v.matter.productsLearned.required">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">Kies welke beroepsproducten er worden aangeleerd bij deze module.</p>
+
+            <md-field :class="{'md-invalid': $v.matter.productsAsked.$dirty && $v.matter.productsAsked.$invalid}">
+              <label>Producten</label>
+              <md-select v-model="$v.matter.productsAsked.$model" multiple>
+                <md-option
+                  v-for="option in options.products"
+                  :value="option"
+                  :key="option"
+                >{{ option }}</md-option>
+              </md-select>
+              <span class="md-error" v-if="!$v.matter.productsAsked.required">Dit veld is verplicht</span>
+            </md-field>
+            <p class="help">Kies welke beroepsproducten er worden gevraagd als oplevering.</p>
 
             <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
           </form>
@@ -324,11 +350,13 @@ export default {
         competencies: [],
         circles: '',
         methods: [],
-        methodsSummary: ''
+        methodsSummary: '',
+        productsLearned: [],
+        productsAsked: [],
       },
       people: {
         coordinators: [],
-        teachers: []
+        teachers: [],
       },
       options: {
         person: null,
@@ -349,6 +377,7 @@ export default {
         ],
         type: ['Project', 'Vak'],
         cluster: null,
+        products: ["analyse" , "business model canvas" , "concept" , "customer journey" , "design system" , "empathy map" , "flows/wireframe" , "installatie" , "interactieve applicatie" , "job story" , "logboek" , "mockup / schermontwerp" , "moodboard" , "ontwerp document / design spec" , "persona" , "prototype" , "requirement list" , "schetsen" , " scenario" , "service blueprint" , "sitemap" , "styleguide" , "storyboard" , "testplan/testrapport" , "video" , "visual design", "geen beroepsproducten"],
       }
     }
   },
@@ -370,7 +399,9 @@ export default {
         competencies: {required},
         circles: this.intro.type === 'Vak' ? {required} : {},
         methods: {required},
-        methodsSummary: {required, maxLength: maxLength(1024)}
+        methodsSummary: {required, maxLength: maxLength(1024)},
+        productsLearned: {required},
+        productsAsked: {required},
       },
       people: {
         coordinators: {required},
@@ -452,7 +483,8 @@ export default {
           return {hoorcollege: 'lecture', werkgroep: 'lab'}[method] || method
         }),
         methodsSummary: [{language: 'nl', content: matter.methodsSummary}],
-        // indicators: null,
+        productsLearned: matter.productsLearned,
+        productsAsked: matter.productsAsked,
         competencies: matter.competencies,
         circles: matter.circles,
         // competenciesSummary: null,
