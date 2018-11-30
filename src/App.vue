@@ -140,8 +140,8 @@
             </md-field>
             <p class="help">
               Wat is het aantal studiepuntent van de module?
-              <span v-if="intro.type == 'Vak'">Een vak is doorgaands <strong>3 punten</strong>.</span>
-              <span v-if="intro.type == 'Project'">Een project is doorgaands <strong>5 punten</strong>.</span>
+              <span v-if="intro.type == 'Vak'">Een vak is doorgaans <strong>3 punten</strong>.</span>
+              <span v-if="intro.type == 'Project'">Een project is doorgaans <strong>5 punten</strong>.</span>
             </p>
 
             <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
@@ -188,20 +188,36 @@
               </div>
             </div>
 
-            <div v-if="intro.type == 'Vak'">
-              <div class="lab-fake-field">
-                <h2 class="lab-fake-label">Cirkels *</h2>
-                <img class="lab-circles" src="./assets/circles.png">
-                <p class="help">In welk van deze gebieden valt het vak?</p>
-                <md-radio
-                  class="lab-check-vertical"
-                  v-model="$v.matter.circles.$model"
-                  v-for="(option, index) in options.circles"
-                  :key="index"
-                  :value="option"
-                ><strong>{{ index + 1 }}</strong>: {{ option }}</md-radio>
-                <p class="lab-fake-error" v-if="$v.matter.circles.$dirty && !$v.matter.circles.required">Dit veld is verplicht</p>
-              </div>
+           
+            <div v-if="intro.type == 'Vak'" class="lab-fake-field">
+              <h2 class="lab-fake-label">Cirkels *</h2>
+              <img class="lab-circles" src="./assets/circles.png">
+              <p class="help">In welk van deze gebieden valt het vak?</p>
+              <md-radio
+                class="lab-check-vertical"
+                v-model="$v.matter.circles.$model"
+                v-for="(option, index) in options.circles"
+                :key="index"
+                :value="option"
+              ><strong>{{ index + 1 }}</strong>: {{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.matter.circles.$dirty && !$v.matter.circles.required">Dit veld is verplicht</p>
+            </div>
+
+            
+            <div v-if="intro.type == 'Project'">
+              <p class="help">In welk gebied valt deze module.?</p>
+              <img  src="./assets/spaces.png">
+              <md-field :class="{'md-invalid': $v.matter.spaces.$dirty && $v.matter.spaces.$invalid}">
+                <label>Spaces</label>
+                <md-select v-model="$v.matter.spaces.$model">
+                  <md-option
+                    v-for="(option, index) in options.spaces"
+                    :value="option"
+                    :key="option"
+                  >{{ index +": "}}{{ option }}</md-option>
+                </md-select>
+                <span class="md-error" v-if="!$v.matter.spaces.required">Dit veld is verplicht</span>
+              </md-field>
             </div>
 
             <div class="lab-fake-field">
@@ -243,7 +259,7 @@
             <p class="help">Kies welke beroepsproducten er worden aangeleerd bij deze module.</p>
 
             <md-field :class="{'md-invalid': $v.matter.productsAsked.$dirty && $v.matter.productsAsked.$invalid}">
-              <label>Producten gevraagd</label>
+              <label>Producten getoetst</label>
               <md-select v-model="$v.matter.productsAsked.$model" multiple>
                 <md-option
                   v-for="option in options.products"
@@ -255,7 +271,6 @@
             </md-field>
             <p class="help">Kies op welke beroepsproducten er getoetst wordt bij deze module.</p>
 
-            
             <md-field :class="{'md-invalid': $v.matter.researchMethodsLearned.$dirty && $v.matter.researchMethodsLearned.$invalid}">
               <label>Onderzoeksmethoden aangeleerd</label>
               <md-select v-model="$v.matter.researchMethodsLearned.$model" multiple>
@@ -270,7 +285,7 @@
             <p class="help">Kies welke onderzoeksmethoden er worden aangeleerd in deze module. Kijk op <a href="http://www.cmdmethods.nl/">cmdmethods.nl</a> om te zien wat elke methode inhoudt</p>
 
             <md-field :class="{'md-invalid': $v.matter.researchMethodsAsked.$dirty && $v.matter.researchMethodsAsked.$invalid}">
-              <label>Onderzoeksmethoden aangeleerd</label>
+              <label>Onderzoeksmethoden getoetst</label>
               <md-select v-model="$v.matter.researchMethodsAsked.$model" multiple>
                 <md-option
                   v-for="option in options.researchMethods"
@@ -376,6 +391,7 @@ export default {
         objectivesSummary: '',
         competencies: [],
         circles: '',
+        spaces: '',
         methods: [],
         methodsSummary: '',
         productsLearned: [],
@@ -404,6 +420,7 @@ export default {
           'Techniek/Vormgeving',
           'Interactie/Techniek/Vormgeving'
         ],
+        spaces: ['problem space', 'concept space','design&build space', 'market space', 'problem space, concept space', 'concept space, design&build space', 'design&build space, market space', 'problem space, concept space, design&build space', 'concept space, design&build space, market space', 'problem space, concept space, design&build space, market space'],
         type: ['Project', 'Vak'],
         cluster: null,
         products: ["geen beroepsproducten", "analyse" , "business model canvas" , "concept" , "customer journey" , "design system" , "empathy map" , "flows/wireframe" , "installatie" , "interactieve applicatie" , "job story" , "logboek" , "mockup / schermontwerp" , "moodboard" , "ontwerp document / design spec" , "persona" , "prototype" , "requirement list" , "schetsen" , " scenario" , "service blueprint" , "sitemap" , "styleguide" , "storyboard" , "testplan/testrapport" , "video" , "visual design"],
@@ -428,6 +445,7 @@ export default {
         objectivesSummary: {required, maxLength: maxLength(1024)},
         competencies: {required},
         circles: this.intro.type === 'Vak' ? {required} : {},
+        spaces: this.intro.type === 'Project' ? {required} : {},
         methods: {required},
         methodsSummary: {required, maxLength: maxLength(1024)},
         productsLearned: {required},
@@ -521,6 +539,7 @@ export default {
         researchMethodsAsked: matter.researchMethodsAsked,
         competencies: matter.competencies,
         circles: matter.circles,
+        spaces: matter.spaces,
         // competenciesSummary: null,
         program: options.program[0]._id,
         faculty: options.faculty[0]._id
@@ -551,7 +570,7 @@ export default {
 }
 
 @media (min-width: 48rem) {
-  .lab-circles {
+  .lab-circles{
     width: 50%;
     float: right;
   }
