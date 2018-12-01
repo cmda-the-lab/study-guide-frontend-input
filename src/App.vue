@@ -306,8 +306,31 @@
                 :key="index"
                 :value="option"
               >{{ option }}</md-checkbox>
-              <p class="lab-fake-error" v-if="$v.matter.assessments.$dirty && !$v.matter.assessments.required">Dit veld is verplicht</p>
             </div>
+
+            <md-field :class="{'md-invalid': $v.matter.studyMaterialsRequired.$dirty && $v.matter.studyMaterialsRequired.$invalid}">
+              <label>Studiemateriaal verplicht</label>
+              <md-textarea
+                v-model.trim="$v.matter.studyMaterialsRequired.$model"
+                md-autogrow
+                required
+                :maxlength="$v.matter.studyMaterialsRequired.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.matter.studyMaterialsRequired.maxLength">Dit veld is te lang (max. {{$v.matter.studyMaterialsRequired.$params.maxLength.max}} karakters)</span>
+            </md-field>
+            <p class="help">Som de verplichte studie materialen op die studenten zelf moeten regelen/kopen om de module te volgen.<br>Gebruik streepjes en enters. Bijvoorbeeld, '- "Creating Significant Learning Experiences - Fink, L. Dee(2003) "'</p>
+
+            <md-field :class="{'md-invalid': $v.matter.studyMaterialsUsed.$dirty && $v.matter.studyMaterialsUsed.$invalid}">
+              <label>Studiemateriaal gebruikt</label>
+              <md-textarea
+                v-model.trim="$v.matter.studyMaterialsUsed.$model"
+                md-autogrow
+                required
+                :maxlength="$v.matter.studyMaterialsUsed.$params.maxLength.max"
+              ></md-textarea>
+              <span class="md-error" v-if="!$v.matter.studyMaterialsUsed.maxLength">Dit veld is te lang (max. {{$v.matter.studyMaterialsUsed.$params.maxLength.max}} karakters)</span>
+            </md-field>
+            <p class="help">Som de specifieke studie materialen op die binnen deze module gebruikt worden. Denk aan artikelen, video's, tutorial's etc.<br>Gebruik streepjes en enters. Bijvoorbeeld, '- "Introduction to asynchronous iteration" Mike Bostock (2018)'</p>
 
             <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
           </form>
@@ -411,6 +434,8 @@ export default {
         researchMethodsLearned: [],
         researchMethodsAsked: [],
         assessments: [],
+        studyMaterialsRequired: '',
+        studyMaterialsUsed: '',
       },
       people: {
         coordinators: [],
@@ -467,6 +492,8 @@ export default {
         researchMethodsLearned: {required},
         researchMethodsAsked: {required},
         assessments: {},
+        studyMaterialsRequired: {maxLength: maxLength(1024)},
+        studyMaterialsUsed: {maxLength: maxLength(1024)},
       },
       people: {
         coordinators: {required},
@@ -553,6 +580,8 @@ export default {
         researchMethodsLearned: matter.researchMethodsLearned,
         researchMethodsAsked: matter.researchMethodsAsked,
         assessments: matter.assessments,
+        studyMaterialsRequired: matter.studyMaterialsRequired,
+        studyMaterialsUsed: matter.studyMaterialsUsed,
         competencies: matter.competencies,
         circles: matter.circles,
         spaces: matter.spaces,
