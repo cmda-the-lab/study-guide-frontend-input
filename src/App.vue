@@ -297,6 +297,18 @@
             </md-field>
             <p class="help">Kies op welke onderzoeksmethoden er getoetst wordt bij deze module. Kijk op <a href="http://www.cmdmethods.nl/">cmdmethods.nl</a> om te zien wat elke methode inhoudt</p>
 
+            <div class="lab-fake-field">
+              <h2 class="lab-fake-label">Toetsvorm *</h2>
+              <p class="help">Welke toesvormen worden er gebruikt in deze module?</p>
+              <md-checkbox
+                v-model="$v.matter.assessments.$model"
+                v-for="(option, index) in options.assessments"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-checkbox>
+              <p class="lab-fake-error" v-if="$v.matter.assessments.$dirty && !$v.matter.assessments.required">Dit veld is verplicht</p>
+            </div>
+
             <md-button type="submit" class="md-dense md-raised md-primary">Verder</md-button>
           </form>
         </md-step>
@@ -398,6 +410,7 @@ export default {
         productsAsked: [],
         researchMethodsLearned: [],
         researchMethodsAsked: [],
+        assessments: [],
       },
       people: {
         coordinators: [],
@@ -425,6 +438,7 @@ export default {
         cluster: null,
         products: ["geen beroepsproducten", "analyse" , "business model canvas" , "concept" , "customer journey" , "design system" , "empathy map" , "flows/wireframe" , "installatie" , "interactieve applicatie" , "job story" , "logboek" , "mockup / schermontwerp" , "moodboard" , "ontwerp document / design spec" , "persona" , "prototype" , "requirement list" , "schetsen" , " scenario" , "service blueprint" , "sitemap" , "styleguide" , "storyboard" , "testplan/testrapport" , "video" , "visual design"],
         researchMethods: ["Geen methodes", "Library", "Benchmark creation", "Best, good & bad practices", "Competitive Analysis", "Design Pattern Search", "Expert Interview", "Literature Study", "Trend analysis", "Field", "Bag tour", "Card sorting", "Context mapping", "Cultural probes", "Day in the life", "Diary study", "Fly on the wall", "Focus group", "Interview", "Participant observation", "Survey", "Lab", "A/B Testing", "Biometrics", "Field Trial", "Online analytics", "Thinking aloud", "Usability Testing", "Wizard of Oz", "Showroom", "Co-reflection", "Expo", "Heuristic Evaluation", "Peer Review", "Pitch", "Provocative Prototyping", "(Product) Quality Review", "USP (Unique Selling Points)", "Workshop", "Co-creation", "Ideation", "Morphological chart", "Proof of Concept", "Prototyping", "Scamper", "Sketching", "Storytelling ", "Tinkering", "Stepping Stones", "Business Model Canvas", "Concept", "Comparison Chart", "Customer Journey", "Design Specification", "Empathy Map", "Expert Review Report", "Inspiration Wall", "Mood Board", "Persona", "Prototype", "Requirement List", "Risk Analysis", "Scenario", "Task Analysis", "Test Report"],
+        assessments: ["Schriftelijke toets", "Product assessment", "Competentie assessment"],
       }
     }
   },
@@ -452,6 +466,7 @@ export default {
         productsAsked: {required},
         researchMethodsLearned: {required},
         researchMethodsAsked: {required},
+        assessments: {},
       },
       people: {
         coordinators: {required},
@@ -537,6 +552,7 @@ export default {
         productsAsked: matter.productsAsked,
         researchMethodsLearned: matter.researchMethodsLearned,
         researchMethodsAsked: matter.researchMethodsAsked,
+        assessments: matter.assessments,
         competencies: matter.competencies,
         circles: matter.circles,
         spaces: matter.spaces,
