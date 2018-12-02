@@ -187,7 +187,6 @@
                 <p class="lab-check-description">{{option.description[lang].value}}</p>
               </div>
             </div>
-
            
             <div v-if="intro.type == 'Vak'" class="lab-fake-field">
               <h2 class="lab-fake-label">Cirkels *</h2>
@@ -203,7 +202,6 @@
               <p class="lab-fake-error" v-if="$v.matter.circles.$dirty && !$v.matter.circles.required">Dit veld is verplicht</p>
             </div>
 
-            
             <div v-if="intro.type == 'Project'">
               <p class="help">In welk gebied valt deze module.?</p>
               <img  src="./assets/spaces.png">
@@ -218,6 +216,27 @@
                 </md-select>
                 <span class="md-error" v-if="!$v.matter.spaces.required">Dit veld is verplicht</span>
               </md-field>
+            </div>
+
+            <div v-if="intro.type == 'Project'" class="lab-fake-field">
+              <h2 class="lab-fake-label">Niveau *</h2>
+              <img src="./assets/levels.png">
+              <p class="help">Geef de complexiteit aan van dit project</p>
+              <md-radio
+                v-model="$v.matter.levelComplexity.$model"
+                v-for="(option, index) in options.levels.complexity"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.matter.levelComplexity.$dirty && !$v.matter.levelComplexity.required">Dit veld is verplicht</p>
+              <p class="help">Geef aan hoeveel initiërend vermogen er bij dit project wordt gevraagd van studenten</p>
+              <md-radio
+                v-model="$v.matter.levelIndependence.$model"
+                v-for="(option, index) in options.levels.independence"
+                :key="index"
+                :value="option"
+              >{{ option }}</md-radio>
+              <p class="lab-fake-error" v-if="$v.matter.levelIndependence.$dirty && !$v.matter.levelIndependence.required">Dit veld is verplicht</p>
             </div>
 
             <div class="lab-fake-field">
@@ -426,6 +445,8 @@ export default {
         objectivesSummary: '',
         competencies: [],
         circles: '',
+        levelComplexity: '',
+        levelIndependence: '',
         spaces: '',
         methods: [],
         methodsSummary: '',
@@ -459,6 +480,7 @@ export default {
           'Interactie/Techniek/Vormgeving'
         ],
         spaces: ['problem space', 'concept space','design&build space', 'market space', 'problem space, concept space', 'concept space, design&build space', 'design&build space, market space', 'problem space, concept space, design&build space', 'concept space, design&build space, market space', 'problem space, concept space, design&build space, market space'],
+        levels: { complexity: ["eenvoudig", "licht Complex", "enigzins complex", "complex"], independence: ["reproductief", "(re)productief", "productief", "creatief"] },
         type: ['Project', 'Vak'],
         cluster: null,
         products: ["geen beroepsproducten", "analyse" , "business model canvas" , "concept" , "customer journey" , "design system" , "empathy map" , "flows/wireframe" , "installatie" , "interactieve applicatie" , "job story" , "logboek" , "mockup / schermontwerp" , "moodboard" , "ontwerp document / design spec" , "persona" , "prototype" , "requirement list" , "schetsen" , " scenario" , "service blueprint" , "sitemap" , "styleguide" , "storyboard" , "testplan/testrapport" , "video" , "visual design"],
@@ -485,6 +507,8 @@ export default {
         competencies: {required},
         circles: this.intro.type === 'Vak' ? {required} : {},
         spaces: this.intro.type === 'Project' ? {required} : {},
+        levelComplexity: {required},
+        levelIndependence: {required},
         methods: {required},
         methodsSummary: {required, maxLength: maxLength(1024)},
         productsLearned: {required},
@@ -585,6 +609,7 @@ export default {
         competencies: matter.competencies,
         circles: matter.circles,
         spaces: matter.spaces,
+        level: matter.levelComplexity + "," + matter.levelIndependence,
         // competenciesSummary: null,
         program: options.program[0]._id,
         faculty: options.faculty[0]._id
