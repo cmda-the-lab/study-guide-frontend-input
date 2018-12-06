@@ -189,7 +189,7 @@
                   <h2 class="lab-fake-label">Project *</h2>
                   <p class="help">Bij welk project hoort deze module?</p>
                   <md-checkbox
-                    class="vertical"
+                    class="lab-check-vertical"
                     v-model="$v.intro.cluster.$model"
                     v-for="(option, index) in options.cluster.filter(
                       opt => opt.phase == 'verdieping'
@@ -210,7 +210,7 @@
                   <h2 class="lab-fake-label">Minor *</h2>
                   <p class="help">Bij welke minor hoort deze module?</p>
                   <md-checkbox
-                    class="vertical"
+                    class="lab-check-vertical"
                     v-model="$v.intro.cluster.$model"
                     v-for="(option, index) in options.cluster.filter(
                       opt => opt.phase == 'minor'
@@ -1222,13 +1222,5 @@ export default {
 .md-menu-content {
   max-width: 50rem !important;
   margin-left: -1rem;
-}
-
-.md-radio.vertical {
-  display: flex;
-}
-
-.md-checkbox.vertical {
-  display: flex;
 }
 </style>
