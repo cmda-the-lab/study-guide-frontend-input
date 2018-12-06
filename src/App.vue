@@ -14,26 +14,47 @@
               id="intro"
               md-label="Introductie"
               md-description="Informatie over de module"
-              :md-error="
-                $v.intro.$dirty && $v.intro.$invalid ? 'Informatie mist' : ''
-              "
-              :md-done="!$v.intro.$invalid"
             >
               <p>
-                In dit onderdeel van de monitor vragen we je om globale
-                informatie over een module in te vullen. Deze informatie kunnen
-                we later gebruiken om het curriculum van volgend jaar te
-                visualiseren, maar ook voor in de studiegids.
+                In deze monitor vragen vragen we je om informatie over een
+                module in te vullen. Deze informatie kunnen we later gebruiken
+                om het curriculum van volgend jaar te visualiseren, maar ook
+                voor in de studiegids.
               </p>
-              <form novalidate v-on:submit="next($event, 'intro', 'matter')">
+              <p>
+                Deze monitor is bedoelt voor modules, zoals een vak, en niet
+                voor een semester of een minor met daarin weer andere modules.
+              </p>
+              <md-button
+                type="submit"
+                v-on:click="next($event, 'intro', 'info')"
+                class="md-dense md-raised md-primary"
+              >
+                Verder
+              </md-button>
+            </md-step>
+            <md-step
+              id="info"
+              md-label="Informatie"
+              md-description="Informatie over de module"
+              :md-error="
+                $v.info.$dirty && $v.info.$invalid ? 'Informatie mist' : ''
+              "
+              :md-done="!$v.info.$invalid"
+            >
+              <p>
+                In dit onderdeel van de monitor vragen we je globale informatie
+                over de module in te vullen.
+              </p>
+              <form novalidate v-on:submit="next($event, 'info', 'matter')">
                 <md-field
                   :class="{
-                    'md-invalid': $v.intro.name.$dirty && $v.intro.name.$invalid
+                    'md-invalid': $v.info.name.$dirty && $v.info.name.$invalid
                   }"
                 >
                   <label>Naam</label>
                   <md-input
-                    v-model.trim="$v.intro.name.$model"
+                    v-model.trim="$v.info.name.$model"
                     required
                   ></md-input>
                   <span class="md-error">Dit veld is verplicht</span>
@@ -45,28 +66,28 @@
                 <md-field
                   :class="{
                     'md-invalid':
-                      $v.intro.shortDescription.$dirty &&
-                      $v.intro.shortDescription.$invalid
+                      $v.info.shortDescription.$dirty &&
+                      $v.info.shortDescription.$invalid
                   }"
                 >
                   <label>Korte beschrijving</label>
                   <md-textarea
-                    v-model.trim="$v.intro.shortDescription.$model"
+                    v-model.trim="$v.info.shortDescription.$model"
                     md-autogrow
                     required
-                    :maxlength="$v.intro.shortDescription.$params.maxLength.max"
+                    :maxlength="$v.info.shortDescription.$params.maxLength.max"
                   ></md-textarea>
                   <span
                     class="md-error"
-                    v-if="!$v.intro.shortDescription.required"
+                    v-if="!$v.info.shortDescription.required"
                     >Dit veld is verplicht</span
                   >
                   <span
                     class="md-error"
-                    v-if="!$v.intro.shortDescription.maxLength"
+                    v-if="!$v.info.shortDescription.maxLength"
                     >Dit veld is te lang (max.
                     {{
-                      $v.intro.shortDescription.$params.maxLength.max
+                      $v.info.shortDescription.$params.maxLength.max
                     }}
                     karakters)</span
                   >
@@ -80,24 +101,23 @@
                 <md-field
                   :class="{
                     'md-invalid':
-                      $v.intro.description.$dirty &&
-                      $v.intro.description.$invalid
+                      $v.info.description.$dirty && $v.info.description.$invalid
                   }"
                 >
                   <label>Lange beschrijving</label>
                   <md-textarea
-                    v-model.trim="$v.intro.description.$model"
+                    v-model.trim="$v.info.description.$model"
                     md-autogrow
                     required
-                    :maxlength="$v.intro.description.$params.maxLength.max"
+                    :maxlength="$v.info.description.$params.maxLength.max"
                   ></md-textarea>
-                  <span class="md-error" v-if="!$v.intro.description.required"
+                  <span class="md-error" v-if="!$v.info.description.required"
                     >Dit veld is verplicht</span
                   >
-                  <span class="md-error" v-if="!$v.intro.description.maxLength"
+                  <span class="md-error" v-if="!$v.info.description.maxLength"
                     >Dit veld is te lang (max.
                     {{
-                      $v.intro.description.$params.maxLength.max
+                      $v.info.description.$params.maxLength.max
                     }}
                     karakters)</span
                   >
@@ -108,7 +128,7 @@
                   <h2 class="lab-fake-label">Type *</h2>
                   <p class="help">Is deze module een project of een vak?</p>
                   <md-radio
-                    v-model="$v.intro.type.$model"
+                    v-model="$v.info.type.$model"
                     v-for="(option, index) in options.type"
                     :key="index"
                     :value="option"
@@ -116,7 +136,7 @@
                   >
                   <p
                     class="lab-fake-error"
-                    v-if="$v.intro.type.$dirty && !$v.intro.type.required"
+                    v-if="$v.info.type.$dirty && !$v.info.type.required"
                   >
                     Dit veld is verplicht
                   </p>
@@ -126,7 +146,7 @@
                   <h2 class="lab-fake-label">Fase *</h2>
                   <p class="help">In welke fase valt deze module?</p>
                   <md-radio
-                    v-model="$v.intro.phase.$model"
+                    v-model="$v.info.phase.$model"
                     v-for="(option, index) in options.phase"
                     :key="index"
                     :value="option"
@@ -134,7 +154,7 @@
                   >
                   <p
                     class="lab-fake-error"
-                    v-if="$v.intro.phase.$dirty && !$v.intro.phase.required"
+                    v-if="$v.info.phase.$dirty && !$v.info.phase.required"
                   >
                     Dit veld is verplicht
                   </p>
@@ -146,7 +166,7 @@
                     In welk leerjaar wordt deze module gegeven?
                   </p>
                   <md-radio
-                    v-model="$v.intro.learningYear.$model"
+                    v-model="$v.info.learningYear.$model"
                     v-for="(option, index) in options.learningYear"
                     :key="index"
                     :value="option"
@@ -155,8 +175,8 @@
                   <p
                     class="lab-fake-error"
                     v-if="
-                      $v.intro.learningYear.$dirty &&
-                        !$v.intro.learningYear.required
+                      $v.info.learningYear.$dirty &&
+                        !$v.info.learningYear.required
                     "
                   >
                     Dit veld is verplicht
@@ -171,7 +191,7 @@
                     vul dan meerdere kwartalen in.
                   </p>
                   <md-checkbox
-                    v-model="$v.intro.quarter.$model"
+                    v-model="$v.info.quarter.$model"
                     v-for="(option, index) in options.quarter"
                     :key="index"
                     :value="option"
@@ -179,18 +199,18 @@
                   >
                   <p
                     class="lab-fake-error"
-                    v-if="$v.intro.quarter.$dirty && !$v.intro.quarter.required"
+                    v-if="$v.info.quarter.$dirty && !$v.info.quarter.required"
                   >
                     Dit veld is verplicht
                   </p>
                 </div>
 
-                <div class="lab-fake-field" v-if="intro.phase == 'verdieping'">
+                <div class="lab-fake-field" v-if="info.phase == 'verdieping'">
                   <h2 class="lab-fake-label">Project *</h2>
                   <p class="help">Bij welk project hoort deze module?</p>
                   <md-checkbox
                     class="lab-check-vertical"
-                    v-model="$v.intro.cluster.$model"
+                    v-model="$v.info.cluster.$model"
                     v-for="(option, index) in options.cluster.filter(
                       opt => opt.phase == 'verdieping'
                     )"
@@ -200,18 +220,18 @@
                   >
                   <p
                     class="lab-fake-error"
-                    v-if="$v.intro.cluster.$dirty && !$v.intro.cluster.required"
+                    v-if="$v.info.cluster.$dirty && !$v.info.cluster.required"
                   >
                     Dit veld is verplicht
                   </p>
                 </div>
 
-                <div class="lab-fake-field" v-if="intro.phase == 'minor'">
+                <div class="lab-fake-field" v-if="info.phase == 'minor'">
                   <h2 class="lab-fake-label">Minor *</h2>
                   <p class="help">Bij welke minor hoort deze module?</p>
                   <md-checkbox
                     class="lab-check-vertical"
-                    v-model="$v.intro.cluster.$model"
+                    v-model="$v.info.cluster.$model"
                     v-for="(option, index) in options.cluster.filter(
                       opt => opt.phase == 'minor'
                     )"
@@ -221,7 +241,7 @@
                   >
                   <p
                     class="lab-fake-error"
-                    v-if="$v.intro.cluster.$dirty && !$v.intro.cluster.required"
+                    v-if="$v.info.cluster.$dirty && !$v.info.cluster.required"
                   >
                     Dit veld is verplicht
                   </p>
@@ -230,27 +250,27 @@
                 <md-field
                   :class="{
                     'md-invalid':
-                      $v.intro.credits.$dirty && $v.intro.credits.$invalid
+                      $v.info.credits.$dirty && $v.info.credits.$invalid
                   }"
                 >
                   <label>Studiepunten (ECTS)</label>
                   <md-input
-                    v-model="$v.intro.credits.$model"
+                    v-model="$v.info.credits.$model"
                     type="number"
-                    :min="$v.intro.credits.$params.minValue.min"
-                    :max="$v.intro.credits.$params.maxValue.max"
+                    :min="$v.info.credits.$params.minValue.min"
+                    :max="$v.info.credits.$params.maxValue.max"
                     required
                   ></md-input>
-                  <span class="md-error" v-if="!$v.intro.credits.required"
+                  <span class="md-error" v-if="!$v.info.credits.required"
                     >Dit veld is verplicht</span
                   >
                 </md-field>
                 <p class="help">
                   Wat is het aantal studiepuntent van de module?
-                  <span v-if="intro.type == 'Vak'"
+                  <span v-if="info.type == 'Vak'"
                     >Een vak is doorgaans <strong>3 punten</strong>.</span
                   >
-                  <span v-if="intro.type == 'Project'"
+                  <span v-if="info.type == 'Project'"
                     >Een project is doorgaans <strong>5 punten</strong>.</span
                   >
                 </p>
@@ -342,7 +362,7 @@
                   </div>
                 </div>
 
-                <div v-if="intro.type == 'Vak'" class="lab-fake-field">
+                <div v-if="info.type == 'Vak'" class="lab-fake-field">
                   <h2 class="lab-fake-label">Cirkels *</h2>
                   <img class="lab-circles" src="./assets/circles.png" />
                   <p class="help">In welk van deze gebieden valt het vak?</p>
@@ -365,7 +385,7 @@
                   </p>
                 </div>
 
-                <div v-if="intro.type == 'Project'">
+                <div v-if="info.type == 'Project'">
                   <p class="help">In welk gebied valt deze module.?</p>
                   <img src="./assets/spaces.png" />
                   <md-field
@@ -389,7 +409,7 @@
                   </md-field>
                 </div>
 
-                <div v-if="intro.type == 'Project'" class="lab-fake-field">
+                <div v-if="info.type == 'Project'" class="lab-fake-field">
                   <h2 class="lab-fake-label">Niveau *</h2>
                   <img src="./assets/levels.png" />
                   <p class="help">Geef de complexiteit aan van dit project</p>
@@ -683,7 +703,7 @@
                   Som de specifieke studie materialen op die binnen deze module
                   gebruikt worden. Denk aan artikelen, video's, tutorial's
                   etc.<br />Gebruik streepjes en enters. Bijvoorbeeld, '-
-                  "Introduction to asynchronous iteration" Mike Bostock (2018)'
+                  "introduction to asynchronous iteration" Mike Bostock (2018)'
                 </p>
 
                 <md-button type="submit" class="md-dense md-raised md-primary"
@@ -787,7 +807,7 @@ export default {
       showDialog: false,
       step: null,
       lang: 0,
-      intro: {
+      info: {
         name: '',
         shortDescription: '',
         description: '',
@@ -970,7 +990,8 @@ export default {
   },
   validations: function() {
     return {
-      intro: {
+      intro: {},
+      info: {
         name: {required},
         shortDescription: {required, maxLength: maxLength(240)},
         description: {required, maxLength: maxLength(1024)},
@@ -979,7 +1000,7 @@ export default {
         learningYear: {required},
         quarter: {required},
         cluster:
-          this.intro.phase === 'verdieping' || this.intro.phase === 'minor'
+          this.info.phase === 'verdieping' || this.info.phase === 'minor'
             ? {required}
             : {},
         credits: {required, minValue: minValue(1), maxValue: maxValue(30)}
@@ -987,8 +1008,8 @@ export default {
       matter: {
         objectivesSummary: {required, maxLength: maxLength(1024)},
         competencies: {required},
-        circles: this.intro.type === 'Vak' ? {required} : {},
-        spaces: this.intro.type === 'Project' ? {required} : {},
+        circles: this.info.type === 'Vak' ? {required} : {},
+        spaces: this.info.type === 'Project' ? {required} : {},
         levelComplexity: {required},
         levelIndependence: {required},
         methods: {required},
@@ -1050,23 +1071,23 @@ export default {
     submit: function() {
       const uri = [apiUrl, 'course', ''].join('/')
       const options = this.options
-      const {intro, matter, people} = this.$data
+      const {info, matter, people} = this.$data
 
       const body = {
-        name: [{language: 'nl', value: intro.name}],
-        shortDescription: [{language: 'nl', value: intro.shortDescription}],
-        description: [{language: 'nl', value: intro.description}],
-        learningYears: [intro.learningYear],
+        name: [{language: 'nl', value: info.name}],
+        shortDescription: [{language: 'nl', value: info.shortDescription}],
+        description: [{language: 'nl', value: info.description}],
+        learningYears: [info.learningYear],
         phase:
           {
             fundament: 'foundation',
             verdieping: 'profiling',
             afstuderen: 'graduation'
-          }[intro.phase] || intro.phase,
-        type: intro.type,
-        periods: intro.quarter,
-        cluster: intro.cluster,
-        credits: parseInt(intro.credits, 10),
+          }[info.phase] || info.phase,
+        type: info.type,
+        periods: info.quarter,
+        cluster: info.cluster,
+        credits: parseInt(info.credits, 10),
         // start: null,
         // end: null,
         // languages: null,
