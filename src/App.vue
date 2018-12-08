@@ -1032,10 +1032,10 @@ export default {
       },
       classification: {
         competencies: [],
-        circles: '',
-        levelComplexity: '',
-        levelIndependence: '',
-        spaces: ''
+        circles: null,
+        levelComplexity: null,
+        levelIndependence: null,
+        spaces: null
       },
       people: {
         coordinators: [],
