@@ -32,7 +32,7 @@
                 v-on:click="next($event, 'intro', 'info')"
                 class="md-dense md-raised md-primary"
               >
-                Verder
+                Begin
               </md-button>
             </md-step>
 
@@ -944,7 +944,7 @@
                 <p class="help">Kies welke mensen de module geven.</p>
 
                 <md-button type="submit" class="md-dense md-raised md-primary"
-                  >Verder</md-button
+                  >Afronden</md-button
                 >
               </form>
             </md-step>
