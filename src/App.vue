@@ -1095,12 +1095,12 @@ export default {
         methodsSummary: {required, maxLength: maxLength(1024)},
         assessments: {required},
         assessmentsSummary: {required, maxLength: maxLength(1024)},
+        studyMaterialsRequired: {maxLength: maxLength(1024)},
+        studyMaterialsUsed: {maxLength: maxLength(1024)},
         productsLearned: {},
         productsAsked: {},
         researchMethodsLearned: {required},
-        researchMethodsAsked: {required},
-        studyMaterialsRequired: {maxLength: maxLength(1024)},
-        studyMaterialsUsed: {maxLength: maxLength(1024)}
+        researchMethodsAsked: {required}
       },
       classification: {
         competencies: {required},
@@ -1202,7 +1202,10 @@ export default {
         competencies: classification.competencies,
         circles: classification.circles,
         spaces: classification.spaces,
-        level: classification.levelComplexity + ',' + matter.levelIndependence,
+        level:
+          classification.levelComplexity +
+          ',' +
+          classification.levelIndependence,
         // competenciesSummary: null,
         program: options.program[0]._id,
         faculty: options.faculty[0]._id
