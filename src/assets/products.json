@@ -1,0 +1,340 @@
+[
+  {
+    "_id": "analysis",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Analyse"
+      },
+      {
+        "language": "en",
+        "value": "Analysis"
+      }
+    ]
+  },
+  {
+    "_id": "business-model-canvas",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Business Model Canvas"
+      },
+      {
+        "language": "en",
+        "value": "Business Model Canvas"
+      }
+    ]
+  },
+  {
+    "_id": "concept",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Concept"
+      },
+      {
+        "language": "en",
+        "value": "Concept"
+      }
+    ]
+  },
+  {
+    "_id": "customer-journey",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Customer journey"
+      },
+      {
+        "language": "en",
+        "value": "Customer journey"
+      }
+    ]
+  },
+  {
+    "_id": "design-system",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Design system"
+      },
+      {
+        "language": "en",
+        "value": "Design system"
+      }
+    ]
+  },
+  {
+    "_id": "empathy-map",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Empathy map"
+      },
+      {
+        "language": "en",
+        "value": "Empathy map"
+      }
+    ]
+  },
+  {
+    "_id": "wireframe",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Flows of wireframe"
+      },
+      {
+        "language": "en",
+        "value": "Flows or wireframe"
+      }
+    ]
+  },
+  {
+    "_id": "installation",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Installatie"
+      },
+      {
+        "language": "en",
+        "value": "Installation"
+      }
+    ]
+  },
+  {
+    "_id": "interactive-application",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Interactieve applicatie"
+      },
+      {
+        "language": "en",
+        "value": "Interactive applicatie"
+      }
+    ]
+  },
+  {
+    "_id": "job-story",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Job story"
+      },
+      {
+        "language": "en",
+        "value": "Job story"
+      }
+    ]
+  },
+  {
+    "_id": "logboek",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Logboek"
+      },
+      {
+        "language": "en",
+        "value": "Logbook"
+      }
+    ]
+  },
+  {
+    "_id": "mockup",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Mockup of schermontwerp"
+      },
+      {
+        "language": "en",
+        "value": "Mockup or screen design"
+      }
+    ]
+  },
+  {
+    "_id": "moodboard",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Moodboard"
+      },
+      {
+        "language": "en",
+        "value": "Moodboard"
+      }
+    ]
+  },
+  {
+    "_id": "spec",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Ontwerp document of design spec"
+      },
+      {
+        "language": "en",
+        "value": "Design document or spec"
+      }
+    ]
+  },
+  {
+    "_id": "persona",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Persona"
+      },
+      {
+        "language": "en",
+        "value": "Persona"
+      }
+    ]
+  },
+  {
+    "_id": "prototype",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Prototype"
+      },
+      {
+        "language": "en",
+        "value": "Prototype"
+      }
+    ]
+  },
+  {
+    "_id": "requirement-list",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Requirement list"
+      },
+      {
+        "language": "en",
+        "value": "Requirement list"
+      }
+    ]
+  },
+  {
+    "_id": "sketch",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Schetsen"
+      },
+      {
+        "language": "en",
+        "value": "Sketches"
+      }
+    ]
+  },
+  {
+    "_id": "scenario",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Scenario"
+      },
+      {
+        "language": "en",
+        "value": "Scenario"
+      }
+    ]
+  },
+  {
+    "_id": "service-blueprint",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Service blueprint"
+      },
+      {
+        "language": "en",
+        "value": "Service blueprint"
+      }
+    ]
+  },
+  {
+    "_id": "sitemap",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Sitemap"
+      },
+      {
+        "language": "en",
+        "value": "Sitemap"
+      }
+    ]
+  },
+  {
+    "_id": "styleguide",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Styleguide"
+      },
+      {
+        "language": "en",
+        "value": "Styleguide"
+      }
+    ]
+  },
+  {
+    "_id": "storyboard",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Storyboard"
+      },
+      {
+        "language": "en",
+        "value": "Storyboard"
+      }
+    ]
+  },
+  {
+    "_id": "testplan",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Testplan of testrapport"
+      },
+      {
+        "language": "en",
+        "value": "Test plan or report"
+      }
+    ]
+  },
+  {
+    "_id": "video",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Video"
+      },
+      {
+        "language": "en",
+        "value": "Video"
+      }
+    ]
+  },
+  {
+    "_id": "visual-design",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Visual design"
+      },
+      {
+        "language": "en",
+        "value": "Visual design"
+      }
+    ]
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "written",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Schriftelijke toets"
+      },
+      {
+        "language": "en",
+        "value": "Written test"
+      }
+    ]
+  },
+  {
+    "_id": "product",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Product assessment"
+      },
+      {
+        "language": "en",
+        "value": "Product assessment"
+      }
+    ]
+  },
+  {
+    "_id": "competency",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Competentie assessment"
+      },
+      {
+        "language": "en",
+        "value": "Competency assessment"
+      }
+    ]
+  }
+]

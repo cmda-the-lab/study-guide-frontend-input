@@ -1,0 +1,28 @@
+[
+  {
+    "_id": "project",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Project"
+      },
+      {
+        "language": "en",
+        "value": "Project"
+      }
+    ]
+  },
+  {
+    "_id": "course",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Vak"
+      },
+      {
+        "language": "en",
+        "value": "Course"
+      }
+    ]
+  }
+]

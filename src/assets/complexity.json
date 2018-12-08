@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "simple",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Eenvoudig"
+      },
+      {
+        "language": "en",
+        "value": "Simple"
+      }
+    ]
+  },
+  {
+    "_id": "light-complexity",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Licht complex"
+      },
+      {
+        "language": "en",
+        "value": "Light complexity"
+      }
+    ]
+  },
+  {
+    "_id": "rather-complex",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Enigszins complex"
+      },
+      {
+        "language": "en",
+        "value": "Rather complex"
+      }
+    ]
+  },
+  {
+    "_id": "complex",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Complex"
+      },
+      {
+        "language": "en",
+        "value": "Complex"
+      }
+    ]
+  }
+]

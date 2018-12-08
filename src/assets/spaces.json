@@ -1,0 +1,142 @@
+[
+  {
+    "_id": "problem",
+    "number": 1,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Volledig probleem"
+      },
+      {
+        "language": "en",
+        "value": "Fully problem"
+      }
+    ]
+  },
+  {
+    "_id": "concept",
+    "number": 2,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Volledig concept"
+      },
+      {
+        "language": "en",
+        "value": "Fully concept"
+      }
+    ]
+  },
+  {
+    "_id": "design-build",
+    "number": 3,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Volledig ontwerp / bouwen"
+      },
+      {
+        "language": "en",
+        "value": "Fully design / build"
+      }
+    ]
+  },
+  {
+    "_id": "market",
+    "number": 4,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Volledig markt"
+      },
+      {
+        "language": "en",
+        "value": "Fully market"
+      }
+    ]
+  },
+  {
+    "_id": "problem-concept",
+    "number": 5,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Gedeeltelijk probleem en concept"
+      },
+      {
+        "language": "en",
+        "value": "Shared problem and concept"
+      }
+    ]
+  },
+  {
+    "_id": "concept-design-build",
+    "number": 6,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Gedeeltelijk concept en ontwerp / bouwen"
+      },
+      {
+        "language": "en",
+        "value": "Shared concept and design / build"
+      }
+    ]
+  },
+  {
+    "_id": "design-build-market",
+    "number": 7,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Gedeeltelijk ontwerp / bouwen en markt"
+      },
+      {
+        "language": "en",
+        "value": "Shared design / build and market"
+      }
+    ]
+  },
+  {
+    "_id": "problem-concept-design-build",
+    "number": 8,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Gedeeltelijk probleem, concept, en ontwerp / bouwen"
+      },
+      {
+        "language": "en",
+        "value": "Shared problem, concept, and design / build"
+      }
+    ]
+  },
+  {
+    "_id": "concept-design-build-market",
+    "number": 9,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Gedeeltelijk concept, ontwerp / bouwen, en markt"
+      },
+      {
+        "language": "en",
+        "value": "Shared concept, design / build, and market"
+      }
+    ]
+  },
+  {
+    "_id": "problem-concept-design-build-market",
+    "number": 10,
+    "values": [
+      {
+        "language": "nl",
+        "value": "Elk gebied"
+      },
+      {
+        "language": "en",
+        "value": "All spaces"
+      }
+    ]
+  }
+]

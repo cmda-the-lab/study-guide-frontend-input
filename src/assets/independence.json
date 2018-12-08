@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "reproductive",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Reproductief"
+      },
+      {
+        "language": "en",
+        "value": "Reproductive"
+      }
+    ]
+  },
+  {
+    "_id": "(re)productive",
+    "values": [
+      {
+        "language": "nl",
+        "value": "(Re)productief"
+      },
+      {
+        "language": "en",
+        "value": "(Re)productive"
+      }
+    ]
+  },
+  {
+    "_id": "productive",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Productief"
+      },
+      {
+        "language": "en",
+        "value": "Productive"
+      }
+    ]
+  },
+  {
+    "_id": "creative",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Creatief"
+      },
+      {
+        "language": "en",
+        "value": "Creative"
+      }
+    ]
+  }
+]

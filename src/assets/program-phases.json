@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "foundation",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Fundament"
+      },
+      {
+        "language": "en",
+        "value": "Foundation"
+      }
+    ]
+  },
+  {
+    "_id": "profiling",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Verdieping"
+      },
+      {
+        "language": "en",
+        "value": "Profiling"
+      }
+    ]
+  },
+  {
+    "_id": "minor",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Minor"
+      },
+      {
+        "language": "en",
+        "value": "Minor"
+      }
+    ]
+  },
+  {
+    "_id": "graduation",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Afstuderen"
+      },
+      {
+        "language": "en",
+        "value": "Graduation"
+      }
+    ]
+  }
+]

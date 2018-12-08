@@ -1,0 +1,106 @@
+[
+  {
+    "_id": "1",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Ontwerpvraag / Probleem / Content / Strategie"
+      },
+      {
+        "language": "en",
+        "value": "Research question / Problem / Content / Strategy"
+      }
+    ]
+  },
+  {
+    "_id": "2",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Interactie"
+      },
+      {
+        "language": "en",
+        "value": "Interaction"
+      }
+    ]
+  },
+  {
+    "_id": "3",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Techniek"
+      },
+      {
+        "language": "en",
+        "value": "Technical"
+      }
+    ]
+  },
+  {
+    "_id": "4",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Vormgeving"
+      },
+      {
+        "language": "en",
+        "value": "Visual design"
+      }
+    ]
+  },
+  {
+    "_id": "5",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Interactie / Techniek"
+      },
+      {
+        "language": "en",
+        "value": "Interaction / Technical"
+      }
+    ]
+  },
+  {
+    "_id": "6",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Interactie / Vormgeving"
+      },
+      {
+        "language": "en",
+        "value": "Interaction / Visual design"
+      }
+    ]
+  },
+  {
+    "_id": "7",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Techniek / Vormgeving"
+      },
+      {
+        "language": "en",
+        "value": "Technical / Visual design"
+      }
+    ]
+  },
+  {
+    "_id": "8",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Interactie / Techniek / Vormgeving"
+      },
+      {
+        "language": "en",
+        "value": "Interaction / Technical / Visual design"
+      }
+    ]
+  }
+]

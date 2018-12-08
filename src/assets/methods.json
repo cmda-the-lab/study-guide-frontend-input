@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "practicum",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Practicum",
+        "description": "meestal weinig voorbereiding; bijvoorbeeld in een lokaal"
+      },
+      {
+        "language": "en",
+        "value": "Practicum",
+        "description": "typically little preparation; for instance in a classroom"
+      }
+    ]
+  },
+  {
+    "_id": "lab",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Werkgroep",
+        "description": "meestal redelijk voorbereiding; bijvoorbeeld in een lokaal"
+      },
+      {
+        "language": "en",
+        "value": "Lab",
+        "description": "typically reasonable preparation; for instance in a classroom"
+      }
+    ]
+  },
+  {
+    "_id": "lecture",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Hoorcollege",
+        "description": "meestal veel voorbereiding; bijvoorbeeld in een auditorium"
+      },
+      {
+        "language": "en",
+        "value": "Lecture",
+        "description": "typically lots of preparation; for instance in an auditorium"
+      }
+    ]
+  },
+  {
+    "_id": "coaching",
+    "values": [
+      {
+        "language": "nl",
+        "value": "Coaching",
+        "description": "individueel of in groepjes; bijvoorbeeld in een projectruimte"
+      },
+      {
+        "language": "en",
+        "value": "Coaching",
+        "description": "individual or in small groups; for instance in a meeting room"
+      }
+    ]
+  }
+]
