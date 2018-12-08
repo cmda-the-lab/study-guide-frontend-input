@@ -891,15 +891,17 @@
             <md-step
               id="people"
               md-label="Mensen"
-              md-description="De betrokken docenten en coordinatoren van de module"
+              :md-description="
+                'De betrokken docenten en coordinatoren van ' + info.type
+              "
               :md-error="
                 $v.people.$dirty && $v.people.$invalid ? 'Informatie mist' : ''
               "
               :md-done="!$v.people.$invalid"
             >
               <p>
-                In dit onderdeel vragen we je om aan te geven wie de module
-                coördineren en doceren.
+                In dit onderdeel vragen we je om aan te geven wie
+                {{ unit }} coördineren en doceren.
               </p>
 
               <form novalidate v-on:submit="next($event, 'people')">
@@ -919,11 +921,14 @@
                       >{{ option.name }}</md-option
                     >
                   </md-select>
-                  <span class="md-error" v-if="!$v.people.coordinators.required"
-                    >Dit veld is verplicht</span
+                  <span
+                    class="md-error"
+                    v-if="!$v.people.coordinators.required"
                   >
+                    Dit veld is verplicht
+                  </span>
                 </md-field>
-                <p class="help">Kies welke mensen de module coördineren.</p>
+                <p class="help">Kies welke mensen {{ unit }} coördineren.</p>
 
                 <md-field
                   :class="{
@@ -941,11 +946,11 @@
                     >
                   </md-select>
                 </md-field>
-                <p class="help">Kies welke mensen de module geven.</p>
+                <p class="help">Kies welke mensen {{ unit }} geven.</p>
 
-                <md-button type="submit" class="md-dense md-raised md-primary"
-                  >Afronden</md-button
-                >
+                <md-button type="submit" class="md-dense md-raised md-primary">
+                  Afronden
+                </md-button>
               </form>
             </md-step>
           </md-steppers>
