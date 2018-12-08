@@ -585,7 +585,9 @@
                 </div>
 
                 <div class="lab-fake-field">
-                  <h2 class="lab-fake-label">Onderzoeksmethoden</h2>
+                  <h2 class="lab-fake-label lab-fake-label-required">
+                    Onderzoeksmethoden
+                  </h2>
                   <p class="help">
                     Geef aan welke onderzoeksmethoden er worden gebruikt en
                     getoetst binnen {{ unit }}.
