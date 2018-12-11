@@ -1184,14 +1184,46 @@ export default {
   },
   created: function() {
     const resources = [
-      {name: 'faculty'},
-      {name: 'program'},
+      {
+        name: 'faculty',
+        map: x =>
+          x.sort((a, b) =>
+            alphaSort.asc(this.pick(a.name).value, this.pick(b.name).value)
+          )
+      },
+      {
+        name: 'program',
+        map: x =>
+          x.sort((a, b) =>
+            alphaSort.asc(this.pick(a.name).value, this.pick(b.name).value)
+          )
+      },
       {
         name: 'person',
         map: x => x.sort((a, b) => alphaSort.asc(a.name, b.name))
       },
       {name: 'competency'},
-      {name: 'cluster'}
+      {
+        name: 'cluster',
+        map: x => {
+          // TODO: drop Dutch IDs when API updates.
+          const phaseMap = {
+            fundament: 0,
+            verdieping: 1,
+            afstuderen: 3,
+            foundation: 0,
+            profiling: 1,
+            minor: 2,
+            graduation: 3
+          }
+
+          return x.sort(
+            (a, b) =>
+              phaseMap[a.phase] - phaseMap[b.phase] ||
+              alphaSort.asc(this.pick(a.name).value, this.pick(b.name).value)
+          )
+        }
+      }
     ]
 
     Promise.all(
