@@ -878,14 +878,24 @@
                     </h3>
                     <p class="help">Wat is de complexiteit van {{ unit }}?</p>
 
-                    <md-radio
-                      v-model="$v.classification.levelComplexity.$model"
+                    <div
                       v-for="option in options.complexityLevels"
                       :key="option._id"
-                      :value="option._id"
                     >
-                      {{ option.values[lang].value }}
-                    </md-radio>
+                      <md-radio
+                        v-model="$v.classification.levelComplexity.$model"
+                        :value="option._id"
+                        class="lab-check-vertical"
+                      >
+                        {{ option.values[lang].value }}
+                      </md-radio>
+                      <p
+                        class="lab-check-description"
+                        v-on:click="classification.levelComplexity = option._id"
+                      >
+                        {{ option.values[lang].description }}
+                      </p>
+                    </div>
                     <p
                       v-if="
                         $v.classification.levelComplexity.$dirty &&
@@ -906,14 +916,26 @@
                       {{ unit }}?
                     </p>
 
-                    <md-radio
-                      v-model="$v.classification.levelIndependence.$model"
+                    <div
                       v-for="option in options.independenceLevels"
                       :key="option._id"
-                      :value="option._id"
                     >
-                      {{ option.values[lang].value }}
-                    </md-radio>
+                      <md-radio
+                        v-model="$v.classification.levelIndependence.$model"
+                        :value="option._id"
+                        class="lab-check-vertical"
+                      >
+                        {{ option.values[lang].value }}
+                      </md-radio>
+                      <p
+                        class="lab-check-description"
+                        v-on:click="
+                          classification.levelIndependence = option._id
+                        "
+                      >
+                        {{ option.values[lang].description }}
+                      </p>
+                    </div>
                     <p
                       v-if="
                         $v.classification.levelIndependence.$dirty &&
@@ -1325,6 +1347,7 @@ export default {
   padding-left: 2.25rem;
   margin-top: -0.75rem;
   color: rgba(0, 0, 0, 0.75);
+  cursor: pointer;
 }
 
 .lab-fake-field .help {

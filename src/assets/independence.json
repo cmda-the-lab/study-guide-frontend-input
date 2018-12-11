@@ -4,11 +4,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Reproductief"
+        "value": "Reproductief",
+        "description": "De design challenge, te gebruiken methoden en het beoogde resultaat van het ontwerptraject zijn helder beschreven en worden aangereikt; De student krijgt instructie, sturing op en begeleiding bij de te nemen stappen en is voor het slagen afhankelijk van coaches en docenten; De student draagt verantwoording voor het uitvoeren van de te nemen stappen en reflecteert op de kwaliteit van eigen handelen en opgeleverde producten."
       },
       {
         "language": "en",
-        "value": "Reproductive"
+        "value": "Reproductive",
+        "description": "The design challenge, methods to be used, and the intended result of the design process are clearly described and provided; The student receives instruction, direction, and guidance in the steps to be taken and depends on coaches and teachers for success; The student bears responsibility for executing the steps to be taken and reflects on the quality of their actions and delivered products."
       }
     ]
   },
@@ -17,11 +19,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "(Re)productief"
+        "value": "(Re)productief",
+        "description": "Er zijn kaders voor de design challenge, te gebruiken methoden en resultaat maar de student dient zelf keuzes te maken; De student krijgt coaching en begeleiding bij de te maken keuzes door de studieloopbaan-, projectcoaches en docenten; De student draagt verantwoording voor plannen en uitvoeren van de te nemen stappen en reflecteert gedurende en na afloop van een ontwerptraject op de kwaliteit van eigen handelen, de gemaakte keuzes en opgeleverde producten."
       },
       {
         "language": "en",
-        "value": "(Re)productive"
+        "value": "(Re)productive",
+        "description": "There are frameworks for the design challenge, the methods to be used, and the result, but the student has to make their own choices; The student receives coaching and guidance on the choices to be made by the study career coach, project coaches, and teachers; The student bears responsibility for planning and executing the steps to be taken and reflects on the quality of their actions, the choices made, and the delivered products during and after a design process."
       }
     ]
   },
@@ -30,11 +34,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Productief"
+        "value": "Productief",
+        "description": "De student bepaalt grotendeels zelf de design challenge, te gebruiken methoden en resultaat; De student krijgt coaching maar methoden en resultaat moeten zelf bepaald worden; De student draagt verantwoording voor initiëren, plannen, uitvoeren en waar nodig bijsturen van de te nemen stappen. Ook reflecteert de student continue op de kwaliteit van diens handelen, de gemaakte keuzes en opgeleverde producten én de plaats van handelen en product als beginnend ontwerper binnen het CMD-beroepenveld."
       },
       {
         "language": "en",
-        "value": "Productive"
+        "value": "Productive",
+        "description": "The student largely determines the design challenge, the methods to be used, and the results; The student receives coaching but methods and results have to be determined by themselves; The student bears responsibility for initiating, planning, executing, and where necessary adjusting the steps to be taken. The student also continuously reflects on the quality of the product and their actions, the choices made and products delivered, and where to act, as a starting designer within the CMD profession field."
       }
     ]
   },
@@ -43,11 +49,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Creatief"
+        "value": "Creatief",
+        "description": "De student handelt volledig vanuit zelf geformuleerde kaders, design challenge, methoden en resultaat worden zelf bepaald; De student draagt volledige verantwoording, reflecteert op alle facetten van diens werk en stuurt bij op basis van bevindingen als professioneel ontwerper binnen het CMD-beroepenveld."
       },
       {
         "language": "en",
-        "value": "Creative"
+        "value": "Creative",
+        "description": "The student acts entirely from self-formulated frameworks and design challenge, methods, and result are determined by themselves; The student bears full responsibility, reflects on all facets of their work and adjusts on the basis of findings as a professional designer within the CMD profession field."
       }
     ]
   }

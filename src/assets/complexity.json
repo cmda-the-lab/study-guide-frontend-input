@@ -4,11 +4,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Eenvoudig"
+        "value": "Eenvoudig",
+        "description": "De design challenge beslaat een enkelvoudig, eenvoudig probleem met lage tot matige impact voor de gebruiker; De opdracht wordt uitgevoerd volgens standaardprocedures en gegeven ontwerpmethoden en -technieken."
       },
       {
         "language": "en",
-        "value": "Simple"
+        "value": "Simple",
+        "description": "The design challenge covers a single, simple problem with low to moderate impact for the user; The assignment is carried out according to standard procedures and given design methods and techniques."
       }
     ]
   },
@@ -17,11 +19,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Licht complex"
+        "value": "Licht complex",
+        "description": "De design challenge beslaat een meervoudig, lastiger probleem dat matige tot hoge impact voor gebruikers heeft; Bij het uitvoeren van de opdracht dienen aangeboden ontwerpmethoden en -technieken met elkaar gecombineerd te worden om tot resultaat te komen; Er zijn meerdere stakeholders betrokken bij het project."
       },
       {
         "language": "en",
-        "value": "Light complexity"
+        "value": "Light complexity",
+        "description": "The design challenge covers multiple, trickier problems that have moderate to high impact for users; When executing the assignment, given design methods and techniques must be combined in order to achieve results; The project involves several stakeholders."
       }
     ]
   },
@@ -30,11 +34,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Enigszins complex"
+        "value": "Enigszins complex",
+        "description": "De design challenge beslaat een meervoudig, lastig inzichtelijk probleem dat hoge impact voor gebruikers heeft; Bij het uitvoeren van de opdracht kiest de student onderbouwd passende ontwerpmethoden en -technieken, waar nodig wordt bestaande kennis uitgebreid ten behoeve van het project; Er is een groot aantal stakeholders bij het project betrokken."
       },
       {
         "language": "en",
-        "value": "Rather complex"
+        "value": "Rather complex",
+        "description": "The design challenge covers multiple, hard to grasp problems that have a high impact for users; When carrying out the assignment, the student applies well-chosen design methods and techniques, where necessary existing knowledge is expanded for the benefit of the project; The project involves a large number of stakeholders."
       }
     ]
   },
@@ -43,11 +49,13 @@
     "values": [
       {
         "language": "nl",
-        "value": "Complex"
+        "value": "Complex",
+        "description": "De design challenge beslaat een meervoudig probleem, lastig inzichtelijk probleem dat hoge impact voor gebruikers en stakeholders heeft; Bij het uitvoeren van de opdracht ontwikkelt de student nieuwe ontwerpmethoden en -technieken."
       },
       {
         "language": "en",
-        "value": "Complex"
+        "value": "Complex",
+        "description": "The design challenge covers multiple, hard to grasp problems that have a high impact for users and stakeholders; When carrying out the assignment, the student develops new design methods and techniques."
       }
     ]
   }
