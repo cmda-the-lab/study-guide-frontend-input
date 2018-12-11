@@ -1,39 +1,45 @@
 [
   {
-    "_id": "written",
+    "_id": "knowledge-test",
     "values": [
       {
         "language": "nl",
+        "url": "https://score.hva.nl/docent/15_toetsvormen/Paginas/Kennistoets.aspx",
         "value": "Schriftelijke toets"
       },
       {
         "language": "en",
+        "url": "https://score.hva.nl/docent/english_teacher/Pages/assessment%20methods/Knowledge-Test-.aspx",
         "value": "Written test"
       }
     ]
   },
   {
-    "_id": "product",
+    "_id": "project-assignment",
     "values": [
       {
         "language": "nl",
+        "url": "https://score.hva.nl/docent/15_toetsvormen/Paginas/Projectopdracht.aspx",
         "value": "Product assessment"
       },
       {
         "language": "en",
+        "url": "https://score.hva.nl/docent/english_teacher/Pages/assessment%20methods/Project-Assignment-.aspx",
         "value": "Product assessment"
       }
     ]
   },
   {
-    "_id": "competency",
+    "_id": "skills-test",
     "values": [
       {
         "language": "nl",
+        "url": "https://score.hva.nl/docent/15_toetsvormen/Paginas/Afstudeeropdracht.aspx",
         "value": "Competentie assessment"
       },
       {
         "language": "en",
+        "url": "https://score.hva.nl/docent/english_teacher/Pages/assessment%20methods/Skills-test-.aspx",
         "value": "Competency assessment"
       }
     ]
