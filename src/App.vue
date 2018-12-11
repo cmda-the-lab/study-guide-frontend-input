@@ -139,7 +139,7 @@
                     :key="option._id"
                     :value="option._id"
                   >
-                    {{ option.values[lang].value }}
+                    {{ pick(option.values).value }}
                   </md-radio>
                   <p
                     v-if="$v.info.type.$dirty && !$v.info.type.required"
@@ -196,7 +196,7 @@
                     :key="option._id"
                     :value="option._id"
                   >
-                    {{ option.values[lang].value }}
+                    {{ pick(option.values).value }}
                   </md-radio>
                   <p
                     v-if="$v.info.phase.$dirty && !$v.info.phase.required"
@@ -219,7 +219,7 @@
                     :key="option._id"
                     :value="option._id"
                   >
-                    {{ option.values[lang].value }}
+                    {{ pick(option.values).value }}
                   </md-radio>
                   <p
                     v-if="
@@ -247,7 +247,7 @@
                     :key="option._id"
                     :value="option._id"
                   >
-                    {{ option.values[lang].value }}
+                    {{ pick(option.values).value }}
                   </md-checkbox>
                   <p
                     v-if="$v.info.quarter.$dirty && !$v.info.quarter.required"
@@ -278,7 +278,7 @@
                     :key="option._id"
                     :value="option._id"
                   >
-                    {{ option.name[lang].value }}
+                    {{ pick(option.name).value }}
                   </md-checkbox>
                   <p
                     v-if="$v.info.cluster.$dirty && !$v.info.cluster.required"
@@ -366,9 +366,9 @@
                     :value="option._id"
                     class="lab-check-vertical"
                   >
-                    <strong>{{ option.values[lang].value }}</strong>
-                    <span v-if="option.values[lang].description">
-                      ({{ option.values[lang].description }})
+                    <strong>{{ pick(option.values).value }}</strong>
+                    <span v-if="pick(option.values).description">
+                      ({{ pick(option.values).description }})
                     </span>
                   </md-checkbox>
                   <p
@@ -430,9 +430,9 @@
                     :value="option._id"
                     class="lab-check-vertical"
                   >
-                    <strong>{{ option.values[lang].value }}</strong>
-                    <span v-if="option.values[lang].description">
-                      ({{ option.values[lang].description }})
+                    <strong>{{ pick(option.values).value }}</strong>
+                    <span v-if="pick(option.values).description">
+                      ({{ pick(option.values).description }})
                     </span>
                   </md-checkbox>
                   <p
@@ -564,7 +564,7 @@
                   <md-table v-model="options.products">
                     <md-table-row slot="md-table-row" slot-scope="{item}">
                       <md-table-cell md-label="Product">
-                        {{ item.values[lang].value }}
+                        {{ pick(item.values).value }}
                       </md-table-cell>
                       <md-table-cell md-label="Gebruikt">
                         <md-checkbox
@@ -708,7 +708,7 @@
                         toggle(classification.competencies, option._id)
                       "
                     >
-                      {{ option.description[lang].value }}
+                      {{ pick(option.description).value }}
                     </p>
                   </div>
                 </div>
@@ -730,7 +730,7 @@
                     class="lab-check-vertical"
                   >
                     <strong>{{ option._id }}</strong
-                    >: {{ option.values[lang].value }}
+                    >: {{ pick(option.values).value }}
                   </md-radio>
                   <p
                     v-if="
@@ -800,7 +800,7 @@
                     class="lab-check-vertical"
                   >
                     <strong>{{ option.number }}</strong
-                    >: {{ option.values[lang].value }}
+                    >: {{ pick(option.values).value }}
                   </md-radio>
                   <p
                     v-if="
@@ -828,14 +828,14 @@
                           v-for="option in options.independenceLevels"
                           :key="option._id"
                         >
-                          {{ option.values[lang].value }}
+                          {{ pick(option.values).value }}
                         </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <th>
-                          {{ options.complexityLevels[3].values[lang].value }}
+                          {{ pick(options.complexityLevels[3].values).value }}
                         </th>
                         <td class="profiling">Profileren</td>
                         <td class="graduation">Afstuderen</td>
@@ -844,7 +844,7 @@
                       </tr>
                       <tr>
                         <th>
-                          {{ options.complexityLevels[2].values[lang].value }}
+                          {{ pick(options.complexityLevels[2].values).value }}
                         </th>
                         <td class="profiling">Profileren</td>
                         <td class="profiling">Profileren</td>
@@ -853,7 +853,7 @@
                       </tr>
                       <tr>
                         <th>
-                          {{ options.complexityLevels[1].values[lang].value }}
+                          {{ pick(options.complexityLevels[1].values).value }}
                         </th>
                         <td class="foundation">Funderen</td>
                         <td class="profiling">Profileren</td>
@@ -862,7 +862,7 @@
                       </tr>
                       <tr>
                         <th>
-                          {{ options.complexityLevels[0].values[lang].value }}
+                          {{ pick(options.complexityLevels[0].values).value }}
                         </th>
                         <td class="foundation">Funderen</td>
                         <td class="foundation">Funderen</td>
@@ -887,13 +887,13 @@
                         :value="option._id"
                         class="lab-check-vertical"
                       >
-                        {{ option.values[lang].value }}
+                        {{ pick(option.values).value }}
                       </md-radio>
                       <p
                         class="lab-check-description"
                         v-on:click="classification.levelComplexity = option._id"
                       >
-                        {{ option.values[lang].description }}
+                        {{ pick(option.values).description }}
                       </p>
                     </div>
                     <p
@@ -925,7 +925,7 @@
                         :value="option._id"
                         class="lab-check-vertical"
                       >
-                        {{ option.values[lang].value }}
+                        {{ pick(option.values).value }}
                       </md-radio>
                       <p
                         class="lab-check-description"
@@ -933,7 +933,7 @@
                           classification.levelIndependence = option._id
                         "
                       >
-                        {{ option.values[lang].description }}
+                        {{ pick(option.values).description }}
                       </p>
                     </div>
                     <p
@@ -1076,7 +1076,8 @@ export default {
     return {
       showDialog: false,
       step: 'intro',
-      lang: 0,
+      language: 'nl',
+      defaultLanguage: 'nl',
       info: {
         name: '',
         shortDescription: '',
@@ -1206,6 +1207,12 @@ export default {
     )
   },
   methods: {
+    pick(values) {
+      return attempt(this.language) || attempt(this.defaultLanguage) || null
+      function attempt(lang) {
+        return values.find(({language}) => language === lang)
+      }
+    },
     toggle(list, value) {
       var position = list.indexOf(value)
       if (position === -1) {
