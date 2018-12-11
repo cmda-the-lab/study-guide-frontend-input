@@ -130,7 +130,12 @@
                 </md-field>
                 <p class="help">Beschrijf de module in twee tot vier alineas</p>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid': $v.info.type.$dirty && $v.info.type.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">Type</h2>
                   <p class="help">Wat is het type van de module?</p>
                   <md-radio
@@ -187,7 +192,12 @@
                   </span>
                 </p>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid': $v.info.phase.$dirty && $v.info.phase.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">Fase</h2>
                   <p class="help">In welk fase wordt {{ unit }} aangeboden?</p>
                   <md-radio
@@ -206,7 +216,14 @@
                   </p>
                 </div>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.info.learningYear.$dirty &&
+                      $v.info.learningYear.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Leerjaar
                   </h2>
@@ -232,7 +249,13 @@
                   </p>
                 </div>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.info.quarter.$dirty && $v.info.quarter.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Kwartaal
                   </h2>
@@ -260,6 +283,10 @@
                 <div
                   v-if="info.phase == 'profiling' || info.phase == 'minor'"
                   class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.info.cluster.$dirty && $v.info.cluster.$invalid
+                  }"
                 >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     <span v-if="info.phase == 'profiling'">Project</span>
@@ -287,6 +314,13 @@
                     Dit veld is verplicht
                   </p>
                 </div>
+
+                <p
+                  v-if="$v.info.$dirty && $v.info.$invalid"
+                  class="lab-fake-error"
+                >
+                  Er mist nog informatie.
+                </p>
 
                 <md-button type="submit" class="md-dense md-raised md-primary">
                   Verder
@@ -352,7 +386,13 @@
                   >
                 </p>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.matter.methods.$dirty && $v.matter.methods.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Werkvormen
                   </h2>
@@ -411,11 +451,18 @@
                   >
                 </md-field>
                 <p class="help">
-                  Beschrijf in twee tot vier alineas er binnen {{ unit }} en
+                  Beschrijf in twee tot vier alineas hoe er binnen {{ unit }} en
                   tijdens de werkvormen gewerkt wordt.
                 </p>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.matter.assessments.$dirty &&
+                      $v.matter.assessments.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Toetsvormen
                   </h2>
@@ -554,7 +601,16 @@
                   >
                 </p>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      ($v.matter.productsLearned.$dirty &&
+                        $v.matter.productsLearned.$invalid) ||
+                      ($v.matter.productsAsked.$dirty &&
+                        $v.matter.productsAsked.$invalid)
+                  }"
+                >
                   <h2 class="lab-fake-label">Beroepsproducten</h2>
                   <p class="help">
                     Geef aan welke beroepsproducten er worden gebruikt en
@@ -584,7 +640,16 @@
                   </md-table>
                 </div>
 
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      ($v.matter.researchMethodsLearned.$dirty &&
+                        $v.matter.researchMethodsLearned.$invalid) ||
+                      ($v.matter.researchMethodsAsked.$dirty &&
+                        $v.matter.researchMethodsAsked.$invalid)
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Onderzoeksmethoden
                   </h2>
@@ -648,7 +713,24 @@
                       </md-card-actions>
                     </md-card>
                   </div>
+                  <span
+                    class="md-error"
+                    v-if="
+                      ($v.matter.researchMethodsLearned.$dirty &&
+                        $v.matter.researchMethodsLearned.$invalid) ||
+                        ($v.matter.researchMethodsAsked.$dirty &&
+                          $v.matter.researchMethodsAsked.$invalid)
+                    "
+                    >Dit veld is verplicht</span
+                  >
                 </div>
+
+                <p
+                  v-if="$v.matter.$dirty && $v.matter.$invalid"
+                  class="lab-fake-error"
+                >
+                  Er mist nog informatie.
+                </p>
 
                 <md-button type="submit" class="md-dense md-raised md-primary">
                   Verder
@@ -676,19 +758,17 @@
                 novalidate
                 v-on:submit="next($event, 'classification', 'people')"
               >
-                <div class="lab-fake-field">
+                <div
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.classification.competencies.$dirty &&
+                      $v.classification.competencies.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Competenties
                   </h2>
-                  <p
-                    class="lab-fake-error"
-                    v-if="
-                      $v.classification.competencies.$dirty &&
-                        !$v.classification.competencies.required
-                    "
-                  >
-                    Dit veld is verplicht
-                  </p>
                   <p class="help">
                     De CMD competenties beschrijven het <em>eindniveau</em> van
                     een CMD student. Kies dus competenties waaraan gewerkt wordt
@@ -711,9 +791,26 @@
                       {{ pick(option.description).value }}
                     </p>
                   </div>
+                  <p
+                    class="lab-fake-error"
+                    v-if="
+                      $v.classification.competencies.$dirty &&
+                        !$v.classification.competencies.required
+                    "
+                  >
+                    Dit veld is verplicht
+                  </p>
                 </div>
 
-                <div v-if="info.type == 'course'" class="lab-fake-field">
+                <div
+                  v-if="info.type == 'course'"
+                  class="lab-fake-field"
+                  :class="{
+                    'md-invalid':
+                      $v.classification.circles.$dirty &&
+                      $v.classification.circles.$invalid
+                  }"
+                >
                   <h2 class="lab-fake-label lab-fake-label-required">
                     Cirkels
                   </h2>
@@ -744,7 +841,14 @@
                 </div>
 
                 <div v-if="info.type == 'project'">
-                  <h2 class="lab-fake-label lab-fake-label-required">
+                  <h2
+                    class="lab-fake-label lab-fake-label-required"
+                    :class="{
+                      'md-invalid':
+                        $v.classification.spaces.$dirty &&
+                        $v.classification.spaces.$invalid
+                    }"
+                  >
                     Gebieden
                   </h2>
                   <img class="lab-spaces" src="./assets/spaces.png" />
@@ -814,7 +918,7 @@
                 </div>
 
                 <div v-if="info.type == 'project'" class="lab-levels">
-                  <h2 class="lab-fake-label">Niveau</h2>
+                  <h2>Niveau</h2>
 
                   <p class="help">
                     Wat is het niveau van de opdracht van {{ unit }}?
@@ -872,7 +976,14 @@
                     </tbody>
                   </table>
 
-                  <div class="lab-fake-field">
+                  <div
+                    class="lab-fake-field"
+                    :class="{
+                      'md-invalid':
+                        $v.classification.levelComplexity.$dirty &&
+                        $v.classification.levelComplexity.$invalid
+                    }"
+                  >
                     <h3 class="lab-fake-label lab-fake-label-required">
                       Complexiteit
                     </h3>
@@ -907,7 +1018,14 @@
                     </p>
                   </div>
 
-                  <div class="lab-fake-field">
+                  <div
+                    class="lab-fake-field"
+                    :class="{
+                      'md-invalid':
+                        $v.classification.levelIndependence.$dirty &&
+                        $v.classification.levelIndependence.$invalid
+                    }"
+                  >
                     <h3 class="lab-fake-label lab-fake-label-required">
                       Initiërend vermogen
                     </h3>
@@ -948,18 +1066,23 @@
                   </div>
                 </div>
 
-                <md-button type="submit" class="md-dense md-raised md-primary"
-                  >Verder</md-button
+                <p
+                  v-if="$v.classification.$dirty && $v.classification.$invalid"
+                  class="lab-fake-error"
                 >
+                  Er mist nog informatie.
+                </p>
+
+                <md-button type="submit" class="md-dense md-raised md-primary">
+                  Verder
+                </md-button>
               </form>
             </md-step>
 
             <md-step
               id="people"
               md-label="Mensen"
-              :md-description="
-                'De betrokken docenten en coordinatoren van ' + info.type
-              "
+              md-description="De betrokken docenten en coordinatoren van de module"
               :md-error="
                 $v.people.$dirty && $v.people.$invalid ? 'Informatie mist' : ''
               "
@@ -971,48 +1094,72 @@
               </p>
 
               <form novalidate v-on:submit="next($event, 'people')">
-                <md-field
+                <div
+                  class="lab-fake-field"
                   :class="{
-                    'md-invalid':
-                      $v.people.coordinators.$dirty &&
-                      $v.people.coordinators.$invalid
+                    'md-invalid': $v.people.$dirty && $v.people.$invalid
                   }"
                 >
-                  <label>Coördinatoren</label>
-                  <md-select v-model="$v.people.coordinators.$model" multiple>
-                    <md-option
-                      v-for="option in options.person"
-                      :value="option._id"
-                      :key="option._id"
-                      >{{ option.name }}</md-option
-                    >
-                  </md-select>
+                  <md-table
+                    v-model="peopleSearched"
+                    md-sort="name"
+                    md-sort-order="desc"
+                    md-fixed-header
+                  >
+                    <md-table-toolbar>
+                      <div class="md-toolbar-section-start">
+                        <h1
+                          class="md-title lab-fake-label lab-fake-label-required"
+                        >
+                          Rollen
+                        </h1>
+                      </div>
+
+                      <md-field md-clearable class="md-toolbar-section-end">
+                        <md-input
+                          placeholder="Zoek op naam…"
+                          v-model="peopleSearch"
+                          @input="searchInPeople"
+                        />
+                      </md-field>
+                    </md-table-toolbar>
+
+                    <md-table-row slot="md-table-row" slot-scope="{item}">
+                      <md-table-cell md-label="Naam" md-sort-by="name">
+                        {{ item.name }}
+                      </md-table-cell>
+
+                      <md-table-cell md-label="Docent">
+                        <md-checkbox
+                          v-model="$v.people.teachers.$model"
+                          :value="item._id"
+                          class="lab-check-no-margin"
+                        />
+                      </md-table-cell>
+
+                      <md-table-cell md-label="Coördinator">
+                        <md-checkbox
+                          v-model="$v.people.coordinators.$model"
+                          :value="item._id"
+                          class="lab-check-no-margin"
+                        />
+                      </md-table-cell>
+                    </md-table-row>
+                  </md-table>
                   <span
                     class="md-error"
-                    v-if="!$v.people.coordinators.required"
+                    v-if="$v.people.$dirty && $v.people.$invalid"
                   >
                     Dit veld is verplicht
                   </span>
-                </md-field>
-                <p class="help">Kies welke mensen {{ unit }} coördineren.</p>
+                </div>
 
-                <md-field
-                  :class="{
-                    'md-invalid':
-                      $v.people.teachers.$dirty && $v.people.teachers.$invalid
-                  }"
+                <p
+                  v-if="$v.people.$dirty && $v.people.$invalid"
+                  class="lab-fake-error"
                 >
-                  <label>Docenten</label>
-                  <md-select v-model="$v.people.teachers.$model" multiple>
-                    <md-option
-                      v-for="option in options.person"
-                      :value="option._id"
-                      :key="option._id"
-                      >{{ option.name }}</md-option
-                    >
-                  </md-select>
-                </md-field>
-                <p class="help">Kies welke mensen {{ unit }} geven.</p>
+                  Er mist nog informatie.
+                </p>
 
                 <md-button type="submit" class="md-dense md-raised md-primary">
                   Afronden
@@ -1061,7 +1208,7 @@ const cards = carddb
     height: image_height
   }))
 
-import {identity} from 'lodash'
+import {identity, noop} from 'lodash'
 import {required, maxLength, minValue, maxValue} from 'vuelidate/lib/validators'
 
 const apiUrl =
@@ -1078,6 +1225,8 @@ export default {
       step: 'intro',
       language: 'nl',
       defaultLanguage: 'nl',
+      peopleSearched: [],
+      peopleSearch: null,
       info: {
         name: '',
         shortDescription: '',
@@ -1200,7 +1349,11 @@ export default {
       },
       {
         name: 'person',
-        map: x => x.sort((a, b) => alphaSort.asc(a.name, b.name))
+        map: x =>
+          x.filter(x => x.name).sort((a, b) => alphaSort.asc(a.name, b.name)),
+        sideEffect: x => {
+          this.peopleSearched = x
+        }
       },
       {name: 'competency'},
       {
@@ -1219,7 +1372,7 @@ export default {
 
           return x.sort(
             (a, b) =>
-              phaseMap[a.phase] - phaseMap[b.phase] ||
+              phaseMap[b.phase] - phaseMap[a.phase] ||
               alphaSort.asc(this.pick(a.name).value, this.pick(b.name).value)
           )
         }
@@ -1227,12 +1380,13 @@ export default {
     ]
 
     Promise.all(
-      resources.map(({name, map = identity}) =>
+      resources.map(({name, map = identity, sideEffect = noop}) =>
         fetch([apiUrl, name, ''].join('/'))
           .then(res => res.json())
           .then(map)
           .then(data => {
             this.options[name] = data
+            sideEffect(data)
             return name
           })
       )
@@ -1252,6 +1406,14 @@ export default {
       } else {
         list.splice(position, 1)
       }
+    },
+    searchInPeople() {
+      const list = this.options.person
+      const term = this.peopleSearch
+
+      this.peopleSearched = term
+        ? list.filter(x => x.name.toLowerCase().includes(term.toLowerCase()))
+        : list
     },
     next: function(ev, curr, next) {
       ev.preventDefault()
@@ -1409,6 +1571,11 @@ export default {
   font-weight: normal;
 }
 
+.lab-fake-field.md-invalid .lab-fake-label,
+.lab-fake-field.md-invalid .md-error {
+  color: #ff5252 !important;
+}
+
 .lab-check-vertical {
   display: flex;
 }
@@ -1477,6 +1644,49 @@ export default {
   padding-left: 8px;
 }
 
+.md-table {
+  width: 100%;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+.md-table >>> .md-toolbar {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.md-table >>> .md-title {
+  margin-left: 0;
+}
+
+.md-table >>> .md-table-head-label,
+.md-table >>> .md-table-cell-container {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.md-table >>> .md-sortable .md-table-head-label {
+  padding-right: 32px;
+}
+
+@media (min-width: 40em) {
+  .md-table >>> .md-toolbar {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .md-table {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  .md-table >>> .md-table-head-label,
+  .md-table >>> .md-table-cell-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
 .lab-levels {
   margin-top: 3rem;
 }
@@ -1485,6 +1695,25 @@ export default {
   empty-cells: show;
   max-width: 100%;
   margin: 1em 0;
+  font-size: 5px;
+}
+
+@media (min-width: 25em) {
+  .lab-level-table {
+    font-size: 8px;
+  }
+}
+
+@media (min-width: 30em) {
+  .lab-level-table {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 40em) {
+  .lab-level-table {
+    font-size: inherit;
+  }
 }
 
 .lab-level-table thead {
@@ -1492,7 +1721,7 @@ export default {
 }
 
 .lab-level-table :matches(th, td) {
-  padding: 1rem;
+  padding: 1em;
   text-align: center;
 }
 
