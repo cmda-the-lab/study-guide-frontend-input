@@ -749,6 +749,48 @@
                   </h2>
                   <img class="lab-spaces" src="./assets/spaces.png" />
                   <p class="help">In welk gebied valt {{ unit }}?</p>
+                  <details>
+                    <summary>Meer informatie over de gebieden</summary>
+                    <h3>Probleem</h3>
+                    <p>
+                      Dit is de space van meta of strategisch begrip en
+                      afbakening. De ontwerper zoekt een kader op strategisch
+                      niveau om het project richting te geven. Hoewel dat de
+                      focus op begrip en afbakening ligt, heeft de ontwerper
+                      zijn hele arsenaal aan competenties nodig om een design
+                      challenge te definiëren die helder en inspirerend is.
+                    </p>
+                    <h3>Concept</h3>
+                    <p>
+                      In deze space vormt de strategische challenge het
+                      startpunt voor het genereren en valideren van ideeën. Dit
+                      betekent een aantal tastbare opties creëren en evalueren
+                      of ze effectief en gepast zijn. Het doel is het selecteren
+                      van een productvisie en -concept dat door een team
+                      verfijnd en uitgewerkt kan worden tot een lanceerbaar
+                      product.
+                    </p>
+                    <h3>Ontwerp / bouwen</h3>
+                    <p>
+                      De space van detailontwerp, realisatie en afwegingen. Dit
+                      is ook de space waar veel ontwerpers hun carrière starten
+                      (in combinatie met de market space). Het concept of de
+                      challenge is al dan niet van de ontwerpers in deze ruimte
+                      zelf. Ze werken het concept in ieder geval uit - in
+                      verschillende iteraties en meestal in multidisciplinaire
+                      teams - tot iets dat gelanceerd kan worden.
+                    </p>
+                    <h3>Markt</h3>
+                    <p>
+                      In de market space worden vaak bedrijfskritische producten
+                      uitgebreid en herontworpen, om de user experience en
+                      prestaties/metrics te optimaliseren, nieuwe mogelijkheden
+                      te benutten en om druk van concurrenten het hoofd te
+                      bieden. Bij het doorlopen van de iteraties is een
+                      complicerende factor dat rekening gehouden moet worden met
+                      een live systeem.
+                    </p>
+                  </details>
 
                   <md-radio
                     v-model="$v.classification.spaces.$model"
