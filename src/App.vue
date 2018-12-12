@@ -1173,7 +1173,7 @@
       <md-dialog-confirm
         :md-active.sync="showDialog"
         md-title="Gelukt!"
-        md-content="Bedankt voor invullen van deze cursus! 💖 De data is opgestuurd naar de database. 👾 Wil je de pagina herladen om een nieuwe module in te vullen? ♻️"
+        md-content="Bedankt voor invullen van deze module! 💖 De data is opgestuurd naar de database. 👾 Wil je de pagina herladen om een nieuwe module in te vullen? ♻️"
         md-confirm-text="Ja, herlaad"
         md-cancel-text="Nee"
         @md-confirm="onConfirm"
@@ -1431,7 +1431,7 @@ export default {
       }
     },
     submit: function() {
-      const uri = [apiUrl, 'course', ''].join('/')
+      const uri = [apiUrl, 'module', ''].join('/')
       const options = this.options
       const {info, matter, classification, people} = this.$data
 
