@@ -299,8 +299,7 @@
                     v-model="$v.info.cluster.$model"
                     v-for="option in options.cluster.filter(
                       o =>
-                        o.phase ==
-                        (info.phase == 'profiling' ? 'verdieping' : info.phase)
+                        o.phase.includes(info.phase)
                     )"
                     :key="option._id"
                     :value="option._id"
@@ -1286,8 +1285,8 @@ export default {
       return this.info.type === 'project'
         ? 'het project'
         : this.info.type === 'course'
-        ? 'het vak'
-        : 'de module'
+          ? 'het vak'
+          : 'de module'
     }
   },
   validations: function() {
@@ -1361,15 +1360,11 @@ export default {
         map: x => {
           // TODO: drop Dutch IDs when API updates.
           const phaseMap = {
-            fundament: 0,
-            verdieping: 1,
-            afstuderen: 3,
             foundation: 0,
             profiling: 1,
             minor: 2,
             graduation: 3
           }
-
           return x.sort(
             (a, b) =>
               phaseMap[b.phase] - phaseMap[a.phase] ||
