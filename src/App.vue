@@ -293,13 +293,11 @@
                     <span v-if="info.phase == 'minor'">Minor</span>
                   </h2>
                   <p class="help">Bij welke groep hoort {{ unit }}?</p>
-                  <!-- TODO: change to english -->
                   <md-checkbox
                     class="lab-check-vertical"
                     v-model="$v.info.cluster.$model"
-                    v-for="option in options.cluster.filter(
-                      o =>
-                        o.phase.includes(info.phase)
+                    v-for="option in options.cluster.filter(o =>
+                      o.phase.includes(info.phase)
                     )"
                     :key="option._id"
                     :value="option._id"
@@ -1285,8 +1283,8 @@ export default {
       return this.info.type === 'project'
         ? 'het project'
         : this.info.type === 'course'
-          ? 'het vak'
-          : 'de module'
+        ? 'het vak'
+        : 'de module'
     }
   },
   validations: function() {
@@ -1358,7 +1356,6 @@ export default {
       {
         name: 'cluster',
         map: x => {
-          // TODO: drop Dutch IDs when API updates.
           const phaseMap = {
             foundation: 0,
             profiling: 1,
