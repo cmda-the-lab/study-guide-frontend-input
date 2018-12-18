@@ -2,7 +2,7 @@
   <div id="app">
     <div class="page-container">
       <md-app md-waterfall md-mode="overlap">
-        <md-app-toolbar class="md-primary md-large">
+        <md-app-toolbar class="md-large">
           <div class="md-toolbar-row">
             <h1 class="md-title">CMD Monitor</h1>
           </div>
@@ -1490,8 +1490,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.md-toolbar.md-theme-default.md-primary {
+.md-app-container > .md-toolbar {
   background-color: #feca2f;
+  /* Fix bug where the following app contents (the scroller), didn’t get its box painted. */
+  will-change: auto;
 }
 
 @media (min-width: 48rem) {
